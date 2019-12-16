@@ -1,0 +1,28 @@
+<div *ngIf="transactiondetails">
+    <p>Transaction History</p>
+    <table class='table table-hover table-responsive'>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Payment ID</th>
+            <th>Amount</th>
+            <th>Date</th>
+        </tr>
+        <!-- Use *ngFor directive to loop throught our list of products. -->
+        <tr *ngFor="let user of transactiondetails;let i=index;">
+            <td class="align-middle">{{user.TransactionID}}</td>
+            <td class="align-middle">{{user.PaymentID}}</td>
+            <td class="align-middle">{{user.Amount|currency}}</td>
+            <td class="align-middle">{{user.Date}}</td>
+        </tr>
+    </table>
+</div>
+<form [formGroup]="paymentForm">
+    <div id="dropin-container"></div>
+    <div class="form-group">
+        <input currencyMask formControlName="amount" placeholder="Enter Amount to Charge" class="form-control" id="amountinput" [ngClass]="{ 'is-invalid': submitted && f.amount.errors }" />
+        <div *ngIf="submitted && f.amount.errors" class="invalid-feedback">
+            <div *ngIf="f.amount.errors.required">Amount is required</div>
+        </div>
+    </div>
+    <button id="submit-button">Process Payment</button>
+</form>

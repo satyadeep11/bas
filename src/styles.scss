@@ -1,1 +1,128 @@
+@import './variables';
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@import '~@angular/material/theming';
+// Plus imports for other components in your app.
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat-core();
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$buildastore-primary: mat-palette($mat-indigo);
+$buildastore-accent: mat-palette($mat-pink, A200, A100, A400);
+// The warn palette is optional (defaults to red).
+$buildastore-warn: mat-palette($mat-red);
+// Create the theme object (a Sass map containing all of the palettes).
+$buildastore-theme: mat-light-theme($buildastore-primary, $buildastore-accent, $buildastore-warn);
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include angular-material-theme($buildastore-theme);
+
 /* You can add global styles to this file, and also import other style files */
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.green-snackbar {
+    background: rgb(3, 122, 3) !important;
+}
+
+.red-snackbar {
+    background: #F44336 !important;
+}
+
+.blue-snackbar {
+    background: blue !important;
+}
+
+.error-msg {
+    color: red;
+}
+
+// .mat-step-header {
+//   pointer-events: none !important;
+// }
+.basbtnbig {
+    border-radius: 2rem;
+    min-width: 10rem;
+    background-color: rgb(168, 173, 0);
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: 500;
+    border: solid;
+}
+
+.basbtn {
+    border-radius: 2rem;
+    min-width: 10rem;
+    background-color: rgb(168, 173, 0);
+    padding: 1rem;
+    color: white;
+    font-weight: 500;
+    border: solid;
+}
+
+.basbtnsdy {
+    border-radius: 2rem;
+    min-width: 10rem;
+    background-color: #6c757d;
+    padding: 1rem;
+    color: white;
+    font-weight: 500;
+    border: solid;
+}
+
+.basbtnsdysmall {
+    border-radius: 2rem;
+    min-width: 10rem;
+    background-color: #6c757d;
+    padding: 0.5rem;
+    color: white;
+    font-weight: 500;
+    border: solid;
+}
+
+.basbtn:hover,
+.basbtnbig:hover,
+.basbtnsdy:hover,
+.basbtnsdysmall:hover {
+    color: white;
+}
+
+.bgroundstyle {
+    background-image: url("./assets/Background.jpg");
+    background-repeat: repeat-x;
+}
+
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus {
+    color: black;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: black;
+}
+
+body {
+    font-family: 'Open Sans', Arial, sans-serif !important;
+}
+
+.btn {
+    font-family: 'Open Sans', Arial, sans-serif !important;
+    text-transform: uppercase;
+    font-weight: 500;
+}
+
+[data-braintree-id="toggle"] {
+    display: none;
+}

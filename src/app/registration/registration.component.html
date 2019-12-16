@@ -1,0 +1,929 @@
+<div class="w100">
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light px-5  mx-lg-5">
+            <div class="d-flex flex-grow-1">
+
+                <a class="navbar-brand" [routerLink]="['/']">
+                    <img src="../../assets/Logo_Build-A-Gift-Store.png" width="400" height="100" class="d-inline-block align-top img-fluid" alt="">
+                    <!-- Build-A-Gift-Store -->
+                </a>
+                <div class="w-100 text-right">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse flex-grow-1 text-right  mx-lg-5" id="myNavbar">
+                <ul class="navbar-nav ml-auto flex-nowrap ">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/registration']">Build My Store</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/faq']">FAQ</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/about-us']">About Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/contact-us']">Contact Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/stores']">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <!-- <div class="progress">
+            <div class="progress-bar {{progressbar}} progress-bar-animated" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" [style.width]="progress+'%'"></div>
+        </div> -->
+        <div class="row text-center d-none d-sm-none d-md-flex py-5 bgroundstyle align-middle ">
+            <hr class="w-100" style="position: absolute; border: 1px solid white;">
+            <div class="col-sm mt-1">
+                <span class="rounded-circle p-2 px-3 " [ngClass]="(progress<0)?'bg-light text-dark':'bg-dark text-white'">1</span>
+            </div>
+            <div class="col-sm mt-1">
+                <span class="rounded-circle p-2 px-3 " [ngClass]="(progress<30)?'bg-light text-dark':'bg-dark text-white'">2</span>
+            </div>
+            <div class="col-sm mt-1">
+                <span class="rounded-circle p-2 px-3 " [ngClass]="(progress<80)?'bg-light text-dark':'bg-dark text-white'">3</span>
+            </div>
+        </div>
+        <div class="row justify-content-center text-center mt-5">
+            <div class="col-8">
+                <h2>{{sectiontitle}}</h2>
+                <p [innerHTML]="sectiondesc"></p>
+                <hr class="mt-3 mb-3 w-50 bg-dark">
+            </div>
+        </div>
+    </div>
+    <div class="container">
+
+        <form *ngIf="eligible" [formGroup]="dynamicForm">
+            <div class="mt-5">
+                <div>
+                    <div *ngIf="!messagepage" class="main">
+                        <!-- <button (click)="messagepage=!messagepage">here</button> -->
+
+
+                        <form *ngIf="eligible" [formGroup]="dynamicForm">
+                            <div class="m-3">
+                                <!-- <div class="card-header">
+                                        <h5>Build a Store <button *ngIf="selection.length>0" class="float-right btn btn-dark d-lg-none"
+                                                (click)="seeSelections(content)">({{seeselection.length}}) Selections</button></h5>
+                                    </div> -->
+                                <mat-horizontal-stepper #stepper>
+                                    <mat-step>
+                                        <ng-template matStepLabel>About Company</ng-template>
+                                        <div *ngFor="let form_elem of formTemplate;let ind=index;">
+                                            <div *ngIf="form_elem.section==1">
+                                                <h4 *ngIf="ind==0">Store Basics</h4>
+                                                <div *ngIf="ind==6"><br>
+                                                    <h4>Gift Basics</h4>
+                                                </div>
+                                                <div [ngSwitch]="form_elem.type">
+                                                    <div *ngSwitchCase="'textBox'" class="form-group">
+                                                        <div *ngIf="form_elem.control!='domainname' && form_elem.control!='accesscode'">
+                                                            <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                            <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+
+                                                            <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section1errors)" class="error-msg">
+                                                                <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                    {{form_elem.label}} is required.</div>
+                                                                <div [hidden]="!dynamicForm.controls[form_elem.control].errors.email">
+                                                                    {{form_elem.label}} is invalid.</div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='domainname'">
+                                                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('email')">
+                                                                <label for="{{form_elem.control}}" [innerHTML]="form_elem.label"></label>
+                                                                <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                                <button class="btn btn-primary mt-1" (click)="addDomain()">Add</button>
+                                                                <div *ngIf="(dynamicForm.controls[form_elem.control].errors && domainerror)" class="error-msg">
+                                                                    <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                        {{form_elem.name}} is required.</div>
+                                                                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.pattern">
+                                                                        {{form_elem.name}} is invalid domain name.(avoid http,https and www)
+                                                                    </div>
+                                                                </div>
+                                                                <div>
+                                                                    <div *ngFor="let item of domaindata">
+                                                                        <ul id="list" class="list-inline mt-1 pb-1">
+                                                                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                                {{ item }}
+                                                                                <button (click)="removeDomain(item)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='accesscode'">
+                                                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')">
+                                                                <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                                <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                                <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section1errors)" class="error-msg">
+                                                                    <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                        {{form_elem.label}} is required.</div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'number'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="number" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                    </div>
+                                                    <div *ngSwitchCase="'password'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="password" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" autocomplete="new-password" class="form-control" />
+                                                    </div>
+                                                    <div *ngSwitchCase="'date'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="date" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" id="{{form_elem.control}}" (change)="dateChange(form_elem.control)" class="form-control" />
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section1errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                                            Start date cannot be less than today
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.launchdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                                            End date cannot be less less than today
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='deliverdate' && this.dynamicForm.controls.deliverdate.value<this.deliverdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                                            Deliver date cannot be less than 2 weeks from End date.
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'textArea'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <textarea formControlName="{{form_elem.control}}" id="{{form_elem.control}}" class="form-control"></textarea>
+                                                    </div>
+                                                    <div *ngSwitchCase="'select'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <select id="{{form_elem.control}}" *ngIf="form_elem.control!='budget'" formControlName="{{form_elem.control}}" class="form-control">
+                                                                <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
+                                                            <option *ngFor="let opt of form_elem.options; let i = index" [value]="opt">
+                                                                {{opt}}
+                                                            </option>
+                                                        </select>
+                                                        <select *ngIf="form_elem.control=='budget'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control">                                                      
+                                                            <option *ngFor="let opt of allcats; let i = index" [value]="opt.CategoryID">
+                                                                {{opt.CategoryName}}
+                                                            </option>                                                       
+                                                        </select>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section1errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'file'" class="form-group">
+                                                        <div *ngIf="form_elem.control=='logoimage'">
+                                                            <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                            <input type="file" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" (change)="onFileSelect($event,form_elem.control)">
+                                                            <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section4errors)" class="error-msg">
+                                                                <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                    {{form_elem.label}} is required.</div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='bannerimage'">
+                                                            <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                            <input type="file" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" (change)="onFileSelect($event,form_elem.control)">
+                                                            <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section4errors)" class="error-msg">
+                                                                <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                    {{form_elem.label}} is required.</div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                        <div class="text-center">
+                                            <button (click)="checkSection(1)" class=" border-light basbtn ">NEXT: Choose My Gifts</button>
+                                        </div>
+                                    </mat-step>
+                                    <mat-step>
+                                        <ng-template matStepLabel>Select Gifts</ng-template>
+                                        <nav class="navbar-collapse fixed-top navbar-light bg-transparent d-none d-lg-block mt-5">
+                                            <button *ngIf="selection.length>0" class="btn btn-secondary btn-sm mx-3 float-right" style="border-radius: 2rem;" (click)="seeSelections(content)">({{seeselection.length}}) Selections</button>
+                                        </nav>
+                                        <div class="container-fluid">
+                                            <div class="row">
+                                                <div *ngFor="let item of myData |shiptimefilter : diffDays" class="col-md-4 text-center d-flex align-items-stretch">
+                                                    <div class="card mb-2 " [ngClass]="removeCheck(item.Attr2) ? 'border-success' : ''">
+                                                        <ng-container *ngIf="isArray(item.ImageFile); then hascolor; else singlecolor">
+                                                        </ng-container>
+                                                        <ng-template #hascolor>
+                                                            <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
+                                                        </ng-template>
+                                                        <ng-template #singlecolor>
+                                                            <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                                        </ng-template>
+                                                        <!-- <div class="card-body">
+                                                            <h5 class="card-title">{{item.ProductName}}</h5>
+                                                            <p class="card-text">
+                                                                {{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}
+                                                            </p>
+                                                            <button class="btn btn-secondary" style="border-radius: 2rem;" (click)="productdetails(content1,item)">View Details</button>
+                                                            <p *ngIf="removeCheck(item.Attr2)==true ||removeCheck(item.Attr2)>0 " class="card-text"><small class="text-muted">Added</small></p>
+                                                        </div> -->
+                                                        <div class="card-body d-flex flex-column">
+                                                            <!-- <h1 class="card-title pricing-card-title">{{item.ProductName}}</h1> -->
+                                                            <ul class="list-unstyled mt-3 mb-4">
+                                                                <li><b>{{item.ProductName|titlecase}}</b></li>
+                                                                <li>{{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}</li>
+                                                            </ul>
+                                                            <button type="button" style="border-radius: 2rem;" (click)="productdetails(content1,item)" class="mt-auto mx-5 btn  btn-secondary">View Details</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="text-center">
+                                            <button matStepperPrevious class="basbtnsdy" style="border-radius: 2rem;">Back</button>
+                                            <button (click)="seeSelections(content)" class="border-light basbtn mx-5">NEXT: Review My Selections</button>
+                                            <button *ngIf="!alldataloaded" class="basbtnsdy" style="border-radius: 2rem;" (click)="changeData()">Show More</button>
+                                            <button *ngIf="selection.length>0" class="basbtnsdy d-lg-none" style="border-radius: 2rem;" (click)="seeSelections(content)">({{seeselection.length}}) Selections</button>
+                                        </div>
+                                    </mat-step>
+                                    <mat-step>
+                                        <ng-template matStepLabel>Personal Details</ng-template>
+                                        <div *ngFor="let form_elem of formTemplate">
+                                            <div *ngIf="form_elem.section==2">
+                                                <div [ngSwitch]="form_elem.type">
+                                                    <div *ngSwitchCase="'textBox'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.email">
+                                                                {{form_elem.label}} is invalid.</div>
+                                                        </div>
+                                                        <div class="error-msg" *ngIf="dupemail && form_elem.control=='email'">
+                                                            {{form_elem.label}} is already in use.</div>
+                                                        <div *ngIf="form_elem.control=='bannerheading'">
+                                                            <p><small>Maximum number of characters allowed 300.</small></p>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'file'" class="form-group">
+                                                        <div *ngIf="form_elem.control=='logoimage'">
+                                                            <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label><br>
+                                                            <small>Add your organization's logo to your store by uploading it here.</small>
+                                                            <input type="file" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" accept=".jpg,.jpeg,.png,.gif" (change)="onFileSelect($event,form_elem.control)">
+                                                            <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                                <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                    {{form_elem.label}} is required.</div>
+                                                            </div>
+                                                            <div>
+                                                                <p><small> Recommended dimensions: 200px x 200px; Max file size: 2 MB; Formats: .jpg, .png, . gif; Background color: white or transparent</small></p>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='bannerimage'">
+                                                            <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                            <input type="file" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" accept=".jpg,.jpeg,.png,.gif" (change)="onFileSelect($event,form_elem.control)">
+                                                            <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                                <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                    {{form_elem.label}} is required.</div>
+                                                            </div>
+                                                            <div>
+                                                                <p><small>Recommended dimensions: 800px x 600px;  Max file size: 2 MB; Formats: .jpg, .png, .gif</small></p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'textBoxGroup'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <div class="input-group mb-3">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text" id="basic-addon3">https://buildastore.com/stores/</span>
+                                                            </div>
+                                                            <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                        </div>
+
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.name}} is required.</div>
+                                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.email">
+                                                                {{form_elem.label}} is invalid.</div>
+                                                        </div>
+                                                        <div class="error-msg" *ngIf="dupeurl && form_elem.control=='storeurl'">
+                                                            {{form_elem.name}} is already in use.</div>
+                                                    </div>
+
+                                                    <div *ngSwitchCase="'number'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="number" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                    </div>
+                                                    <div *ngSwitchCase="'password'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input [type]="hide ? 'password' : 'text'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" autocomplete="new-password" class="form-control" />
+                                                        <!-- <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'"> -->
+                                                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                                            </button>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                        </div>
+                                                        <div *ngIf="passmismatch" class="error-msg"> Passwords don't match</div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'date'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="date" formControlName="{{form_elem.control}}" id="{{form_elem.control}}" class="form-control" />
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'textArea'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <textarea formControlName="{{form_elem.control}}" id="{{form_elem.control}}" class="form-control"></textarea>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.name}} is required.</div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='bannerdesc'">
+                                                            <p><small>Maximum number of characters allowed 3000.</small></p>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='reason'">
+                                                            <p><small>Use this section to add a personal note or instructions for your store's visitors. Maximum number of characters allowed 3000.</small></p>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'select'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <select formControlName="{{form_elem.control}}" class="form-control" id="{{form_elem.control}}">                                                               
+                                                                <option *ngFor="let opt of form_elem.options; let i = index" [value]="opt">
+                                                                    {{opt}}
+                                                                </option>
+                                                            </select>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section2errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="justify-content-center text-center">
+                                            <button matStepperPrevious class="basbtnsdy mx-5">Back</button>
+                                            <button (click)="checkSection(2)" class="basbtn">NEXT: Create My Account </button>
+                                        </div>
+                                    </mat-step>
+
+                                    <mat-step>
+                                        <ng-template matStepLabel>Final Questions</ng-template>
+                                        <div *ngFor="let form_elem of formTemplate">
+                                            <div *ngIf="form_elem.section==3">
+                                                <div [ngSwitch]="form_elem.type">
+                                                    <div *ngSwitchCase="'textBox'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required,email'" class="text-danger">*</span><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
+                                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.email">
+                                                                {{form_elem.label}} is invalid.</div>
+                                                        </div>
+                                                        <div class="error-msg" *ngIf="dupemail && form_elem.control=='email'">
+                                                            {{form_elem.label}} is already in use.</div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'number'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="number" formControlName="{{form_elem.control}}" class="form-control" id="{{form_elem.control}}" />
+                                                    </div>
+                                                    <div *ngSwitchCase="'password'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input [type]="hide ? 'password' : 'text'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" autocomplete="new-password" class="form-control" />
+                                                        <!-- <input matInput placeholder="Enter your password" [type]="hide ? 'password' : 'text'"> -->
+                                                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                                    <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                                                </button>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                        </div>
+                                                        <div *ngIf="passmismatch" class="error-msg"> Passwords don't match</div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'date'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="date" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'textArea'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <textarea formControlName="{{form_elem.control}}" class="form-control" id="{{form_elem.control}}"></textarea>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.name}} is required.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'file'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <input type="file" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" (change)="onFileSelect($event,form_elem.control)" class="form-control">
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.label}} is required.</div>
+                                                        </div>
+                                                    </div>
+                                                    <div *ngSwitchCase="'select'" class="form-group">
+                                                        <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
+                                                        <select formControlName="{{form_elem.control}}" class="form-control" id="{{form_elem.control}}">
+                                                                <option *ngFor="let opt of form_elem.options; let i = index" [value]="opt">
+                                                                    {{opt}}
+                                                                </option>
+                                                            </select>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="dynamicForm.controls.shipping.value=='To a corporate address' || dynamicForm.controls.shipping.value=='Recipients can choose from a corporate address or enter their home address'">
+                                            <label>Corporate Address</label>
+                                            <p><small>You indicated that you would like to have gifts shipped to a corporate address. Please share that address in the section below. You will have a chance to add additional addresses once the first one is created.</small></p>
+                                            <div class="card-group" *ngIf="t.controls.length>0">
+                                                <div *ngFor="let address of t.controls; let i = index">
+                                                    <div class="card">
+                                                        <div *ngIf="!this.Address[i]" class="card-body" id="AddressResp{{i}}">
+                                                            <div class="card-title">
+                                                                <p>{{this.dynamicForm.value["addressesarray"][i].addressname|titlecase}}</p>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <p>{{this.dynamicForm.value["addressesarray"][i].streetaddress}} {{this.dynamicForm.value["addressesarray"][i].streetaddress2}}</p>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <p>{{this.dynamicForm.value["addressesarray"][i].city}} , {{this.dynamicForm.value["addressesarray"][i].state}}, {{this.dynamicForm.value["addressesarray"][i].zip}}</p>
+                                                            </div>
+                                                        </div>
+                                                        <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngFor="let address of t.controls; let i = index" class="list-group list-group-flush">
+                                                <div class="list-group-item" *ngIf="this.Address[i]">
+                                                    <!-- <ng-template *ngIf="i==0;then primary; else secondary">
+                                                    </ng-template>
+                                                    <ng-template #primary>
+                                                        <h5 class="card-title">Address 1 </h5>
+                                                    </ng-template>
+                                                    <ng-template #secondary>
+                                                        <h5 class="card-title">Address {{i+1}}</h5>
+                                                    </ng-template> -->
+
+                                                    <div *ngIf="this.Address[i]" [formGroup]="address" class="form-row" id="Address{{i}}">
+                                                        <div class="form-group col-6">
+                                                            <label>Address Name</label>
+                                                            <input type="text" autocomplete="name" formControlName="addressname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.addressname.errors }" />
+                                                            <div *ngIf="addresserrors && address.controls.addressname.errors" class="invalid-feedback">
+                                                                <div *ngIf="address.controls.addressname.errors.required">Address Name is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-6">
+                                                            <label>Street Address</label>
+                                                            <input type="text" autocomplete="shipping address-line1" formControlName="streetaddress" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress.errors }" />
+                                                            <div *ngIf="addresserrors && address.controls.streetaddress.errors" class="invalid-feedback">
+                                                                <div *ngIf="address.controls.streetaddress.errors.required">Street Address is required
+                                                                </div>
+                                                                <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-6">
+                                                            <label>Street Address 2</label>
+                                                            <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress2.errors }" />
+                                                        </div>
+                                                        <div class="form-group col-6">
+                                                            <label>City</label>
+                                                            <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.city.errors }" />
+                                                            <div *ngIf="addresserrors && address.controls.city.errors" class="invalid-feedback">
+                                                                <div *ngIf="address.controls.city.errors.required">City is required</div>
+                                                                <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-6">
+                                                            <label>State</label>
+                                                            <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }">
+                                                                    <option value="AL">Alabama</option>
+                                                                    <option value="AK">Alaska</option>
+                                                                    <option value="AZ">Arizona</option>
+                                                                    <option value="AR">Arkansas</option>
+                                                                    <option value="CA">California</option>
+                                                                    <option value="CO">Colorado</option>
+                                                                    <option value="CT">Connecticut</option>
+                                                                    <option value="DE">Delaware</option>
+                                                                    <option value="DC">District Of Columbia</option>
+                                                                    <option value="FL">Florida</option>
+                                                                    <option value="GA">Georgia</option>
+                                                                    <option value="HI">Hawaii</option>
+                                                                    <option value="ID">Idaho</option>
+                                                                    <option value="IL">Illinois</option>
+                                                                    <option value="IN">Indiana</option>
+                                                                    <option value="IA">Iowa</option>
+                                                                    <option value="KS">Kansas</option>
+                                                                    <option value="KY">Kentucky</option>
+                                                                    <option value="LA">Louisiana</option>
+                                                                    <option value="ME">Maine</option>
+                                                                    <option value="MD">Maryland</option>
+                                                                    <option value="MA">Massachusetts</option>
+                                                                    <option value="MI">Michigan</option>
+                                                                    <option value="MN">Minnesota</option>
+                                                                    <option value="MS">Mississippi</option>
+                                                                    <option value="MO">Missouri</option>
+                                                                    <option value="MT">Montana</option>
+                                                                    <option value="NE">Nebraska</option>
+                                                                    <option value="NV">Nevada</option>
+                                                                    <option value="NH">New Hampshire</option>
+                                                                    <option value="NJ">New Jersey</option>
+                                                                    <option value="NM">New Mexico</option>
+                                                                    <option value="NY">New York</option>
+                                                                    <option value="NC">North Carolina</option>
+                                                                    <option value="ND">North Dakota</option>
+                                                                    <option value="OH">Ohio</option>
+                                                                    <option value="OK">Oklahoma</option>
+                                                                    <option value="OR">Oregon</option>
+                                                                    <option value="PA">Pennsylvania</option>
+                                                                    <option value="RI">Rhode Island</option>
+                                                                    <option value="SC">South Carolina</option>
+                                                                    <option value="SD">South Dakota</option>
+                                                                    <option value="TN">Tennessee</option>
+                                                                    <option value="TX">Texas</option>
+                                                                    <option value="UT">Utah</option>
+                                                                    <option value="VT">Vermont</option>
+                                                                    <option value="VA">Virginia</option>
+                                                                    <option value="WA">Washington</option>
+                                                                    <option value="WV">West Virginia</option>
+                                                                    <option value="WI">Wisconsin</option>
+                                                                    <option value="WY">Wyoming</option>
+                                                                    <option value="AS">American Samoa</option>
+                                                                    <option value="GU">Guam</option>
+                                                                    <option value="MP">Northern Mariana Islands</option>
+                                                                    <option value="PR">Puerto Rico</option>
+                                                                    <option value="UM">United States Minor Outlying Islands</option>
+                                                                    <option value="VI">Virgin Islands</option>
+                                                                    <option value="AA">Armed Forces Americas</option>
+                                                                    <option value="AP">Armed Forces Pacific</option>
+                                                                    <option value="AE">Armed Forces Others</option>	
+                                                                </select>
+                                                            <!-- <input type="text" autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }" /> -->
+                                                            <div *ngIf="addresserrors && address.controls.state.errors" class="invalid-feedback">
+                                                                <div *ngIf="address.controls.state.errors.required">State is required</div>
+                                                                <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-6">
+                                                            <label>Zip Code</label>
+                                                            <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
+                                                            <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
+                                                                <div *ngIf="address.controls.zip.errors.required">Zip Code is required</div>
+                                                                <div *ngIf="address.controls.zip.errors.pattern">Invalid Zip</div>
+                                                            </div>
+                                                        </div>
+                                                        <button mat-raised-button (click)="addSingleAd(i)" type="button">Add</button>
+                                                        <button mat-raised-button *ngIf="i>0" (click)="CancelSingleAd(i)" type="button">Cancel</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br>
+                                            <button *ngIf="this.addAnother" (click)="addAnotherAd()" type="button" class="btn btn-secondary" style="border-radius: 2rem;">Add Another Address</button>
+                                        </div>
+
+                                        <div class="justify-content-center text-center">
+                                            <button matStepperPrevious class="basbtnsdy mx-5">Back</button>
+                                            <button type="button" (click)="checkSection(3)" class="border-light basbtn">NEXT: Save My Details</button>
+                                            <!-- <button mat-raised-button (click)="onSubmit(formdone)">Submit</button> -->
+                                        </div>
+                                    </mat-step>
+                                    <mat-step>
+                                        <ng-template matStepLabel>Store Setup</ng-template>
+
+                                        <div class="justify-content-center text-center">
+                                            <!-- <button mat-raised-button matStepperPrevious>Back</button>
+                                            <button mat-raised-button (click)="onSubmit(formdone)">Submit</button> -->
+                                            <div class="text-left">
+                                                <p><b>Check your email</b> for a confirmation from support@buildastore.com that includes important information related to how you'll access your site, share it, and a few things we need to finish up to ensure
+                                                    your gifts get in your recipients hands on time.</p>
+                                                <p> If you don't see the email in your inbox, be sure to check your spam/junk folder. If you're still not able to find it, please let us know at helpmybrand@idworks.com. </p>
+                                                <p><b>On the next page</b> you'll be able preview and edit your site. If you choose to make changes to your site right away, don't forget to hit <i>Save</i> before exiting!</p>
+                                            </div>
+                                            <button type="button" (click)="previewredirect()" class=" border-light basbtn mt-5">NEXT: Preview My Store</button>
+                                        </div>
+                                    </mat-step>
+                                </mat-horizontal-stepper>
+                            </div>
+
+
+                        </form>
+
+
+                        <ng-template #content let-modal>
+                            <div class="modal-header">
+                                <h6 class="text-muted text-center">You have {{seeselection.length}} selections </h6>
+                                <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <ul class="list-group">
+                                            <div *ngFor=" let selection of seeselection" class=" text-center">
+                                                <li class="list-group-item">
+
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <img [src]="'https://www.securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
+                                                        </div>
+                                                        <div class="col align-self-center">
+                                                            <p><b>{{selection.ProductName}}</b>({{selection.A2_Label}})</p>
+                                                            <p>{{selection.minimum|currency:'USD'}} - {{selection.maximum|currency:'USD'}}</p>
+                                                            <button *ngIf="removeCheck(selection.Attr2)" (click)="removefromcart(selection.ProductName,selection.ProductID,selection.Attr2)" class="basbtnsdy">Remove from Store</button>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                            </div>
+                                        </ul>
+
+                                        <!-- <div *ngIf="seeselection.length==0" class="align-content-center">
+                                            <p>No products Selected</p>
+                                            <button class="btn btn-primary" (click)="closeModal()">Go Back</button>
+                                        </div> -->
+                                    </div>
+                                </div>
+                                <div *ngIf="seeselection.length==0" class="row justify-content-center text-center ">
+                                    <div class="col">
+                                        <p>No products Selected</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button *ngIf="seeselection.length!=0" ngbAutofocus (click)="closeModal();checkSection('gift')" class=" border-light basbtn">NEXT: Customize My Store</button>
+                                <button *ngIf="seeselection.length==0" class="btn btn-secondary" style="border-radius: 2rem;" (click)="closeModal()">Go Back</button>
+                                <!-- <button type="button" class="btn btn-primary" [routerLink]="['/products',catid]" [routerLinkActive]="['router-link-active']" (click)="closeModal()">Add More Products</button>   -->
+                            </div>
+
+                        </ng-template>
+
+                        <!-- <app-preview *ngIf="!preview && seeselection.length>0"></app-preview> -->
+
+
+
+                        <div *ngIf="!eligible" class="h-100">
+                            <div class="d-flex h-100 justify-content-center align-items-center">
+                                <div class="d-flex flex-column">
+                                    <h4>
+                                        Sorry you are not eligible to build a store right now.
+                                    </h4>
+                                    <p>
+                                        Based on your responses you don't meet the criteria to start a build a store right now. If you feel that we missed something please get in touch at help@buildastore.com
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <ng-template #formdone let-modal>
+                            <div class="modal-header">
+                                <h6 class="text-muted">Congratulations </h6>
+                                <button type="button" class="close" aria-label="Close" (click)="closeredirectModal()">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <p>
+                                            Our account managers will get in touch with you to complete your billing setup and help you make your Build a Store live.
+                                        </p>
+                                        <p>
+                                            Meanwhile you can have a look at the preview of your store.
+                                        </p>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" (click)="closeredirectModal()">Preview</button>
+                                <!-- <button type="button" class="btn btn-primary" [routerLink]="['/products',catid]" [routerLinkActive]="['router-link-active']" (click)="closeModal()">Add More Products</button>   -->
+                            </div>
+                        </ng-template>
+
+
+                        <ng-template #content1 let-modal>
+                            <div class="modal-header">
+                                <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                                <span aria-hidden="true">&times;</span>
+                              </button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <div class="container">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12">
+                                            <!-- Portfolio Modal - Title -->
+                                            <h2 class="portfolio-modal-title text-dark text-uppercase mb-1">{{products[0].ProductName}}</h2>
+                                        </div>
+                                        <div>
+                                            <div *ngFor="let item of products">
+                                                <ng-container *ngIf="isArray(item.Attr2); then hascoloroption; else singlecoloroption">
+                                                </ng-container>
+                                                <ng-template #hascoloroption>
+                                                    <div class="row">
+                                                        <div *ngFor="let option of item.Attr2; let i = index;let fst = first;" class="col-sm-6">
+                                                            <div class="card">
+                                                                <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">{{item.A2_Label[i]}}</h5>
+                                                                    <div>
+                                                                        <button *ngIf="!removeCheck(item.Attr2[i])" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2[i],item.A2_Label[i],item.ImageFile[i])" class="basbtn">Add to Store</button>
+                                                                        <button *ngIf="removeCheck(item.Attr2[i])" class="basbtnsdy " (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2[i])">Remove from Store</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!-- <div class="col-sm-12 justify-content-center p-1">
+                                                            <button (click)="closeModal()" class="btn btn-secondary">Back</button>
+                                                        </div> -->
+
+                                                    </div>
+
+                                                </ng-template>
+                                                <ng-template #singlecoloroption>
+                                                    <div class="row justify-content-center">
+                                                        <div class="col-sm-6">
+                                                            <div class="card d-block">
+                                                                <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">{{item.A2_Label}}</h5>
+                                                                    <p class="card-text">
+                                                                        {{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}
+                                                                    </p>
+                                                                    <div>
+                                                                        <button *ngIf="!removeCheck(item.Attr2)" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2,item.A2_Label,item.ImageFile)" class="basbtn">Add to Store</button>
+                                                                        <button *ngIf="removeCheck(item.Attr2)" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2)" class="basbtnsdy">Remove from Store</button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <!-- <div class="col-sm-12 justify-content-center p-1">
+                                                                <button (click)="closeModal()" class="btn btn-secondary">Back</button>
+                                                            </div> -->
+                                                        </div>
+                                                    </div>
+                                                </ng-template>
+                                            </div>
+                                            <div class="row justify-content-center">
+                                                <div class="col-sm-6">
+                                                    <div class="card bg-light mt-3">
+                                                        <div class="card-header">Pricing Breaks</div>
+                                                        <div class="card-body">
+                                                            <table class="table">
+                                                                <thead class="thead-dark">
+                                                                    <tr>
+                                                                        <th scope="col">Min Quantity</th>
+                                                                        <th scope="col">Max Quantity</th>
+                                                                        <th scope="col">Price</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr *ngFor="let row of pb;let last=last">
+                                                                        <td>{{row.QtyMin}}</td>
+                                                                        <td>{{last?'Max':row.QtyMax}}</td>
+                                                                        <td>{{row.Price|currency}}</td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card d-block bg-light mt-3">
+                                                <div class="card-header">Product Information</div>
+                                                <div class="card-body">
+                                                    <p class="text-left">{{products[0].ProductDesc1}}</p>
+                                                    <p class="text-left">{{products[0].ProductDesc2}}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
+                    </div>
+                    <div *ngIf="messagepage" class="text-center body1">
+                        <div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+                            <header class="masthead mb-auto">
+                                <div class="inner">
+                                    <!-- <h3 class="masthead-brand">Cover</h3>
+                                <nav class="nav nav-masthead justify-content-center">
+                                  <a class="nav-link active" href="#">Home</a>
+                                  <a class="nav-link" href="#">Features</a>
+                                  <a class="nav-link" href="#">Contact</a>
+                                </nav> -->
+                                </div>
+                            </header>
+
+                            <main role="main" class="inner cover">
+                                <h1 class="cover-heading">Registration Complete</h1>
+                                <p class="lead">
+                                    Our account managers will get in touch with you to complete your billing setup and help you make your Build a Store live.
+                                </p>
+                                <p>
+                                    Meanwhile you can have a look at the preview of your store.
+                                </p>
+                                <p class="lead">
+                                    <!-- <a href="#" class="btn btn-lg btn-secondary">Preview</a> -->
+                                    <button class="btn btn-lg btn-secondary" (click)="closeredirectModal()">Preview</button>
+                                </p>
+                                <p>
+                                    Other information goes here
+                                </p>
+                            </main>
+
+                            <footer class="mastfoot mt-auto">
+                                <div class="inner">
+                                    <p>footer links can go here</p>
+                                </div>
+                            </footer>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- <footer class="page-footer bg-dark text-white font-small blue pt-4">
+        <div class="d-flex justify-content-center">
+            <div class="p-2 text-center">
+                <h5 class="text-uppercase">Get to Know Us</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#!">About Us</a>
+                    </li>
+                    <li>
+                        <a href="#!">Privacy Policy</a>
+                    </li>
+                    <li>
+                        <a href="#!">Terms of Service</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="p-2 text-center">
+                <h5 class="text-uppercase">Connect</h5>
+                <ul class="list-unstyled">
+                    <li>
+                        <a href="#!">help@xxxxx.com</a>
+                    </li>
+                    <li>
+                        <a href="#!">xxx.xxx.xxxx</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-copyright text-center py-3">© 2020 Identity Works, Inc</div> -->
+    <footer class="page-footer font-small bg-dark text-white font-small pt-4">
+        <div class="container-fluid text-center text-md-left">
+            <div class="row mx-5 pb-3">
+                <div class="col">
+                    <h5 class="text-uppercase">About Us</h5>
+                    <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
+                        <a [routerLink]="['/about-us']" class="text-white">Learn More</a></p>
+                </div>
+                <hr class="clearfix w-100 d-md-none pb-3">
+                <div class="col">
+                    <h5 class="text-uppercase">Support</h5>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" href="#!">800-658-9014</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" href="#!">helpmybrand@idworks.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" [routerLink]="['/privacy-policy']">Privacy Policy</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" [routerLink]="['/terms-of-service']">Terms of Service</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-copyright text-center py-3">© 2020 Identity Works, Inc</div>
+</div>

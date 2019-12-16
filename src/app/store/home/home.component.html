@@ -1,0 +1,760 @@
+<body *ngIf="!loading">
+    <div class="page-wrapper deep-theme {{toggled}}">
+        <a *ngIf="mgrlogin" id="show-sidebar" class="btn btn-sm btn-dark" [routerLink]="" (click)="toggled='toggled'" style="z-index: 99999;">
+            <i class="fas fa-bars"></i>
+        </a>
+        <nav *ngIf="mgrlogin" id="sidebar" class="sidebar-wrapper">
+            <div class="sidebar-content">
+                <a id="close-sidebar" class="float-right pr-2 text-dark" [routerLink]="" (click)="toggled=''">
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+                <div class="sidebar-brand my-3">
+                    <!-- <a>Build A Store</a> -->
+                    <img src="../../assets/Logo_Build-A-Gift-Store.png" width="200" height="50" class="d-inline-block align-top img-fluid" alt="">
+                </div>
+                <div class="sidebar-header bg-header">
+                    <!-- <div class="user-pic">
+                        <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+                    </div> -->
+                    <div class="text-center ">
+                        <p><strong>{{mgrname|titlecase}}</strong></p>
+                        <p>{{mgremail}}</p>
+                        <hr class="bg-white">
+                        <p><strong>{{storename|titlecase}}</strong></p>
+                        <!-- <p class="basbtnhome mx-4"><strong>Store Admin</strong></p> -->
+                        <p><button *ngIf="!admin" class="basbtnhome" [routerLink]="adminurl">Store Admin</button></p>
+                        <p><button *ngIf="admin" class="basbtnhome" onclick="window.close();">Close</button></p>
+                        <a style="cursor: pointer" (click)="logout()">
+                            <span>Logout</span>
+                        </a>
+                    </div>
+
+
+                </div>
+                <div class="sidebar-menu">
+                    <ul>
+                        <li class="m-2">
+                            <span>Display Settings</span>
+                        </li>
+                        <div class="accordion md-accordion text-dark" id="accordionEx" role="tablist" aria-multiselectable="true">
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingOne1">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                                        <p class="mb-0 text-dark">
+                                            Company Logo
+                                        </p>
+                                    </a>
+                                </div>
+                                <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                                    <div class="card-body p-0">
+                                        <li class="m-2">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" [checked]="!nologo" (change)="nologo = !nologo;nologooption();" class="custom-control-input" id="ncl">
+                                                <label class="custom-control-label" for="ncl"><small>Company Logo</small></label>
+                                            </div>
+                                        </li>
+                                        <li *ngIf="!nologo" class="m-2">
+                                            <a class="pr-0" style="cursor: pointer">
+                                                <span class="btn btn-sm btn-secondary btn-file basbtnhomesecondary">
+                                                    Browse <input class="form-control" type="file" accept=".jpg,.jpeg,.png,.gif" (change)="fileChangeEvent($event,'logo')">
+                                                </span>
+                                            </a>
+                                            <div *ngIf="error">
+                                                <!-- {{ error.message }} -->
+                                                <small class="text-danger">Error! File too Big.</small>
+                                            </div>
+                                            <div *ngIf="uploadResponse.status === 'error'">
+                                                <small class="text-danger">{{ uploadResponse.message }}</small>
+                                            </div>
+                                            <div *ngIf="uploadResponse.status === 'progress'">
+
+                                                <small class="text-info">
+                                                <div role="progressbar" [style.width.%]="uploadResponse.message" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                                    {{uploadResponse.message}}%
+                                                </div></small>
+
+                                            </div>
+                                            <p><small> Recommended dimensions: 200px x 200px Max file size: 2 MB <br>Formats: .jpg, .png, .gif <br>Background color: white or transparent</small></p>
+                                        </li>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingTwo2">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="true" aria-controls="collapseTwo2">
+                                        <p class="mb-0 text-dark">
+                                            Banner Background
+                                        </p>
+                                    </a>
+                                </div>
+                                <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+                                    <div class="card-body p-0">
+                                        <li class="m-2">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" [checked]="!nobanner" (change)="nobanner = !nobanner;nobanneroption();" class="custom-control-input" id="nbb">
+                                                <label class="custom-control-label" for="nbb"><small>Background Image</small></label>
+                                            </div>
+                                        </li>
+                                        <li class="m-2">
+                                            <div class="custom-control custom-switch">
+                                                <input type="checkbox" [checked]="transparentbg" (change)="transparentbg = !transparentbg" class="custom-control-input" id="tbg">
+                                                <label class="custom-control-label" for="tbg"><small>White Text Background</small></label>
+                                            </div>
+                                        </li>
+                                        <li class="m-2">
+                                            <label class="checkbox-inline">
+                                                                        <input type="color" [(ngModel)]="textcolor" >
+                                                                        <small>Text Color</small>
+                                                                </label>
+                                        </li>
+
+                                        <li *ngIf="!nobanner" class="m-2">
+                                            <a class="pr-0" style="cursor: pointer">
+                                                <span class="btn btn-sm btn-secondary btn-file basbtnhomesecondary">
+                                                    Browse <input class="form-control" type="file" accept=".jpg,.jpeg,.png" (change)="fileChangeEvent($event,'banner')">
+                                                </span>
+                                            </a>
+                                            <span><small>Recommended dimensions : 800px x 600px<br>Max file size: 2 MB<br>Formats: .jpg, .png, .gif</small></span>
+                                        </li>
+
+
+                                        <!-- <li class="m-2">
+                                            <label class="checkbox-inline">
+                                                <input type="checkbox" [checked]="textdark"  (change)="textdark = !textdark" > 
+                                                Dark Text
+                                            </label>
+                                        </li> -->
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card ">
+                                <div class="card-header" role="tab" id="headingThree3">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseThree3" aria-expanded="true" aria-controls="collapseThree3">
+                                        <p class="mb-0 text-dark">
+                                            *Headline
+                                        </p>
+                                    </a>
+                                </div>
+                                <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#accordionEx">
+                                    <div class="card-body p-0">
+                                        <li class="m-2">
+                                            <input class="form-control" type="text" [(ngModel)]="bannerheading" #headline placeholder="Banner heading">
+                                            <p><small>Max characters: 300</small></p>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-header" role="tab" id="headingFour4">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseFour4" aria-expanded="true" aria-controls="collapseFour4">
+                                        <p class="mb-0 text-dark">
+                                            Sub-Headline
+                                        </p>
+                                    </a>
+                                </div>
+                                <div id="collapseFour4" class="collapse" role="tabpanel" aria-labelledby="headingFour4" data-parent="#accordionEx">
+                                    <div class="card-body p-0">
+                                        <li class="m-2">
+                                            <textarea class="form-control" rows="3" cols="28" [(ngModel)]="bannerdesc"></textarea>
+                                            <p><small>Max characters: 3000</small></p>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card ">
+                                <div class="card-header" role="tab" id="headingFive5">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseFive5" aria-expanded="true" aria-controls="collapseFive5">
+                                        <p class="mb-0 text-dark">
+                                            Store Description
+                                        </p>
+                                    </a>
+                                </div>
+                                <div id="collapseFive5" class="collapse" role="tabpanel" aria-labelledby="headingFive5" data-parent="#accordionEx">
+                                    <div class="card-body p-0">
+                                        <li class="m-2">
+                                            <textarea class="form-control" rows="3" cols="28" [(ngModel)]="reason"></textarea>
+                                            <p><small>Max characters: 3000</small></p>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <li>
+                            <div class="m-4">
+                                <span>Select Theme</span>
+                                <br>
+                                <select title="Colors" title="Colors" class="form-control" [(ngModel)]="theme" (change)="themechange($event.target.value)">     
+                                        <option>Default</option>
+                                        <option>Sketch</option>
+                                        <option>Night</option>
+                                        <option>Stone</option>
+                                        <option>Summer</option>
+                                        <option>Minimal</option>
+                                        <option>Clean</option>
+                                        <option>Vivid</option>
+                                        <option>Red</option>
+                                        <option>Green</option>
+                                        <option>Blue</option>
+                                        <option>Christmas</option>
+                                        <option>Snow</option>
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <a><span class="">
+                                <div class="row m-2">
+                                    <div class="col text-center">
+                                            <button class="basbtnhome" (click)="submit()">Save</button>
+                                    </div>                                        
+                                </div>
+                                <div class="row m-2">
+                                        <div class="col text-center">
+                                        <!-- <button *ngIf="!admin" class="btn btn-secondary basbtnhomesecondary " [routerLink]="adminurl">Admin Section</button> -->
+                                    </div></div> 
+                                    <div class="row m-2">
+                                            <div class="col text-center">
+                                            <!-- <button *ngIf="admin" class="btn btn-primary basbtnhomesecondary" onclick="window.close();">Close</button> -->
+                                </div>  </div>                           
+                            </span></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="page-content {{theme|lowercase}}">
+            <nav class="bg-light text-uppercase" id="mainNav">
+                <div class="container-fluid">
+                    <div class="row h-100 justify-content-center align-items-center">
+                        <div class="col-lg-11">
+                            <a *ngIf="logoimage" class="navbar-brand " [routerLink]="">
+                                <img [src]="logoimage" alt="" class="img-rounded float-left" style="height: 100px;width: 100px;">
+                            </a>
+                            <div *ngIf="!logoimage" class="py-3">
+                                <span class="text-center border border-secondary rounded p-1">
+                                            <a class="navbar-brand js-scroll-trigger mr-0 px-2">{{storename||'Store Name'}}</a>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <header *ngIf="welcome" class="bg-secondary py-5 text-center" [style.backgroundImage]='"url("+ bannerimage +")"' style="background:no-repeat center ;height: 100%;background-size:cover">
+                <div class="container-fluid h-100">
+                    <div class="row h-100 justify-content-center align-items-center">
+                        <div class="col" style="max-width: max-content;">
+                            <div class="bg-light p-5">
+                                <h1 class=" mb-2">WELCOME</h1>
+                                <h4 class="lead mb-5">Please enter your {{domain?'email address':'access code'|lowercase}} below to view the gift options {{companyname||'Store Name'|titlecase}} has chosen for you.
+                                    <br> This site will accept orders until 11:00 PM CST on {{storeclose||'Store Close Date'}}.
+                                    <br> Don't miss out! Be sure to place your order before that day.</h4>
+                                <form [formGroup]="loginForm">
+                                    <div *ngIf="domain" class="input-group input-group-lg">
+                                        <!-- <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-lg">Enter Email</span>
+                                        </div> -->
+                                        <input formControlName="email" type="text" class="form-control" aria-label="Enter Email" aria-describedby="inputGroup-sizing-sm" placeholder="Enter Email">
+                                    </div>
+                                    <div *ngIf="code" class="input-group input-group-lg">
+                                        <!-- <div class="input-group-prepend">
+                                            <span class="input-group-text" id="inputGroup-sizing-lg">Enter Access Code</span>
+                                        </div> -->
+                                        <input formControlName="access" type="text" class="form-control" aria-label="Enter Access Code" aria-describedby="inputGroup-sizing-sm" placeholder="Enter Access Code">
+                                    </div>
+                                    <button (click)="preAuth()" class="btn btn-primary mt-5">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div *ngIf="home">
+                <header class="bg-secondary py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" style="font-size: 5vw;"><strong>{{bannerheading||'Banner Heading'|titlecase}}</strong></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <!-- <header class=" text-center" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background-size: cover;background:no-repeat center ;height: 100%;">
+                    <div class="container-fluid d-flex align-items-center flex-column bg-light p-5">
+                        <h1 class="masthead-heading text-uppercase mb-0">{{bannerheading||'Banner Heading'}}</h1>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p class="masthead-subheading mb-0">{{bannerdesc||'Banner Description'}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </header> -->
+                <div *ngIf="reason" class="container-fluid">
+                    <div class="row h-100 justify-content-center align-items-center">
+                        <div class="col-md-8 col-lg-8 text-center p-5">
+                            <h4>{{reason|titlecase}}</h4>
+                        </div>
+                    </div>
+                </div>
+                <!-- <hr class="w-75"> -->
+                <section class="">
+                    <div class="container-fluid bg-secondary" id="bgimage" [style.backgroundImage]='"url("+bgimage+")"'>
+                        <div class="page-section-heading text-center text-white p-4 row">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6 bg-secondary p-3">
+                                <h3 class="text-white"><strong>Choose Your Gift</strong></h3>
+                                <p>
+                                    Make your choice by clicking on View Details for the item you're interested in. <br> In View Details window, click Select to choose your gift.
+                                </p>
+                            </div>
+                            <div class="col-sm-3"></div>
+                        </div>
+
+                        <div class="row mx-lg-5">
+                            <!-- <div *ngFor="let item of uniqueprods" class="col-md-6 col-lg-4 text-center">
+                                <div class="portfolio-item mx-auto" (click)="productdetails(content,item)">
+                                    <img class="img-fluid" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
+                                    <div class="text-center">
+                                        <h4 class="item-title-fluid"><a [routerLink]="">{{item.ProductName|titlecase}}</a></h4>
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary mb-2" (click)="productdetails(content,item)">View Details </button>
+                            </div> -->
+                            <div *ngFor="let item of uniqueprods" class="col-sm-4 mb-5 text-center">
+                                <div class="card h-100">
+                                    <img class="card-img-top" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
+                                    <div class="card-body">
+                                        <p class="card-title"><b>{{item.ProductName|titlecase}}</b></p>
+                                        <!-- <p class="card-text">{{item.ProductDesc1}}</p> -->
+                                        <button class="btn btn-secondary basbtnhomesecondary mb-2" (click)="productdetails(content,item)">View Details</button>
+                                    </div>
+                                    <!-- <div class="card-footer">
+
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div *ngIf="checkout">
+                <header class="bg-secondary py-5 text-center" id="bannerbg2" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size: cover;">
+                    <div class="container-fluid h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col-lg-8">
+                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class="p-5">
+                                    <h1 class=" mb-2" [style.color]="textcolor" style="font-size: 5vw;"><strong>CHECKOUT</strong></h1>
+                                    <!-- <h4 class="lead mb-5">Please confirm your gift selection, delivery location and submit your order below.</h4> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <section *ngIf="checkout && !successful" class="p-lg-5 py-5">
+                    <h4 class="text-center p-2">Your Selection</h4>
+                    <div class="container-fluid bg-light">
+                        <div class="container-fluid">
+                            <!-- <table id="cart" class="table table-condensed table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <td data-th="">
+                                            <div class="row">
+                                                <div class="col-sm-2 hidden-xs"><img style="max-width: 7rem;" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="..." class="img-responsive" /></div>
+                                                <div class="col-sm-8">
+                                                    <h4 class="nomargin">{{pselect.ProductName|titlecase}} ({{pselect.A2_Label}})</h4>
+                                                    <p>{{pselect.ProductDesc1}}</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <button class="btn btn-primary" (click)="home=!home;checkout=!checkout">Change</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table> -->
+                            <div class="row p-lg-5 py-5">
+                                <div class="col-sm-12">
+                                    <div class="card text-center mb-2 ">
+                                        <div class="card-body">
+                                            <img class="card-img-top" style="max-width: 7rem;" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap">
+                                            <h4 class="card-title">{{pselect.ProductName|titlecase}} ({{pselect.A2_Label}})</h4>
+                                            <p class="card-text">{{pselect.ProductDesc1}}</p>
+                                            <div>
+                                                <button class="btn btn-secondary basbtnhomesecondary" (click)="home=!home;checkout=!checkout">Change</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <hr class="bg-dark w-75">
+                <section *ngIf="checkout && !successful" class="p-lg-5 py-5">
+                    <h4 class="text-center text-uppercase p-2">Delivery Location</h4>
+                    <div class="container-fluid bg-light">
+                        <div class="row p-lg-5 py-5 text-center">
+                            <div *ngFor="let address of addresses; let i=index" class="col-sm-12">
+                                <div class="card text-center mb-2 {{successclass[i]}}">
+                                    <div class="card-body form-inline-lg d-lg-flex justify-content-between align-items-center">
+                                        <h5 class="card-title">{{address.addressname|titlecase}}</h5>
+                                        <h6 class="card-text">{{address.streetaddress|titlecase}}, {{address.streetaddress2|titlecase}}{{address.streetaddress2?',':''}} {{address.city|titlecase}}, {{address.state|titlecase}}, {{address.zip}}</h6>
+                                        <div>
+                                            <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)="adselect(i,address)">Select</button>
+                                            <button *ngIf="!address.AddressID" (click)="this.addresses.splice(i, 1); hideaddaddress=false;finalcheckout=!finalcheckout" class="btn btn-secondary basbtnhomesecondary">Delete</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="empaddress" class="col-sm-12">
+                                <div *ngIf="!showshipping && !hideaddaddress">
+                                    <button class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=true;" type="button">Use My Address</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="empaddress">
+                            <div *ngIf="showshipping" class="row">
+                                <div class="col-sm-2"></div>
+                                <div [formGroup]="address" class="form-row col-sm-8 mt-4 pb-2 ">
+                                    <div class="form-group col-12">
+                                        <label>Full Name</label>
+                                        <input type="text" autocomplete="name" formControlName="addressname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.addressname.errors }" />
+                                        <div *ngIf="addresserrors && address.controls.addressname.errors" class="invalid-feedback">
+                                            <div *ngIf="address.controls.addressname.errors.required">
+                                                Full Name is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label>Address Line 1</label>
+                                        <input type="text" autocomplete="shipping address-line1" formControlName="streetaddress" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress.errors }" />
+                                        <div *ngIf="addresserrors && address.controls.streetaddress.errors" class="invalid-feedback">
+                                            <div *ngIf="address.controls.streetaddress.errors.required">
+                                                Address Line 1 is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-6">
+                                        <label>Address Line 2</label>
+                                        <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress2.errors }" />
+                                    </div>
+                                    <div class="form-group col-5">
+                                        <label>City</label>
+                                        <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.city.errors }" />
+                                        <div *ngIf="addresserrors && address.controls.city.errors" class="invalid-feedback">
+                                            <div *ngIf="address.controls.city.errors.required">
+                                                City is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-3">
+                                        <label>State</label>
+                                        <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }">
+                                                <option value="AL">Alabama</option>
+                                                <option value="AK">Alaska</option>
+                                                <option value="AZ">Arizona</option>
+                                                <option value="AR">Arkansas</option>
+                                                <option value="CA">California</option>
+                                                <option value="CO">Colorado</option>
+                                                <option value="CT">Connecticut</option>
+                                                <option value="DE">Delaware</option>
+                                                <option value="DC">District Of Columbia</option>
+                                                <option value="FL">Florida</option>
+                                                <option value="GA">Georgia</option>
+                                                <option value="HI">Hawaii</option>
+                                                <option value="ID">Idaho</option>
+                                                <option value="IL">Illinois</option>
+                                                <option value="IN">Indiana</option>
+                                                <option value="IA">Iowa</option>
+                                                <option value="KS">Kansas</option>
+                                                <option value="KY">Kentucky</option>
+                                                <option value="LA">Louisiana</option>
+                                                <option value="ME">Maine</option>
+                                                <option value="MD">Maryland</option>
+                                                <option value="MA">Massachusetts</option>
+                                                <option value="MI">Michigan</option>
+                                                <option value="MN">Minnesota</option>
+                                                <option value="MS">Mississippi</option>
+                                                <option value="MO">Missouri</option>
+                                                <option value="MT">Montana</option>
+                                                <option value="NE">Nebraska</option>
+                                                <option value="NV">Nevada</option>
+                                                <option value="NH">New Hampshire</option>
+                                                <option value="NJ">New Jersey</option>
+                                                <option value="NM">New Mexico</option>
+                                                <option value="NY">New York</option>
+                                                <option value="NC">North Carolina</option>
+                                                <option value="ND">North Dakota</option>
+                                                <option value="OH">Ohio</option>
+                                                <option value="OK">Oklahoma</option>
+                                                <option value="OR">Oregon</option>
+                                                <option value="PA">Pennsylvania</option>
+                                                <option value="RI">Rhode Island</option>
+                                                <option value="SC">South Carolina</option>
+                                                <option value="SD">South Dakota</option>
+                                                <option value="TN">Tennessee</option>
+                                                <option value="TX">Texas</option>
+                                                <option value="UT">Utah</option>
+                                                <option value="VT">Vermont</option>
+                                                <option value="VA">Virginia</option>
+                                                <option value="WA">Washington</option>
+                                                <option value="WV">West Virginia</option>
+                                                <option value="WI">Wisconsin</option>
+                                                <option value="WY">Wyoming</option>
+                                                <option value="AS">American Samoa</option>
+                                                <option value="GU">Guam</option>
+                                                <option value="MP">Northern Mariana Islands</option>
+                                                <option value="PR">Puerto Rico</option>
+                                                <option value="UM">United States Minor Outlying Islands</option>
+                                                <option value="VI">Virgin Islands</option>
+                                                <option value="AA">Armed Forces Americas</option>
+                                                <option value="AP">Armed Forces Pacific</option>
+                                                <option value="AE">Armed Forces Others</option>	
+                                            </select>
+                                        <!-- <input type="text" autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }" /> -->
+                                        <div *ngIf="addresserrors && address.controls.state.errors" class="invalid-feedback">
+                                            <div *ngIf="address.controls.state.errors.required">
+                                                State is required
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-4">
+                                        <label>Zip Code</label>
+                                        <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
+                                        <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
+                                            <div *ngIf="address.controls.zip.errors.required">
+                                                Zip Code is required
+                                            </div>
+                                            <div *ngIf="address.controls.zip.errors.pattern">
+                                                Invalid Zip
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 text-center">
+                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)=" onSubmit()" type="button">Add</button>
+                                        <button class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=false" type="button">Cancel</button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <hr class="bg-dark w-75">
+                <section *ngIf="finalcheckout" class="page-section p-lg-5 py-5">
+                    <h4 class="text-center p-2">Contact Information</h4>
+                    <div class="container-fluid bg-light">
+                        <div [formGroup]="registerForm" class="form-row col-sm-12 p-lg-5 py-5 text-center">
+                            <div class="form-group col-6">
+                                <label for="fname">First Name</label>
+                                <input type="text" formControlName="fname" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.fname.errors }" />
+                                <div *ngIf="registrationerrors && f.fname.errors" class="invalid-feedback">
+                                    <div *ngIf="f.fname.errors.required">
+                                        First Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="lname">Last Name</label>
+                                <input type="text" formControlName="lname" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.lname.errors }" />
+                                <div *ngIf="registrationerrors && f.lname.errors" class="invalid-feedback">
+                                    <div *ngIf="f.lname.errors.required">
+                                        Last Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="phone">Phone</label>
+                                <input type="text" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.phone.errors }" />
+                                <div *ngIf="registrationerrors && f.phone.errors" class="invalid-feedback">
+                                    <div *ngIf="f.phone.errors.required">
+                                        Phone is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="email">Email</label>
+                                <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': (registrationerrors && f.email.errors)||(registrationerrors && dupemail) }" />
+                                <div *ngIf="registrationerrors && f.email.errors" class="invalid-feedback">
+                                    <div *ngIf="f.email.errors.required">
+                                        Email is required
+                                    </div>
+                                    <div *ngIf="f.email.errors?.validateEmail">
+                                        Invalid email
+                                    </div>
+                                </div>
+                                <div *ngIf="registrationerrors" class="invalid-feedback">
+                                    <div *ngIf="dupemail">
+                                        Email already used.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="password">Password</label>
+                                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.password.errors }" />
+                                <div *ngIf="registrationerrors && f.password.errors" class="invalid-feedback">
+                                    <div *ngIf="f.password.errors.required">
+                                        Password is required
+                                    </div>
+                                    <div *ngIf="f.password.errors.minlength">
+                                        Password must be at least 6 characters
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label for="password">Retype Password</label>
+                                <input type="password" formControlName="confirmpassword" pattern="{{f.password.value}}" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.confirmpassword.errors }" />
+                                <div *ngIf="(registrationerrors && f.confirmpassword.errors)" class="invalid-feedback">
+                                    <div *ngIf="f.confirmpassword.errors.required">
+                                        Password is required
+                                    </div>
+                                    <div *ngIf="f.confirmpassword.errors.minlength">
+                                        Password must be at least 6 characters
+                                    </div>
+                                    <div *ngIf="f.confirmpassword.errors.pattern">
+                                        Password does not match
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="code" class="form-group col-6">
+                                <label for="code">Store Access Code</label>
+                                <input type="text" formControlName="code" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.code.errors }" />
+                                <div *ngIf="(registrationerrors && f.code.errors)" class="invalid-feedback">
+                                    <div *ngIf="f.code.errors.required">
+                                        Code is required
+                                    </div>
+                                    <div *ngIf="f.code.errors.pattern">
+                                        Access Code is wrong
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center">
+                            <button class="btn btn-secondary basbtnhomesecondary" (click)="finalcheckouts()" type="button">Place My Order</button>
+                        </div>
+                        <div class="py-3">
+                            <p>
+                                Please note: The items offered in this gift store will be produced as they are ordered. As a result, all selections and sales are final and cannot be returned, except in the case of defective merchandise. Please contact customer service with your questions
+                                about this policy.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div *ngIf="successful">
+                <header class="bg-secondary py-5 text-center" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class="p-5">
+                                    <h1 class="mb-2" style="font-size: 5vw;"><strong>Thank You</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="container-fluid">
+                    <div class="row h-100 justify-content-center align-items-center">
+                        <div class="col-md-8 col-lg-8 text-center p-5">
+                            <h4 class="lead mb-5">We've received your order! Check your inbox shortly for an email confirmation that includes the details of your order and contact information for your questions.</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer bg-dark text-light py-5">
+                <div class="container-fluid">
+                    <div class="row ">
+                        <!-- <div class="col-lg-8 mb-5 mb-lg-0">
+                            <h4 class="text-uppercase mb-4">ABOUT US</h4>
+                            <p class="lead mb-0">
+                                Build-A-Gift-Store is backed by Identity Works, Inc., an industry leader in branded apparel and promotional products since 1996. Providing brand-driven technology solutions, swag, and fulfillment services, you can rely on our expertise, award-winning
+                                creative, and personalized approach to customer service to outfit your team with exactly what they need.
+                            </p>
+                        </div> -->
+                        <div class="col"></div>
+
+                        <div class="col">
+                            <h5 class="text-uppercase">Support</h5>
+                            <div class="row">
+                                <div class="col">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="text-white" href="#!">800-658-9014</a>
+                                        </li>
+                                        <li>
+                                            <a class="text-white" href="#!">helpmybrand@idworks.com</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col">
+                                    <ul class="list-unstyled">
+                                        <li>
+                                            <a class="text-white" target="_blank" [routerLink]="['/privacy-policy']">Privacy Policy</a>
+                                        </li>
+                                        <li>
+                                            <a class="text-white" target="_blank" [routerLink]="['/terms-of-service']">Terms of Service</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col"></div>
+                    </div>
+                </div>
+            </footer>
+            <section class="copyright py-4 text-center bg-light">
+                <div class="container-fluid">
+                    <small>&copy; 2020 Identity Works, Inc</small>
+                </div>
+            </section>
+            <ng-template #content let-modal>
+                <div class="modal-header">
+                    <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+                </div>
+                <div class="modal-body text-center {{theme|lowercase}}">
+                    <div class="container-fluid">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-12">
+                                <div class="d-flex justify-content-center">
+                                    <div *ngFor="let product of products">
+                                        <img class="card-img-top" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +product.ProductID+ '_'+product.ImageFile" alt="" style="max-width: 350px;">
+                                        <div class="card-body">
+                                            <p class="card-text">{{product.A2_Label}}</p>
+                                        </div>
+                                        <button class="btn btn-secondary basbtnhomesecondary" (click)="checkouts(product)">Select</button>
+                                    </div>
+                                </div>
+
+
+                                <div class="card mt-5">
+                                    <div class="card-header">{{products[0].ProductName|titlecase}}</div>
+                                    <div class="card-body">
+                                        <p class="text-left">{{products[0].ProductDesc1}}</p>
+                                        <p class="text-left">{{products[0].ProductDesc2}}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</body>
+<div *ngIf="loading" class="container-fluid  h-100">
+    <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="">
+            <strong>Loading...</strong>
+            <div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>
+        </div>
+    </div>
+</div>

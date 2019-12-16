@@ -1,0 +1,321 @@
+<body>
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light px-5  mx-lg-5">
+            <div class="d-flex flex-grow-1">
+
+                <a class="navbar-brand" [routerLink]="['/']">
+                    <img src="../../assets/Logo_Build-A-Gift-Store.png" width="400" height="100" class="d-inline-block align-top img-fluid" alt="">
+                    <!-- Build-A-Gift-Store -->
+                </a>
+                <div class="w-100 text-right">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
+                                                <span class="navbar-toggler-icon"></span>
+                                            </button>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse flex-grow-1 text-right  mx-lg-5" id="myNavbar">
+                <ul class="navbar-nav ml-auto flex-nowrap ">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/registration']">Build My Store</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/faq']">FAQ</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/about-us']">About Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/contact-us']">Contact Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/stores']">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <!-- <div class="progress">
+                        <div class="progress-bar {{progressbar}} progress-bar-animated" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" [style.width]="progress+'%'"></div>
+                    </div> -->
+        <div class="row text-center d-md-flex py-5 bgroundstyle align-middle ">
+            <div class="col">
+                <h1 class="text-white">Build A Gift Store FAQs</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="position-relative overflow-hidden py-5 py-md-5 my-md-3">
+            <div class="accordion md-accordion" id="accordionEx" role="tablist" aria-multiselectable="true">
+
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingOne1">
+                            <a data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                                <h4 class="mb-0 text-dark">
+                                    Artwork <i class="fas float-right fa-angle-down rotate-icon"></i>
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapseOne1" class="collapse show" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                            <div class="card-body">
+                                <ul class="">
+                                    <li>
+                                        <p><b>How do I submit artwork?</b></p>
+                                        <p>Once you’ve built your store, an Account Manager will contact you to talk about the products you’ve chosen and your artwork/branding options for them. At that time, you can send the logo(s) we need to create your
+                                            pieces directly to your Account Manager. Vector files in PDF or EPS format work best.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Does the same logo have to be used on all items in my store? </b></p>
+                                        <p>No way! Your branding can vary on each item, based on what you think works best for your brand. After you build your store, an Account Manager will contact you to talk about the products you’ve chosen and your artwork/branding
+                                            options for them. At that time, you can discuss what logo(s) you’d like to use on each piece.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Will the gifts I choose for my store be shown with my logo on them inside the store? </b></p>
+                                        <p>Yes! As soon as we receive the logo(s) you would like to use to customize the items you chose, we’ll add images with your company logo to your site. Barring any file issues, this typically takes two business days
+                                            or less from the time we receive your logo.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Can I see what my pieces look like before I place an order?  </b></p>
+                                        <p>Absolutely! Once your Account Manager receives your logo(s), they will have mock-ups created for each of the products you selected to be sure the logo size and positioning fits your preference. We won’t move forward
+                                            with production on your pieces until we have your approval on each design.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Can I offer blank items without my company logo on them in my gift store? </b></p>
+                                        <p>Unfortunately, this is not an option at this time.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingTwo2">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="false" aria-controls="collapseTwo2">
+                                <h4 class="mb-0 text-dark">
+                                    Products <i class="fas float-right fa-angle-down rotate-icon"></i>
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
+                            <div class="card-body">
+
+                                <ul class="">
+                                    <li>
+                                        <p><b>How many color options can we choose per item? </b></p>
+                                        <p>Assuming that inventory levels are adequate (we can check this for you), feel free to choose any color(s) the supplier offers for the items you’d like. </p>
+                                    </li>
+                                    <li>
+                                        <p><b>How many items can we have on the site?  </b></p>
+                                        <p>While there are no limits on the number of items you can choose, we have found that 4-6 options is a good number of items for gift stores. This gives your recipients choices without overwhelming them.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Can we get samples before adding them to the site?  </b></p>
+                                        <p>Yes, blank or random imprinted samples are available for all items on the Build-A-Gift Store. Please contact our team for assistance with this. Product and/or freight charges may apply for samples depending on the
+                                            item.
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p><b>Are there minimums that need to be ordered for each item? </b></p>
+                                        <p>Not to worry! All items you see on the Build-A-Gift Store can be produced as single pieces. </p>
+                                    </li>
+                                    <li>
+                                        <p><b>I’m looking for something specific that I don’t see on your website. Can you help?  </b></p>
+                                        <p>Absolutely! <a [routerLink]="['/contact-us']">Contact our team</a> for additional product suggestions. </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingThree3">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseThree3" aria-expanded="false" aria-controls="collapseThree3">
+                                <h4 class="mb-0 text-dark">
+                                    Payments, Orders, & Returns <i class="fas float-right fa-angle-down rotate-icon"></i>
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#accordionEx">
+                            <div class="card-body">
+                                <ul class="">
+                                    <li>
+                                        <p><b>What is your return policy? </b></p>
+                                        <p>Because all items on your Build-A-Gift Store will be produced to order and decorated with your logo, returns will only be possible in the event of defects or damages. </p>
+                                    </li>
+                                    <li>
+                                        <p><b>How will my company be charged for the orders that are placed on my site?  When? </b></p>
+                                        <p>You will receive an invoice that includes production costs for all products on your order, as well as their expected freight and fulfillment charges. This information will be put together and sent to you after the
+                                            ordering window for your store has ended. At that time, no more new orders can be accepted by your store and we will be preparing to send everything to production for you.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>What methods of payment do you accept?</b></p>
+                                        <p>Payments can be made via ACH, Wire Transfer, Credit Card, or check.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>After an order has been submitted, can I make changes to it? </b></p>
+                                        <p>You will have the ability to view orders and, if needed, cancel them until your store stops accepting new orders. Your Account Manager will also be able to help you modify existing orders. Once your store’s orders
+                                            go into production, changes and cancellations can be made, but will incur additional charges.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingFour4">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseFour4" aria-expanded="false" aria-controls="collapseFour4">
+                                <h4 class="mb-0 text-dark">
+                                    Shipping & Delivery <i class="fas float-right fa-angle-down rotate-icon"></i>
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapseFour4" class="collapse" role="tabpanel" aria-labelledby="headingFour4" data-parent="#accordionEx">
+                            <div class="card-body">
+                                <ul class="">
+                                    <!-- <li>
+                                        <p><b>What is the timeline for opening the store, closing the store to time of delivery? </b></p>
+                                        <p>From the time you complete your gift selection and upload your art, please allow 2-3 working days for our team to finalize your store and make it live. We generally recommend 2-3 weeks to allow employees to make
+                                            their selections. Most items on Build-A-Gift platform can be decorated and shipped within 5-7 working days. If you have a firm delivery timeline, you can provide that while setting up your store, and the site
+                                            will filter products to show only those that can accommodate this timeline.</p>
+                                        <p>If you have special requirements when it comes to the timing of your project, please contact us directly to see if we can meet your needs.</p>
+                                    </li> -->
+                                    <li>
+                                        <p><b>How long does it take from the time my store launches online until the gifts are delivered?</b></p>
+                                        <p>Launch to delivery time can vary, depending on the products you choose. When you set up your store online, you will have an opportunity to provide the delivery date you would prefer to have. Based on that date,
+                                            our site will only show you gifts that can be produced within your timeline.</p>
+                                        <p>In general, your store will be available to share with your gift recipients as soon as you complete setting it up online. We recommend that you keep the store open for 2-3 weeks to give your recipients enough time
+                                            to make their selections. After your store closes (cannot accept new orders), the gifts can typically be decorated and shipped within 5-7 working days. </p>
+                                        <p>If you have special requirements when it comes to the timing of your project, please contact us directly to see if we can meet your needs.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Will we be charged for shipping? </b></p>
+                                        <p>Yes, you will be charged for shipping. Shipping costs vary based on the number of items and the number of addresses being shipping to. A final invoice with expected shipping charges will be provided to you before
+                                            your pieces are sent to production.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Can we ship to home addresses or is everything bulk shipped to one location? </b></p>
+                                        <p>When setting up your site, you can choose how gifts ship. You have a few options:</p>
+                                        <ul>
+                                            <li>
+                                                <p>All items can ship to one location</p>
+                                            </li>
+                                            <li>
+                                                <p>Users can choose from a list of approved locations</p>
+                                            </li>
+                                            <li>
+                                                <p>You can allow users to enter their own address</p>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <p><b>Do you ship internationally? </b></p>
+                                        <p>At this time we only offer shipping within the United States.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>When will my order ship? </b></p>
+                                        <p>Each item on the site has a “Production and Shipping Time” timeline listed. Most products can ship and deliver within 10-12 working days from the time your store closes and final payment is received.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>How long does shipping take? </b></p>
+                                        <p>Ground shipping to US addresses will generally take 3-6 working days to any one location, and is included in our “Production and Shipping Time” timeline for each product.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>What carriers do you work with? </b></p>
+                                        <p>We work with a variety of carriers, including UPS, FedEx, USPS, and DHL. Our system will select the best carrier option based on the package size and transit time to optimize cost.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Will a signature be required?</b></p>
+                                        <p>Signatures will be required for all commercial addresses. If you require signature release for residential deliveries, please contact us. Additional charges will apply for this service.</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header" role="tab" id="headingFive5">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseFive5" aria-expanded="false" aria-controls="collapseFive5">
+                                <h4 class="mb-0 text-dark">
+                                    Gift Store Related <i class="fas float-right fa-angle-down rotate-icon"></i>
+                                </h4>
+                            </a>
+                        </div>
+                        <div id="collapseFive5" class="collapse" role="tabpanel" aria-labelledby="headingFive5" data-parent="#accordionEx">
+                            <div class="card-body">
+                                <ul class="">
+                                    <!-- <li>
+                                        <p><b>Do you send reminder emails to remind employees to place their order? </b></p>
+                                        <p>Yes! </p>
+                                    </li> -->
+                                    <li>
+                                        <p><b>What if my gift recipients don’t have access to email? </b></p>
+                                        <p>You can choose to have them gain access to the store with an access code instead. You’ll have an opportunity to create the code when you set up your store.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>Can I add my own theme to my gift store?</b></p>
+                                        <p>Absolutely! You can add your company brand’s spin to the store by editing the following fields: store name and url, company logo, main banner background image, main banner text, and home page description text. You
+                                            also have the opportunity to choose a color theme that best compliments your brand.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>After I’ve created my gift store, can I make changes to it? </b></p>
+                                        <p>You can make changes to the banners and text on the page at any time. If additional changes are needed to the products you selected after you finalize your store, please contact your Account Manager for assistance.</p>
+                                    </li>
+                                    <li>
+                                        <p><b>My store is live. Can I see what orders have been placed on my store so far?</b></p>
+                                        <p>You bet! If you created the store you will have administrative rights that allow you to review and approve the store’s orders as well as edit its custom fields. </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer font-small bg-dark text-white font-small pt-4">
+        <div class="container-fluid text-center text-md-left">
+            <div class="row mx-5 pb-3">
+                <div class="col">
+                    <h5 class="text-uppercase">About Us</h5>
+                    <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
+                        <a [routerLink]="['/about-us']" class="text-white">Learn More</a></p>
+                </div>
+                <hr class="clearfix w-100 d-md-none pb-3">
+                <div class="col">
+                    <h5 class="text-uppercase">Support</h5>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" href="#!">800-658-9014</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" href="#!">helpmybrand@idworks.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" [routerLink]="['/privacy-policy']">Privacy Policy</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" [routerLink]="['/terms-of-service']">Terms of Service</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-copyright text-center py-3">© 2020 Identity Works, Inc</div>
+</body>

@@ -1,0 +1,80 @@
+
+
+    <div class="main">
+
+            <div class="container">
+<form *ngIf="eligible" [formGroup]="dynamicForm" (ngSubmit)="onSubmit()">
+<div *ngFor="let sec of secs">
+<div *ngFor="let form_elem of formTemplate">
+    <div *ngIf="form_elem.section==sec">
+        <div [ngSwitch]="form_elem.type">
+            <div *ngSwitchCase="'textBox'" class="form-group">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                <div *ngIf="(dynamicForm.controls[form_elem.control].errors && sectionerrors)" class="error-msg">
+                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">{{form_elem.label}} is required.</div>
+                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.email"> {{form_elem.label}} is invalid.</div>
+                </div>
+            </div>
+            <div *ngSwitchCase="'number'" class="form-group">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                <input type="number" formControlName="{{form_elem.control}}" class="form-control" />
+            </div>
+            <div *ngSwitchCase="'password'" class="form-group">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                <input type="password" formControlName="{{form_elem.control}}"
+                    autocomplete="new-password" class="form-control" />
+            </div>
+            <div *ngSwitchCase="'date'" class="form-group">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                <input type="date" formControlName="{{form_elem.control}}" id="{{form_elem.control}}" (change)="dateChange(form_elem.control)" class="form-control" />
+                <div *ngIf="(dynamicForm.controls[form_elem.control].errors && sectionerrors)" class="error-msg">
+                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">{{form_elem.label}} is required.</div>                                                              
+                </div>
+                <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine"  class="error-msg">
+                    Start date cannot be less than 2 weeks from today
+                </div>  
+                <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.enddate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                    End date cannot be less than Reward program length from Start date
+                </div> 
+                <div *ngIf="form_elem.control=='deliverdate' && this.dynamicForm.controls.deliverdate.value<this.deliverdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                    Deliver date cannot be less than 2 weeks from End date.
+                </div>
+            </div>
+            <div *ngSwitchCase="'textArea'" class="form-group">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                <textarea formControlName="{{form_elem.control}}" class="form-control"></textarea>
+            </div>
+            <div *ngSwitchCase="'select'" class="form-group">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)"  [value]="-1">
+                    <option value="-1"> Select an Option</option>
+                    <option *ngFor="let opt of form_elem.options; let i = index" [value]="opt">
+                        {{opt}}
+                    </option>
+                </select>
+                <div *ngIf="(dynamicForm.controls[form_elem.control].errors && sectionerrors==sec)" class="error-msg">
+                        <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>                                        
+                </div>
+            </div>
+            <div *ngSwitchCase="'file'" class="form-group">
+               <div *ngIf="this.dynamicForm.controls.giftlogo.value.includes('Yes')">
+                <label for="{{form_elem.control}}">{{form_elem.label}}</label>                                        
+                <input type="file" formControlName="{{form_elem.control}}" class="form-control">
+                <div *ngIf="(dynamicForm.controls[form_elem.control].errors && sectionerrors)" class="error-msg">
+                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">{{form_elem.label}} is required.</div>                                    
+                </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div>
+        <button mat-raised-button (click)="checkSection(sec)" class="btn btn-primary">Next</button>
+    </div>
+</div>
+
+</form>
+</div>
+</div>

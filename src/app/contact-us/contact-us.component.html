@@ -1,0 +1,195 @@
+<body>
+
+    <div>
+        <nav class="navbar navbar-expand-lg navbar-light px-5  mx-lg-5">
+            <div class="d-flex flex-grow-1">
+
+                <a class="navbar-brand" [routerLink]="['/']">
+                    <img src="../../assets/Logo_Build-A-Gift-Store.png" width="400" height="100" class="d-inline-block align-top img-fluid" alt="">
+                    <!-- Build-A-Gift-Store -->
+                </a>
+                <div class="w-100 text-right">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
+                                                    <span class="navbar-toggler-icon"></span>
+                                                </button>
+                </div>
+            </div>
+            <div class="collapse navbar-collapse flex-grow-1 text-right  mx-lg-5" id="myNavbar">
+                <ul class="navbar-nav ml-auto flex-nowrap ">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/registration']">Build My Store</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/faq']">FAQ</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/about-us']">About Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/contact-us']">Contact Us</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" [routerLink]="['/stores']">Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="container-fluid">
+        <!-- <div class="progress">
+                        <div class="progress-bar {{progressbar}} progress-bar-animated" role="progressbar" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" [style.width]="progress+'%'"></div>
+                    </div> -->
+        <div class="row text-center d-md-flex py-5 bgroundstyle align-middle ">
+            <div class="col">
+                <h1 class="text-white">Contact Us</h1>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="position-relative overflow-hidden p-5 p-md-5 m-md-3">
+            <div class="row">
+                <div class="col">
+                    <p>Feel free to reach out with your questions about products, orders, art, or anything else related to Build-A-Gift Store. We're happy to help and will respond to all communications within one business day of receiving your message.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li>
+                            800-658-9014
+                        </li>
+                        <li>
+                            helpmybrand@idworks.com
+                        </li>
+                        <br>
+                        <li>
+                            Build-A-Gift Store
+                        </li>
+                        <li>
+                            c/o Identity Works, Inc.
+                        </li>
+                        <li>
+                            920 Industrial Drive,
+                        </li>
+                        <li>
+                            West Salem, WI 54669.
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-unstyled">
+                        <li>
+                            <b>Business Hours</b> (CST)
+                        </li>
+                        <li>
+                            Monday – Friday
+                        </li>
+
+                        <li>
+                            8:30 am - 5:00 pm
+                        </li>
+                        <br>
+                        <li>
+                            Closed Saturday & Sunday
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-fluid">
+            <div class="row form-group">
+                <div class="col-md-5 mx-5">
+                    <b>Email Us</b>
+                </div>
+            </div>
+            <div class="mx-5">
+                <form [formGroup]="contactForm">
+                    <div class="row form-group">
+                        <div class="col-md-5">
+                            <input formControlName="fname" type="text" class="form-control" aria-label="First Name" aria-describedby="inputGroup-sizing-sm" placeholder="*First Name">
+                            <div *ngIf="submitted && contactForm.controls.fname.errors" class="text-danger">
+                                <div *ngIf="contactForm.controls.fname.errors.required">
+                                    First Name is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <input formControlName="lname" type="text" class="form-control" aria-label="Last Name" aria-describedby="inputGroup-sizing-sm" placeholder="*Last Name">
+                            <div *ngIf="submitted && contactForm.controls.lname.errors" class="text-danger">
+                                <div *ngIf="contactForm.controls.lname.errors.required">
+                                    Last Name is required
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-5">
+                            <input formControlName="email" type="text" class="form-control" aria-label="Email" aria-describedby="inputGroup-sizing-sm" placeholder="*Email">
+                            <div *ngIf="submitted && contactForm.controls.email.errors" class="text-danger">
+                                <div *ngIf="contactForm.controls.email.errors.required">
+                                    Email is required
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-5">
+                            <input formControlName="phone" type="text" class="form-control" aria-label="Phone" aria-describedby="inputGroup-sizing-sm" placeholder="Phone">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-10">
+                            <input formControlName="cname" type="text" class="form-control" aria-label="Company Name" aria-describedby="inputGroup-sizing-sm" placeholder="Company Name">
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-10">
+                            <textarea formControlName="msg" rows="3" class="form-control" aria-label="Message" aria-describedby="inputGroup-sizing-sm" placeholder="How can we help? If you’re contacting us about a specific store, please include your store’s name in your message."></textarea>
+                        </div>
+                    </div>
+
+                    <button (click)="send()" class="btn border-light basbtn text-uppercase mb-5">Send my email</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <footer class="page-footer font-small bg-dark text-white font-small pt-4">
+        <div class="container-fluid text-center text-md-left">
+            <div class="row mx-5 pb-3">
+                <div class="col">
+                    <h5 class="text-uppercase">About Us</h5>
+                    <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
+                        <a [routerLink]="['/about-us']" class="text-white">Learn More</a></p>
+                </div>
+                <hr class="clearfix w-100 d-md-none pb-3">
+                <div class="col">
+                    <h5 class="text-uppercase">Support</h5>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" href="#!">800-658-9014</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" href="#!">helpmybrand@idworks.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" [routerLink]="['/privacy-policy']">Privacy Policy</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" [routerLink]="['/terms-of-service']">Terms of Service</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="footer-copyright text-center py-3">© 2020 Identity Works, Inc</div>
+</body>

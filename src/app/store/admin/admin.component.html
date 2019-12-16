@@ -1,0 +1,906 @@
+<div class="page-wrapper chiller-theme" [ngClass]="sidebar ? 'toggled' : ''">
+    <button id="show-sidebar" class="btn btn-sm btn-dark" (click)="this.sidebar = !this.sidebar;">
+      <i class="fas fa-bars"></i>
+    </button>
+    <nav id="sidebar" class="sidebar-wrapper">
+        <div class="sidebar-content">
+            <div class="sidebar-brand">
+                <a>{{storename||'Store Name'}}</a>
+                <div id="close-sidebar" (click)="this.sidebar = !this.sidebar;">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+            <div class="sidebar-header">
+                <div class="user-pic">
+                    <img class="img-responsive img-rounded" src="https://raw.githubusercontent.com/azouaoui-med/pro-sidebar-template/gh-pages/src/img/user.jpg" alt="User picture">
+                </div>
+                <div class="user-info">
+                    <span class="user-name">{{cname||'Customer Name'|titlecase}}
+            </span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+            <!-- sidebar-header  -->
+            <!-- <div class="sidebar-search">
+          <div>
+            <div class="input-group">
+              <input type="text" class="form-control search-menu" placeholder="Search...">
+              <div class="input-group-append">
+                <span class="input-group-text">
+                  <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div> -->
+            <!-- sidebar-search  -->
+            <div class="sidebar-menu">
+                <ul>
+                    <li class="header-menu">
+                        <span>General</span>
+                    </li>
+                    <!-- <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fa fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+                <span class="badge badge-pill badge-warning">New</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">Dashboard 1
+                      <span class="badge badge-pill badge-success">Pro</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">Dashboard 2</a>
+                  </li>
+                  <li>
+                    <a href="#">Dashboard 3</a>
+                  </li>
+                </ul>
+              </div>
+            </li> -->
+                    <!-- <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fa fa-shopping-cart"></i>
+                <span>E-commerce</span>
+                <span class="badge badge-pill badge-danger">3</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">Products
+  
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">Orders</a>
+                  </li>
+                  <li>
+                    <a href="#">Credit cart</a>
+                  </li>
+                </ul>
+              </div>
+            </li> -->
+                    <!-- <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="far fa-gem"></i>
+                <span>Components</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">General</a>
+                  </li>
+                  <li>
+                    <a href="#">Panels</a>
+                  </li>
+                  <li>
+                    <a href="#">Tables</a>
+                  </li>
+                  <li>
+                    <a href="#">Icons</a>
+                  </li>
+                  <li>
+                    <a href="#">Forms</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fa fa-chart-line"></i>
+                <span>Charts</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">Pie chart</a>
+                  </li>
+                  <li>
+                    <a href="#">Line chart</a>
+                  </li>
+                  <li>
+                    <a href="#">Bar chart</a>
+                  </li>
+                  <li>
+                    <a href="#">Histogram</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="sidebar-dropdown">
+              <a href="#">
+                <i class="fa fa-globe"></i>
+                <span>Maps</span>
+              </a>
+              <div class="sidebar-submenu">
+                <ul>
+                  <li>
+                    <a href="#">Google maps</a>
+                  </li>
+                  <li>
+                    <a href="#">Open street map</a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+            <li class="header-menu">
+              <span>Extra</span>
+            </li> -->
+                    <li *ngFor="let menuItem of menuItems">
+                        <a style="cursor: pointer" (click)="section=menuItem.path;title=menuItem.title;">
+                            <i class="{{ menuItem.icon }}"></i>
+                            <span>{{ menuItem.title }}</span>
+                            <!-- <span class="badge badge-pill badge-primary">Beta</span> -->
+                        </a>
+                    </li>
+                    <li>
+                        <a style="cursor: pointer" (click)="logout()">
+                            <i class="fa fa-power-off"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
+
+
+
+                    <!-- 
+            <li>
+              <a href="#">
+                <i class="fa fa-user"></i>
+                <span>Registered Employees</span>
+                <span class="badge badge-pill badge-primary">Beta</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa fa-shopping-cart"></i>
+                <span>Orders Placed</span>
+              </a>
+            </li>
+            <li>
+                <a href="#">
+                  <i class="fa fa-money"></i>
+                  <span>Payment Settings</span>
+                </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="fa fa-cog"></i>
+                <span>Store Settings</span>
+              </a>
+            </li> -->
+                </ul>
+            </div>
+            <!-- sidebar-menu  -->
+        </div>
+        <!-- sidebar-content  -->
+        <!-- <div class="sidebar-footer">
+        <a href="#">
+          <i class="fa fa-bell"></i>
+          <span class="badge badge-pill badge-warning notification">3</span>
+        </a>
+        <a href="#">
+          <i class="fa fa-envelope"></i>
+          <span class="badge badge-pill badge-success notification">7</span>
+        </a>
+        <a href="#">
+          <i class="fa fa-cog"></i>
+          <span class="badge-sonar"></span>
+        </a>
+        <a href="#">
+          <i class="fa fa-power-off"></i>
+        </a>
+      </div> -->
+    </nav>
+    <!-- sidebar-wrapper  -->
+    <main class="page-content">
+        <div class="container-fluid">
+            <h2>{{title||"Dashboard"}}</h2>
+            <hr>
+
+            <div class="row" *ngIf="section=='dashboard'">
+                <div *ngFor="let menuItem of menuItems| slice:1" class="col-xl-3 col-lg-6">
+                    <div class="card text-white bg-{{menuItem.bgclass}}">
+                        <div class="card-header">
+
+                            <div class="row justify-content-md-center">
+                                <i class="fa {{ menuItem.icon }} fa-5x"></i>
+                            </div>
+                            <div class="row justify-content-md-center">
+                                <div class="d-block huge">{{menuItem.value||''}}</div>
+                                <div class="d-block">{{menuItem.title}}</div>
+                            </div>
+
+                        </div>
+                        <div class="card-footer" style="cursor: pointer;" (click)="section=menuItem.path;title=menuItem.title;">
+                            <span class="float-left">View Details</span>
+                            <a class="float-right card-inverse">
+                                <span><i class="fa fa-arrow-circle-right"></i></span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="section=='employees'">
+                <table class='table table-hover table-responsive'>
+
+                    <tr>
+                        <th>First name</th>
+                        <th>Last Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    <!-- Use *ngFor directive to loop throught our list of products. -->
+                    <tr *ngFor="let user of users">
+                        <td>{{user.Firstname}}</td>
+                        <td>{{user.Lastname}}</td>
+                        <td>{{user.Phone}}</td>
+                        <td>{{user.Email}}</td>
+                        <td id="actions_td">
+                            <!-- edit customer button -->
+
+                            <button (click)="editCustomerInfo(user.unique_id,user.fname,user.lname,user.company,user.phone,user.security_group);" class='btn btn-primary '>
+                                         Edit
+                                    </button>&nbsp;
+
+
+                            <button (click)="deleteCustomer(user.unique_id)" class='btn btn-danger '>
+                                       Delete
+                                    </button>&nbsp;
+                            <button (click)="suspendFunction(user.email,user.unique_id)" class='btn btn-success '>
+                                        Suspend
+                                    </button>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="row" *ngIf="section=='orders'">
+                <div *ngIf="end" class="text-center col-lg-12">
+                    <div class="alert alert-info" role="info">
+                        <span>The Store promotion has ended. </span>
+                    </div>
+                    <div *ngIf="!customer_confirmed && !all_denied" class="alert alert-warning" role="alert">
+                        <span>Please Confirm Orders to begin Order processing and recieve final amount invoice for all orders.</span>
+                    </div>
+                    <div *ngIf="customer_confirmed" class="alert alert-success" role="success">
+                        <span>Your orders are being processed.</span>
+                    </div>
+                    <div *ngIf="pending && !all_denied" class="alert alert-danger" role="alert">
+                        Please Approve all orders before you can confirm order processing.
+                    </div>
+                    <div *ngIf="all_denied" class="alert alert-danger" role="alert">
+                        No Orders. All Orders Denied.
+                    </div>
+                    <button *ngIf="!customer_confirmed && !all_denied" [disabled]="pending ? true : null" class='btn btn-success m-1' (click)="confirmorders()">Confirm Orders</button>
+                </div>
+                <table class='table table-hover table-responsive'>
+                    <tr>
+                        <th>Product Image</th>
+                        <th>Product Name</th>
+                        <th>First name</th>
+                        <th>Last Name</th>
+                        <th>Email</th>
+                        <th>Price</th>
+                        <th>Shipping</th>
+                        <th>Actions
+                            <button *ngIf="pending" class='btn btn-success m-1' (click)="approveallorders()"> Approve All </button>
+                        </th>
+                    </tr>
+
+                    <!-- Use *ngFor directive to loop throught our list of products. -->
+                    <tr *ngFor="let user of orders;let i=index">
+                        <td>
+                            <img [src]="'https://www.securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
+                        </td>
+                        <td class="align-middle">{{user.ProductName}} ({{user.ImageFile.split('.').slice(0, -1).join('.')}})</td>
+                        <td class="align-middle">{{user.Firstname}}</td>
+                        <td class="align-middle">{{user.Lastname}}</td>
+                        <td class="align-middle">{{user.Email}}</td>
+                        <td class="align-middle">{{user.price|currency}}</td>
+                        <td class="align-middle">{{(user.Shipping?10:0)|currency}}</td>
+                        <td class="align-middle text-center" id="actions_td">
+                            <p *ngIf="user.Pending==0">
+                                <span *ngIf="user.deny==0 && user.Shipping==0">Approved <small>(Ships to Corporate Address)</small></span>
+                                <span *ngIf="user.deny==0 && user.Shipping==1">Approved <small>(Ships to Personal Address)</small></span>
+                                <span *ngIf="user.deny==1 ">Denied</span>
+                            </p>
+                            <button *ngIf="(user.Pending==1 && user.deny==0||(user.Pending==0 && user.deny==1)) && !customer_confirmed" class='btn btn-success m-1' (click)="approvesingleorder(user.ProductSelectionID,i)"> Approve </button>
+                            <button *ngIf="((user.Pending==1 && user.deny==0)||(user.Pending==0 && user.deny==0)) && !customer_confirmed" (click)="denysingleorder(user.ProductSelectionID,i)" class='btn btn-danger m-1'>Deny</button>
+
+                            <!-- <button class='btn btn-primary m-1'>Suspend</button> -->
+
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="8" class="text-right">
+                            <p m-5>Estimated Total: {{total|currency}} (Excludes taxes)</p>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
+            <div class="row" *ngIf="section=='payments'">
+                <app-payment [storeid]="storeid"></app-payment>
+            </div>
+
+            <div *ngIf="section=='storesettings'">
+                <form [formGroup]="dynamicForm">
+                    <div *ngFor="let form_elem of storesettings">
+                        <div [ngSwitch]="form_elem.type">
+                            <div *ngSwitchCase="'textBox'" class="form-group">
+                                <div *ngIf="form_elem.control!='domainname' && form_elem.control!='accesscode'">
+                                    <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                    <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
+
+                                    <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                        <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                            {{form_elem.label}} is required.</div>
+                                        <div [hidden]="!dynamicForm.controls[form_elem.control].errors.email">
+                                            {{form_elem.label}} is invalid.</div>
+                                    </div>
+                                </div>
+                                <div *ngIf="form_elem.control=='domainname'">
+                                    <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('email')">
+                                        <label [innerHTML]="form_elem.label" for="{{form_elem.control}}"></label>
+                                        <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                        <button class="btn btn-primary mt-1" (click)="addDomain()">Add</button>
+                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && domainerror)" class="error-msg">
+                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                {{form_elem.name}} is required.</div>
+                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.pattern">
+                                                {{form_elem.name}} is invalid domain name.(avoid http,https and www)
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div *ngFor="let item of domaindata">
+                                                <ul id="list" class="list-inline mt-1 pb-1">
+                                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                        {{ item }}
+                                                        <button (click)="removeDomain(item)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div *ngIf="form_elem.control=='accesscode'">
+                                    <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')">
+                                        <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                        <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
+                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                {{form_elem.name}} is required.</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'number'" class="form-group">
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                <input type="number" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control" />
+                            </div>
+                            <div *ngSwitchCase="'password'" class="form-group">
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                <input type="password" formControlName="{{form_elem.control}}" [value]="form_elem.value" autocomplete="new-password" class="form-control" />
+                            </div>
+                            <div *ngSwitchCase="'date'" class="form-group">
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                <input type="date" formControlName="{{form_elem.control}}" id="{{form_elem.control}}" (change)="dateChange(form_elem.control)" [value]="form_elem.value" class="form-control" />
+                                <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                        {{form_elem.label}} is required.</div>
+                                </div>
+                                <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                    Start date cannot be less than 1 day from today
+                                </div>
+                                <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.enddate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                    End date cannot be less than Reward program length from Start date
+                                </div>
+                                <div *ngIf="form_elem.control=='deliverdate' && this.dynamicForm.controls.deliverdate.value<this.deliverdate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                    Deliver date cannot be less than 2 weeks from End date.
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'textArea'" class="form-group">
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                <textarea formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control"></textarea>
+                            </div>
+                            <div *ngSwitchCase="'textBoxGroup'" class="form-group">
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon3">https://buildastore.com/stores/</span>
+                                    </div>
+                                    <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
+                                </div>
+
+                                <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                    <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                        {{form_elem.label}} is required.</div>
+                                    <div [hidden]="!dynamicForm.controls[form_elem.control].errors.email">
+                                        {{form_elem.label}} is invalid.</div>
+                                </div>
+
+                            </div>
+                            <div *ngSwitchCase="'select'" class="form-group">
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+
+                                <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="form_elem.value">
+                                    <option value="-1"> Select an Option</option>
+                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                        {{opt}}
+                                    </option>
+                                </select> -->
+                                <select id="{{form_elem.control}}" *ngIf="form_elem.control!='budget'" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
+                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
+                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                        {{opt}}
+                                    </option>
+                                </select>
+                                <select *ngIf="form_elem.control=='budget'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control">                                                      
+                                    <option *ngFor="let opt of allcats; let i = index" [value]="opt.CategoryID">
+                                        {{opt.CategoryName}}
+                                    </option>                                                       
+                                </select>
+
+                                <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>
+                                </div>
+                            </div>
+                            <div *ngSwitchCase="'file'" class="form-group">
+
+                                <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                <input type="file" formControlName="{{form_elem.control}}" class="form-control" (change)="onFileSelect($event,form_elem.control)">
+                                <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                    <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">
+                                        {{form_elem.label}} is required.</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <div>
+                    <button class="btn btn-primary" [routerLink]="home">Edit Front End</button>
+                    <p><small>Change Visual Appearance of your Store</small></p>
+                    <button class="btn btn-primary" (click)="section='productmgmt';title='Product Management '+ selection.length+ ' Selections';productmgmt();">Edit Products</button>
+                    <p><small>Change Products on your Store</small></p>
+                    <button class="btn btn-primary" (click)="section='addressmgmt';title='Address Management'; addressmgmt()">Edit Addresses</button>
+                    <p><small>Change Addresses associated with your Store</small></p>
+                </div>
+                <div>
+                    <button class="btn btn-primary" (click)="submit()">Save</button>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="section=='addressmgmt'">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-2 "></div>
+                        <div class="col align-self-center">
+                            <div class="py-5">
+                                <label>Choose Shipping Setting </label>
+                                <select class="form-control" [(ngModel)]="addsetting" (change)="personalcheck()">
+                                                <option value="To a corporate address">To a corporate address</option>
+                                                <option value="To the recipient's home address">To the recipient's home address</option>
+                                                <option value="Recipients can choose from a corporate address or enter their home address">Recipients can choose from a corporate address or enter their home address</option>                                          
+                                        </select>
+                            </div>
+
+                            <div *ngIf="pcheck" class="alert alert-warning" role="alert">
+                                <p class=""><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Some orders placed are being shipped to a personal address. You will have to manually assign the corporate address to each of those orders. <br>Do you want to
+                                    continue?
+                                </p>
+                                <button class="btn btn-secondary mx-2" (click)="pcheck=false;showpaddress=true">Yes</button>
+                                <button class="btn btn-secondary mx-2" (click)="pcheck=false;addsetting=ss.shipping.empshipsetting;addsetting=='To a corporate address'?showpaddress=true:showpaddress=false">No</button>
+                            </div>
+
+                            <!-- <div class="row" *ngIf="showpaddress">
+                                <div class="col" *ngFor="let address of paddress">
+                                    <p>{{address.Firstname}} {{address.Lastname}} , {{address.Phone}}, {{address.Username}}</p>
+                                    <select id={{address.StoreUserID}} class="form-control">                                    
+                                            <option *ngFor="let address of ss.shipping.addressess" [value]="address.AddressID">{{address.addressname}}</option> 
+                                        </select>
+                                    <button class="btn btn-primary" (click)="update2caddress(address.StoreUserID)">Update Address</button>
+                                </div>
+                            </div> -->
+
+                            <div *ngIf="showpaddress">
+                                <div class="alert alert-warning" role="alert">
+                                    <p class=""><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> The following need their addressess updated.
+                                    </p>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="card-deck">
+                                            <div class="col" *ngFor="let address of paddress">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{address.Firstname}} {{address.Lastname}}</h5>
+                                                        <p class="card-text"><i class="fa fa-phone" aria-hidden="true"></i> {{address.Phone}}</p>
+                                                        <p class="card-text"><i class="fa fa-envelope" aria-hidden="true"></i>{{address.Username}}</p>
+                                                        <div class="">
+                                                            <label><small>Select Corporate Address</small></label>
+                                                            <select id={{address.StoreUserID}} class="form-control">                                    
+                                                                        <option *ngFor="let address of ss.shipping.addressess" [value]="address.AddressID">{{address.addressname|titlecase}}</option> 
+                                                                    </select>
+                                                        </div>
+                                                        <button class="btn btn-primary mt-3" (click)="update2caddress(address.StoreUserID)">Update Address</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="py-5" *ngIf="addsetting=='To a corporate address' || addsetting=='Recipients can choose from a corporate address or enter their home address'">
+                                <label>Corporate Address</label>
+                                <p><small>You indicated that you would like to have gifts shipped to a corporate address. Please share that address in the section below.</small></p>
+                                <div class="card-group" *ngIf="addressesarray.controls.length>0">
+                                    <div *ngFor="let address of addressesarray.value; let i = index">
+                                        <div class="card">
+                                            <div *ngIf="!this.Address[i]" class="card-body" id="AddressResp{{i}}">
+                                                <div class="card-title">
+                                                    <p>{{address.addressname|titlecase}}</p>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p>{{address.streetaddress}} {{address.streetaddress2}}</p>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p>{{address.city}} , {{address.state}}, {{address.zip}}</p>
+                                                </div>
+                                            </div>
+                                            <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngFor="let address of addressesarray.controls; let i = index" class="list-group list-group-flush">
+                                    <div class="list-group-item" *ngIf="this.Address[i]">
+
+                                        <div *ngIf="this.Address[i]" [formGroup]="address" class="form-row" id="Address{{i}}">
+                                            <div class="form-group col-6">
+                                                <label>Address Name</label>
+                                                <input type="text" autocomplete="name" formControlName="addressname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.addressname.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.addressname.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.addressname.errors.required">Address Name is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Street Address</label>
+                                                <input type="text" autocomplete="shipping address-line1" formControlName="streetaddress" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.streetaddress.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.streetaddress.errors.required">Street Address is required
+                                                    </div>
+                                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Street Address 2</label>
+                                                <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress2.errors }" />
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>City</label>
+                                                <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.city.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.city.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.city.errors.required">City is required</div>
+                                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>State</label>
+                                                <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }">
+                                                                <option value="AL">Alabama</option>
+                                                                <option value="AK">Alaska</option>
+                                                                <option value="AZ">Arizona</option>
+                                                                <option value="AR">Arkansas</option>
+                                                                <option value="CA">California</option>
+                                                                <option value="CO">Colorado</option>
+                                                                <option value="CT">Connecticut</option>
+                                                                <option value="DE">Delaware</option>
+                                                                <option value="DC">District Of Columbia</option>
+                                                                <option value="FL">Florida</option>
+                                                                <option value="GA">Georgia</option>
+                                                                <option value="HI">Hawaii</option>
+                                                                <option value="ID">Idaho</option>
+                                                                <option value="IL">Illinois</option>
+                                                                <option value="IN">Indiana</option>
+                                                                <option value="IA">Iowa</option>
+                                                                <option value="KS">Kansas</option>
+                                                                <option value="KY">Kentucky</option>
+                                                                <option value="LA">Louisiana</option>
+                                                                <option value="ME">Maine</option>
+                                                                <option value="MD">Maryland</option>
+                                                                <option value="MA">Massachusetts</option>
+                                                                <option value="MI">Michigan</option>
+                                                                <option value="MN">Minnesota</option>
+                                                                <option value="MS">Mississippi</option>
+                                                                <option value="MO">Missouri</option>
+                                                                <option value="MT">Montana</option>
+                                                                <option value="NE">Nebraska</option>
+                                                                <option value="NV">Nevada</option>
+                                                                <option value="NH">New Hampshire</option>
+                                                                <option value="NJ">New Jersey</option>
+                                                                <option value="NM">New Mexico</option>
+                                                                <option value="NY">New York</option>
+                                                                <option value="NC">North Carolina</option>
+                                                                <option value="ND">North Dakota</option>
+                                                                <option value="OH">Ohio</option>
+                                                                <option value="OK">Oklahoma</option>
+                                                                <option value="OR">Oregon</option>
+                                                                <option value="PA">Pennsylvania</option>
+                                                                <option value="RI">Rhode Island</option>
+                                                                <option value="SC">South Carolina</option>
+                                                                <option value="SD">South Dakota</option>
+                                                                <option value="TN">Tennessee</option>
+                                                                <option value="TX">Texas</option>
+                                                                <option value="UT">Utah</option>
+                                                                <option value="VT">Vermont</option>
+                                                                <option value="VA">Virginia</option>
+                                                                <option value="WA">Washington</option>
+                                                                <option value="WV">West Virginia</option>
+                                                                <option value="WI">Wisconsin</option>
+                                                                <option value="WY">Wyoming</option>
+                                                                <option value="AS">American Samoa</option>
+                                                                <option value="GU">Guam</option>
+                                                                <option value="MP">Northern Mariana Islands</option>
+                                                                <option value="PR">Puerto Rico</option>
+                                                                <option value="UM">United States Minor Outlying Islands</option>
+                                                                <option value="VI">Virgin Islands</option>
+                                                                <option value="AA">Armed Forces Americas</option>
+                                                                <option value="AP">Armed Forces Pacific</option>
+                                                                <option value="AE">Armed Forces Others</option>	
+                                                            </select>
+                                                <!-- <input type="text" autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }" /> -->
+                                                <div *ngIf="addresserrors && address.controls.state.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.state.errors.required">State is required</div>
+                                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Zip Code</label>
+                                                <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.zip.errors.required">Zip Code is required</div>
+                                                    <div *ngIf="address.controls.zip.errors.pattern">Invalid Zip</div>
+                                                </div>
+                                            </div>
+                                            <button mat-raised-button (click)="addSingleAd(i)" type="button">Add</button>
+                                            <button mat-raised-button *ngIf="i>0" (click)="CancelSingleAd(i)" type="button">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <button *ngIf="this.addAnother" (click)="addAnotherAd()" type="button" class="btn btn-secondary" style="border-radius: 2rem;">Add Another Address</button>
+                            </div>
+                            <div class="py-5 text-center">
+                                <button class="btn btn-primary" (click)="saveaddress()">Save</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" *ngIf="section=='productmgmt'">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div *ngFor="let item of myData |shiptimefilter : diffDays" class="col-sm-3 text-center d-flex align-items-stretch">
+                            <div class="card mb-2 " [ngClass]="removeCheck(item.Attr2) ? 'border-success' : ''">
+                                <ng-container *ngIf="isArray(item.ImageFile); then hascolor; else singlecolor">
+                                </ng-container>
+                                <ng-template #hascolor>
+                                    <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
+                                </ng-template>
+                                <ng-template #singlecolor>
+                                    <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                </ng-template>
+                                <!-- <div class="card-body">
+                                    <h5 class="card-title">{{item.ProductName}}</h5>
+                                    <p class="card-text">
+                                        {{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}
+                                    </p>
+                                    <button class="btn btn-secondary" style="border-radius: 2rem;" (click)="productdetails(content1,item)">View Details</button>
+                                    <p *ngIf="removeCheck(item.Attr2)==true ||removeCheck(item.Attr2)>0 " class="card-text"><small class="text-muted">Added</small></p>
+                                </div> -->
+                                <div class="card-body d-flex flex-column">
+                                    <!-- <h1 class="card-title pricing-card-title">{{item.ProductName}}</h1> -->
+                                    <ul class="list-unstyled mt-3 mb-4">
+                                        <li><b>{{item.ProductName}}</b></li>
+                                        <li>{{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}</li>
+                                    </ul>
+                                    <p *ngIf="removeCheck(item.Attr2)==true ||removeCheck(item.Attr2)>0 " class="card-text"><small class="mt-auto text-muted">Added</small></p>
+                                    <button type="button" style="border-radius: 2rem;" (click)="productdetails(content1,item)" class="mt-auto btn  btn-secondary">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="text-center">
+                    <button (click)="seeSelections(content)" class="border-light basbtn mx-5">Save</button>
+                    <!-- <button *ngIf="!alldataloaded" class="btn btn-secondary btn-sm mx-5" style="border-radius: 2rem;" (click)="changeData()">Show More</button> -->
+                    <button *ngIf="selection.length>0" class="btn btn-secondary btn-sm mx-5 d-lg-none" style="border-radius: 2rem;" (click)="seeSelections(content)">({{seeselection.length}}) Selections</button>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+    <!-- page-content" -->
+</div>
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+        <h6 class="text-muted text-center">You have {{seeselection.length}} selections </h6>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <ul class="list-group">
+                    <div *ngFor=" let selection of seeselection" class=" text-center">
+                        <li class="list-group-item">
+
+                            <div class="row">
+                                <div class="col">
+                                    <img [src]="'https://www.securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
+                                </div>
+                                <div class="col align-self-center">
+                                    <p><b>{{selection.ProductName}}</b>({{selection.A2_Label}})</p>
+                                    <p>{{selection.minimum|currency:'USD'}} - {{selection.maximum|currency:'USD'}}</p>
+                                    <button *ngIf="removeCheck(selection.Attr2)" (click)="removefromcart(selection.ProductName,selection.ProductID,selection.Attr2)" style="border-radius: 2rem;" class="btn btn-secondary">Remove from store</button>
+                                </div>
+                            </div>
+                        </li>
+                    </div>
+                </ul>
+
+                <!-- <div *ngIf="seeselection.length==0" class="align-content-center">
+                    <p>No products Selected</p>
+                    <button class="btn btn-primary" (click)="closeModal()">Go Back</button>
+                </div> -->
+            </div>
+        </div>
+        <div *ngIf="seeselection.length==0" class="row justify-content-center text-center ">
+            <div class="col">
+                <p>No products Selected</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-center">
+        <button *ngIf="seeselection.length!=0" ngbAutofocus (click)="closeModal(); saveproductselection()" class=" btn border-light basbtn">Save</button>
+        <button *ngIf="seeselection.length==0" class="btn btn-secondary" style="border-radius: 2rem;" (click)="closeModal()">Go Back</button>
+        <!-- <button type="button" class="btn btn-primary" [routerLink]="['/products',catid]" [routerLinkActive]="['router-link-active']" (click)="closeModal()">Add More Products</button>   -->
+    </div>
+
+</ng-template>
+
+<ng-template #content1 let-modal>
+    <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body text-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-12">
+                    <!-- Portfolio Modal - Title -->
+                    <h2 class="portfolio-modal-title text-dark text-uppercase mb-1">{{products[0].ProductName}}</h2>
+                </div>
+                <div>
+                    <div *ngFor="let item of products">
+                        <ng-container *ngIf="isArray(item.Attr2); then hascoloroption; else singlecoloroption">
+                        </ng-container>
+                        <ng-template #hascoloroption>
+                            <div class="row">
+                                <div *ngFor="let option of item.Attr2; let i = index;let fst = first;" class="col-sm-6">
+                                    <div class="card">
+                                        <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{item.A2_Label[i]}}</h5>
+                                            <div>
+                                                <button *ngIf="!removeCheck(item.Attr2[i])" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2[i],item.A2_Label[i],item.ImageFile[i])" class="btn border-light basbtn">Add to Store</button>
+                                                <button *ngIf="removeCheck(item.Attr2[i])" class="btn btn-secondary btn-sm mx-5 " style="border-radius: 2rem;" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2[i])">Remove from store</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="col-sm-12 justify-content-center p-1">
+                                    <button (click)="closeModal()" class="btn btn-secondary">Back</button>
+                                </div> -->
+
+                            </div>
+
+                        </ng-template>
+                        <ng-template #singlecoloroption>
+                            <div class="row justify-content-center">
+                                <div class="col-sm-6">
+                                    <div class="card d-block">
+                                        <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{item.A2_Label}}</h5>
+                                            <p class="card-text">
+                                                {{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}
+                                            </p>
+                                            <div>
+                                                <button *ngIf="!removeCheck(item.Attr2)" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2,item.A2_Label,item.ImageFile)" class="btn border-light basbtn text-uppercase">Add to Store</button>
+                                                <button *ngIf="removeCheck(item.Attr2)" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2)" style="border-radius: 2rem;" class="btn btn-secondary btn-sm mx-5">Remove from store</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-sm-12 justify-content-center p-1">
+                                        <button (click)="closeModal()" class="btn btn-secondary">Back</button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </ng-template>
+                    </div>
+                    <div class="row justify-content-center">
+                        <div class="col-sm-6">
+                            <div class="card bg-light mt-3">
+                                <div class="card-header">Pricing Breaks</div>
+                                <div class="card-body">
+                                    <table class="table">
+                                        <thead class="thead-dark">
+                                            <tr>
+                                                <th scope="col">Min Quantity</th>
+                                                <th scope="col">Max Quantity</th>
+                                                <th scope="col">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let row of pb;let last=last">
+                                                <td>{{row.QtyMin}}</td>
+                                                <td>{{last?'Max':row.QtyMax}}</td>
+                                                <td>{{row.Price|currency}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card d-block bg-light mt-3">
+                        <div class="card-header">Product Information</div>
+                        <div class="card-body">
+                            <p class="text-left">{{products[0].ProductDesc1}}</p>
+                            <p class="text-left">{{products[0].ProductDesc2}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
