@@ -17,6 +17,7 @@ import { SuperadminComponent } from './superadmin/superadmin.component';
 import { AccessComponent } from './superadmin/access/access.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FaqComponent } from './faq/faq.component';
+import { TestComponent } from './test/test.component';
 
 
 
@@ -40,6 +41,7 @@ const routes: Routes = [
   { path: 'registration/preview', component: PreviewComponent },
   { path: 'superadmin', component:SuperadminComponent},
   { path: 'superadmin/login', component:AccessComponent},
+  { path: 'test', component:TestComponent},
   { path: '**', redirectTo: '' },
  
   

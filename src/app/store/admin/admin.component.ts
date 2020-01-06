@@ -57,12 +57,12 @@ home;
   ss;
   pcheck=false;
   showpaddress=false;
-  emplist= Array();;
+  emplist= Array();
   
 
   constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
     
-    if(sessionStorage.getItem("mgrlgn")===null||sessionStorage.getItem("mgrlgn")=="false"){
+    if(sessionStorage.getItem("mgrlgn")===null||sessionStorage.getItem("mgrlgn")==""){
       this.route.params.subscribe(params => {
         this.site=params['id'];   
       var url="/stores/"+this.site+"/admin/login";
@@ -72,7 +72,7 @@ home;
     else{
       this.route.params.subscribe(params => {
         this.site=params['id'];   
-        if(sessionStorage.getItem("mgrlgn")===null||sessionStorage.getItem("mgrlgn")=="false"){
+        if(sessionStorage.getItem("mgrlgn")===null||sessionStorage.getItem("mgrlgn")==""){
           console.log("asda")
           var logcheck;
           this.data.currentManager.subscribe(message => logcheck=message);   
@@ -94,8 +94,20 @@ home;
   
       this.apiService.checkSite(this.site).subscribe(
         user => {
+          if(user["error"]){
+            sessionStorage.clear();
+            alert("No Such Site with name "+ this.site +" available");
+          this.router.navigate(['/stores']);
+
+          }
           console.log(user);
          this.storeid=user.sitedata[0].StoreID; 
+         var sk=this.storeid*5+(this.site.charCodeAt(1))*11+(this.site.charCodeAt(this.site.length-1))*1987;
+if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
+  sessionStorage.clear();
+  var url="/stores/"+this.site+"/admin/login";
+            this.router.navigate([url]);
+}
          this.customer_confirmed=user.sitedata[0].customer_confirmed==1?true:false;
          this.apiService.getstoreusers(this.storeid).subscribe(
           user => {
@@ -476,12 +488,12 @@ dateChange(control){
       this.sidebar=false;
     }
     this.menuItems = ROUTES.filter(menuItem => menuItem);
-    this.data.changeMessage(true);
+    // this.data.changeMessage(true);
   }
 
   logout(){
-    this.data.changeMessage(false);
-    sessionStorage.removeItem("mgrlgn");
+    this.data.changeMessage('');
+    sessionStorage.clear();
     var url="/stores/"+this.site+"/admin/login";
     this.router.navigate([url]);  
   }

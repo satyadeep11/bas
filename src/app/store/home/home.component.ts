@@ -88,9 +88,19 @@ export class HomeComponent implements OnInit {
   tempbannernamebup;
   transparentbg=true; 
   textcolor;
+  textcolorbup;
   uploadResponse = { status: '', message: '', filePath: '' };
   error;
   bgimage="";
+  primarycolor="#53565A";
+  buttoncolor="#e00000";
+  btntextcolor='';
+  storenamefont="Open Sans";
+  mainheadlinefont="'Bai Jamjuree', sans-serif"; 
+  subheadlinefont="'Bai Jamjuree', sans-serif"; 
+  bodyfont="Open Sans";
+  transparentbgbup;
+  ie = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
 
   constructor(private data: DataService,private modalService: NgbModal,private route: ActivatedRoute,private formBuilder: FormBuilder,private router: Router,private apiService: ApiService,) {
     this.loading=true;
@@ -128,7 +138,8 @@ export class HomeComponent implements OnInit {
       access: [""]
     });
 
-    if(sessionStorage.getItem("mgrlgn")===null||sessionStorage.getItem("mgrlgn")=="false"){
+    if(sessionStorage.getItem("mgrlgn")===null||sessionStorage.getItem("mgrlgn")==""){
+      sessionStorage.clear();
       console.log("asda")
       // var logcheck;
       // this.data.currentManager.subscribe(message => logcheck=message);   
@@ -138,12 +149,7 @@ export class HomeComponent implements OnInit {
       // }
     } 
 
-    if(sessionStorage.getItem("mgrlgn")=="true"){
-      this.mgrlogin=true;
-        this.toggled="toggled";
-        this.welcome=false;
-        this.home=true;
-    }
+    
 
     if(sessionStorage.getItem("adminlgn")=="true"){
       this.mgrlogin=true;
@@ -153,19 +159,40 @@ export class HomeComponent implements OnInit {
         this.admin=true;
     }
 
-    var logcheck;
-    this.data.currentManager.subscribe(message => logcheck=message);   
-    if(logcheck){
-      this.mgrlogin=true;
-      this.toggled="toggled";
-      this.welcome=false;
-      this.home=true;
-    }
+    // var logcheck;
+    // this.data.currentManager.subscribe(message => logcheck=message);   
+    // if(logcheck){
+    //   this.mgrlogin=true;
+    //   this.toggled="toggled";
+    //   this.welcome=false;
+    //   this.home=true;
+    // }
     
 
      this.apiService.checkSite(this.site).subscribe(
         user => {
+          console.log(user)
+          if(user["error"]){
+            sessionStorage.clear();
+            alert("No Such Site with name "+ this.site +" available");
+          this.router.navigate(['/stores']);
+          }
+          this.storeid=user.sitedata[0].StoreID; 
+         var sk=this.storeid*5+(this.site.charCodeAt(1))*11+(this.site.charCodeAt(this.site.length-1))*1987;
+         if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
+           sessionStorage.clear();
+           var url="/stores/"+this.site+"/home";
+                     this.router.navigate([url]);
+         }
+
+         if(parseInt(sessionStorage.getItem("mgrlgn"))==sk){
+          this.mgrlogin=true;
+            this.toggled="toggled";
+            this.welcome=false;
+            this.home=true;
+        }
          this.storedata = user; 
+         
         //  console.log(myData) 
          if(this.storedata){        
         console.log(this.storedata);
@@ -183,8 +210,10 @@ export class HomeComponent implements OnInit {
                   this.templogoname="";
                   this.logoimage ="";
                 }        
-                this.textcolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor').SettingValue:"");       
-                this.transparentbg=this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg')?((this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg').SettingValue)==1?true:false):false;    
+                this.primarycolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'primarycolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'primarycolor').SettingValue:"");       
+                this.buttoncolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'buttoncolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'buttoncolor').SettingValue:"");       
+                this.textcolorbup=this.textcolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor').SettingValue:"");       
+                this.transparentbgbup=this.transparentbg=this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg')?((this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg').SettingValue)==1?true:false):false;    
                 this.reason=this.storedata.sitedata.find(o => o.Settingcontrol === 'reason').SettingValue;
                 this.storename=this.storedata.sitedata.find(o => o.Settingcontrol === 'storename').SettingValue;
                 this.companyname=this.storedata.sitedata.find(o => o.Settingcontrol === 'cname').SettingValue;
@@ -231,6 +260,11 @@ export class HomeComponent implements OnInit {
                     if(!user["error"]){
                       // localStorage.setItem("storemanagerid", (user["md"]["StoreManagerID"]));
                       // localStorage.setItem("storeid", (user["md"]["StoreID"]));
+                      var sk=this.storeid*5+(this.site.charCodeAt(1))*11+(this.site.charCodeAt(this.site.length-1))*1987;
+          console.log(sk);
+            this.data.changeMessage(sk);   
+            console.log(user.ud)            
+            this.data.changeUserdata(user.ud);  
                        sessionStorage.setItem("ud", JSON.stringify(user["ud"]));
                       console.log("success");
                       this.mgrlogin=true;
@@ -318,6 +352,28 @@ export class HomeComponent implements OnInit {
     
   }
 
+
+
+hexToLuma() {
+    const hex   = this.buttoncolor.replace(/#/, '');
+    const r     = parseInt(hex.substr(0, 2), 16);
+    const g     = parseInt(hex.substr(2, 2), 16);
+    const b     = parseInt(hex.substr(4, 2), 16);
+var x=[
+  0.299 * r,
+  0.587 * g,
+  0.114 * b
+].reduce((a, b) => a + b) / 255;
+
+if (x > 0.5)
+this.btntextcolor="#000000";
+else
+this.btntextcolor="#ffffff";
+
+};
+
+
+
   ngOnInit() {
     
     this.apiService.all_products().subscribe(
@@ -329,7 +385,13 @@ export class HomeComponent implements OnInit {
       },
       error => console.log(error)
     );    
-    
+    this.themechange(this.theme);
+
+    if(this.bgimage){
+      document.querySelector('#bannerbg')?document.querySelector('#bannerbg').removeAttribute("style"):'';
+      var str="background:url('"+this.bgimage+"')";
+      document.querySelector('#bannerbg')?document.querySelector('#bannerbg').setAttribute("style",str):'';
+    }
   }
 
   formControlValueChanged() {
@@ -575,6 +637,7 @@ console.log(this.pending);
       this.tempbanner=this.bannerimage;
       this.bannerimage='';
       document.querySelector('#bannerbg').removeAttribute("style");
+      document.querySelector('#bannerbg').setAttribute("style","background-color:#53565a");
     }
     else{      
       this.tempbannername=this.tempbannernamebup;      
@@ -685,7 +748,7 @@ submit(){
       }
       this.tempbannername=this.tempbannername.replace(/ /g,"_");
       this.templogoname=this.templogoname.replace(/ /g,"_");
-      var storedata=({logoimage:this.templogoname,bannerimage:this.tempbannername,bannerheading:this.bannerheading,bannerdesc:this.bannerdesc,reason:this.reason,theme:this.theme, transparentbg:(this.transparentbg?1:0),textcolor:(this.textcolor)});
+      var storedata=({logoimage:this.templogoname,bannerimage:this.tempbannername,bannerheading:this.bannerheading,bannerdesc:this.bannerdesc,reason:this.reason,theme:this.theme, transparentbg:(this.transparentbg?1:0),textcolor:(this.textcolor),primarycolor:(this.primarycolor),buttoncolor:(this.buttoncolor)});
       var finaldata=({ storedata:  storedata , storeid:this.storeid});
 
       console.log(storedata,finaldata)
@@ -706,15 +769,89 @@ submit(){
 
 themechange(color){
   console.log(color);
-  if(color=="Christmas"){
-    this.bgimage="../../assets/Snowflakes.png"
-  }
-  else if(color=="Snow"){
-    this.bgimage="../../assets/giphy.gif"
-  }
-  else{
+  if(color=="Default"){
     this.bgimage="";
-    document.querySelector('#bgimage').removeAttribute("style");
+    document.querySelector('#bgimage')?document.querySelector('#bgimage').removeAttribute("style"):'';
+    document.querySelector('#bgimage')?document.querySelector('#bgimage').setAttribute("style","background-color:white !important;"):'';
+    document.querySelector('#bannerbg')?document.querySelector('#bannerbg').removeAttribute("style"):'';
+    var str="background:url('"+this.bannerimage+"') center center / cover no-repeat; height: 100%;";
+    document.querySelector('#bannerbg')?document.querySelector('#bannerbg').setAttribute("style",str):'';
+    this.mainheadlinefont="'Bai Jamjuree', sans-serif";
+    this.subheadlinefont="'Bai Jamjuree', sans-serif";
+    this.textcolor=this.textcolorbup;
+    this.primarycolor="#53565A";
+    this.buttoncolor="#ff3823";
+    this.transparentbg=this.transparentbgbup;
+  }
+  else {
+     
+    if(color=="Black Dots"){
+      this.bgimage="../../assets/blackdots.png"     
+      this.mainheadlinefont="'Bai Jamjuree', sans-serif";
+      this.subheadlinefont="'Bai Jamjuree', sans-serif";
+      this.textcolor="#ffffff"
+      this.primarycolor="#ffffff";
+      this.buttoncolor="#ff3823"; 
+      this.transparentbg=false;
+    } 
+    if(color=="Colorfest"){
+      this.bgimage="../../assets/colorfest.png"      
+      this.mainheadlinefont="'Aldrich', sans-serif";
+      this.subheadlinefont="'Open Sans', sans-serif";
+      this.textcolor="#a4343a"
+      this.primarycolor="#ffffff";
+      this.buttoncolor="#a4343a"; 
+      this.transparentbg=true;
+    } 
+    if(color=="Confetti"){
+      this.bgimage="../../assets/confetti.png"      
+      this.mainheadlinefont="'Aldrich', sans-serif";
+      this.subheadlinefont="'Open Sans', sans-serif";
+      this.textcolor="#000000"
+      this.primarycolor="#000000";
+      this.buttoncolor="#d60e16"; 
+      this.transparentbg=true;
+    } 
+    if(color=="Gifts"){
+      this.bgimage="../../assets/gifts.png"      
+      this.mainheadlinefont="'Open Sans', sans-serif";
+      this.subheadlinefont="'Open Sans', sans-serif";
+      this.textcolor="#c5292c"
+      this.primarycolor="#000000";
+      this.buttoncolor="#000000"; 
+      this.transparentbg=true;
+    } 
+    if(color=="Scribbles"){
+      this.bgimage="../../assets/scribbles.png"  
+      this.mainheadlinefont="'Bad Script', cursive";
+      this.subheadlinefont="'Bai Jamjuree', sans-serif";
+      this.textcolor="#c5292c"
+      this.primarycolor="#ffffff";
+      this.buttoncolor="#c5292c";   
+      this.transparentbg=true; 
+    } 
+    if(color=="Snowflakes"){
+      this.bgimage="../../assets/snowflakes.png"    
+      this.mainheadlinefont="'Antic Slab', serif";
+      this.subheadlinefont="'Antic Slab', serif";
+      this.textcolor="#ffffff"
+      this.primarycolor="#fa0102";
+      this.buttoncolor="#fa0102";   
+      this.transparentbg=false;
+    } 
+    if(color=="Wellness"){
+      this.bgimage="../../assets/wellness.png"    
+      this.mainheadlinefont="'Bad Script', cursive";
+      this.subheadlinefont="'Bad Script', cursive";
+      this.textcolor="#53565a"
+      this.primarycolor="#ffffff";
+      this.buttoncolor="#53565a";   
+      this.transparentbg=true;
+    } 
+    
+    document.querySelector('#bannerbg')?document.querySelector('#bannerbg').removeAttribute("style"):'';
+      var str="background:url('"+this.bgimage+"')";
+      document.querySelector('#bannerbg')?document.querySelector('#bannerbg').setAttribute("style",str):'';
   }
 }
 

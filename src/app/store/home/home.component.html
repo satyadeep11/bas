@@ -56,7 +56,7 @@
                                         <li *ngIf="!nologo" class="m-2">
                                             <a class="pr-0" style="cursor: pointer">
                                                 <span class="btn btn-sm btn-secondary btn-file basbtnhomesecondary">
-                                                    Browse <input class="form-control" type="file" accept=".jpg,.jpeg,.png,.gif" (change)="fileChangeEvent($event,'logo')">
+                                                    Choose File <input class="form-control" type="file" accept=".jpg,.jpeg,.png,.gif" (change)="fileChangeEvent($event,'logo')">
                                                 </span>
                                             </a>
                                             <div *ngIf="error">
@@ -80,7 +80,48 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card">
+                            <div class="card ">
+                                <div class="card-header" role="tab" id="headingSix6">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseSix6" aria-expanded="true" aria-controls="collapseSix6">
+                                        <p class="mb-0 text-dark">
+                                            Theme
+                                        </p>
+                                    </a>
+                                </div>
+                                <div id="collapseSix6" class="collapse" role="tabpanel" aria-labelledby="headingSix6" data-parent="#accordionEx">
+                                    <div class="card-body p-0">
+
+                                        <li class="m-2">
+                                            <p>
+                                                <small>
+                                                    Choose your company colors in the Color Picker section or select a predetermined theme using the drop down.
+                                                </small>
+                                            </p>
+                                            <select title="Colors" title="Colors" class="form-control" [(ngModel)]="theme" (change)="themechange($event.target.value)">     
+                                                <option>Default</option>
+                                                <option>Black Dots</option>
+                                                <option>Colorfest</option>
+                                                <option>Confetti</option>
+                                                <option>Gifts</option>
+                                                <option>Scribbles</option>
+                                                <option>Snowflakes</option>
+                                                <option>Wellness</option>                                                
+                                            </select>
+                                            <div *ngIf="theme=='Default'" class="m-2">
+                                                <label class="checkbox-inline">
+                                                    <input type="color" [(ngModel)]="primarycolor" >
+                                                    <small> Primary Color</small>
+                                                </label>
+                                                <label class="checkbox-inline">
+                                                    <input type="color" [(ngModel)]="buttoncolor" (change)="hexToLuma()" >
+                                                    <small> Buttons Color</small>
+                                                </label>
+                                            </div>
+                                        </li>
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="theme=='Default'" class="card">
                                 <div class="card-header" role="tab" id="headingTwo2">
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="true" aria-controls="collapseTwo2">
                                         <p class="mb-0 text-dark">
@@ -103,16 +144,30 @@
                                             </div>
                                         </li>
                                         <li class="m-2">
-                                            <label class="checkbox-inline">
+                                            <div *ngIf="!ie">
+                                                <label class="checkbox-inline">
                                                                         <input type="color" [(ngModel)]="textcolor" >
                                                                         <small>Text Color</small>
                                                                 </label>
+                                            </div>
+                                            <div *ngIf="ie">
+                                                <input type="text" name="clr1" [(ngModel)]="textcolor" />
+                                                <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; var color=s;
+                                                clr1.value='#' + color.toString(16);
+                                                ">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
+                                                <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
+                                            </div>
                                         </li>
+
+
+
+
+
 
                                         <li *ngIf="!nobanner" class="m-2">
                                             <a class="pr-0" style="cursor: pointer">
                                                 <span class="btn btn-sm btn-secondary btn-file basbtnhomesecondary">
-                                                    Browse <input class="form-control" type="file" accept=".jpg,.jpeg,.png" (change)="fileChangeEvent($event,'banner')">
+                                                    Choose File <input class="form-control" type="file" accept=".jpg,.jpeg,.png" (change)="fileChangeEvent($event,'banner')">
                                                 </span>
                                             </a>
                                             <span><small>Recommended dimensions : 800px x 600px<br>Max file size: 2 MB<br>Formats: .jpg, .png, .gif</small></span>
@@ -181,7 +236,7 @@
                                 </div>
                             </div>
                         </div>
-                        <li>
+                        <!-- <li>
                             <div class="m-4">
                                 <span>Select Theme</span>
                                 <br>
@@ -201,7 +256,7 @@
                                         <option>Snow</option>
                                 </select>
                             </div>
-                        </li>
+                        </li> -->
                         <li>
                             <a><span class="">
                                 <div class="row m-2">
@@ -225,7 +280,7 @@
         </nav>
 
         <div class="page-content {{theme|lowercase}}">
-            <nav class="bg-light text-uppercase" id="mainNav">
+            <nav class="bg-light " id="mainNav">
                 <div class="container-fluid">
                     <div class="row h-100 justify-content-center align-items-center">
                         <div class="col-lg-11">
@@ -234,7 +289,7 @@
                             </a>
                             <div *ngIf="!logoimage" class="py-3">
                                 <span class="text-center border border-secondary rounded p-1">
-                                            <a class="navbar-brand js-scroll-trigger mr-0 px-2">{{storename||'Store Name'}}</a>
+                                            <a class="navbar-brand js-scroll-trigger mr-0 px-2" [style.font-family]="storenamefont"><b>{{storename||'Store Name'|titlecase}}</b></a>
                                     </span>
                             </div>
                         </div>
@@ -272,14 +327,26 @@
                 </div>
             </header>
 
-            <div *ngIf="home">
-                <header class="bg-secondary py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+            <div *ngIf="home" [style.font-family]="bodyfont">
+                <header *ngIf="!bgimage" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
                     <div class="container-fluid  h-100">
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
                                 <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class=" p-5">
-                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" style="font-size: 5vw;"><strong>{{bannerheading||'Banner Heading'|titlecase}}</strong></h1>
-                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="bgimage" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bgimage + ')'">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -296,28 +363,34 @@
                         </div>
                     </div>
                 </header> -->
-                <div *ngIf="reason" class="container-fluid">
-                    <div class="row h-100 justify-content-center align-items-center">
-                        <div class="col-md-8 col-lg-8 text-center p-5">
-                            <h4>{{reason|titlecase}}</h4>
+                <div class="container-fluid">
+                    <div class="row h-100 pt-5">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-8 col-lg-8 ">
+                            <span *ngIf="reason">
+                                <p>{{reason|titlecase}}</p>
+                                <br>
+                            </span>
+
+                            <p><strong>Choose Your Gift:</strong> Make your choice by clicking on <i>View Details</i> for the item you're interested in. In <i>View Details</i> window, click <i>Select</i> to choose your gift and be taken to the checkout.
+                            </p>
                         </div>
+                        <div class="col-md-2"></div>
                     </div>
                 </div>
                 <!-- <hr class="w-75"> -->
                 <section class="">
-                    <div class="container-fluid bg-secondary" id="bgimage" [style.backgroundImage]='"url("+bgimage+")"'>
-                        <div class="page-section-heading text-center text-white p-4 row">
+                    <div class="container-fluid " id="bgimage" [style.backgroundImage]='"url("+bgimage+")"'>
+                        <!-- <div class="page-section-heading p-4 row">
                             <div class="col-sm-3"></div>
-                            <div class="col-sm-6 bg-secondary p-3">
-                                <h3 class="text-white"><strong>Choose Your Gift</strong></h3>
-                                <p>
-                                    Make your choice by clicking on View Details for the item you're interested in. <br> In View Details window, click Select to choose your gift.
+                            <div class="col-sm-6  p-3">
+                                <p><strong>Choose Your Gift:</strong> Make your choice by clicking on <i>View Details</i> for the item you're interested in. <br> In <i>View Details</i> window, click <i>Select</i> to choose your gift and be taken to the checkout.
                                 </p>
                             </div>
                             <div class="col-sm-3"></div>
-                        </div>
+                        </div> -->
 
-                        <div class="row mx-lg-5">
+                        <div class="row p-lg-5">
                             <!-- <div *ngFor="let item of uniqueprods" class="col-md-6 col-lg-4 text-center">
                                 <div class="portfolio-item mx-auto" (click)="productdetails(content,item)">
                                     <img class="img-fluid" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
@@ -328,12 +401,12 @@
                                 <button class="btn btn-primary mb-2" (click)="productdetails(content,item)">View Details </button>
                             </div> -->
                             <div *ngFor="let item of uniqueprods" class="col-sm-4 mb-5 text-center">
-                                <div class="card h-100">
+                                <div class="card h-100" [ngStyle]="{'border': '3px solid'+primarycolor }">
                                     <img class="card-img-top" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
                                     <div class="card-body">
                                         <p class="card-title"><b>{{item.ProductName|titlecase}}</b></p>
                                         <!-- <p class="card-text">{{item.ProductDesc1}}</p> -->
-                                        <button class="btn btn-secondary basbtnhomesecondary mb-2" (click)="productdetails(content,item)">View Details</button>
+                                        <button class="btn btn-secondary basbtnhomesecondary mb-2" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="productdetails(content,item)">View Details</button>
                                     </div>
                                     <!-- <div class="card-footer">
 
@@ -344,7 +417,7 @@
                     </div>
                 </section>
             </div>
-            <div *ngIf="checkout">
+            <div *ngIf="checkout" [style.font-family]="bodyfont">
                 <header class="bg-secondary py-5 text-center" id="bannerbg2" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size: cover;">
                     <div class="container-fluid h-100">
                         <div class="row h-100 justify-content-center align-items-center">
@@ -648,7 +721,7 @@
                     </div>
                 </section>
             </div>
-            <div *ngIf="successful">
+            <div *ngIf="successful" [style.font-family]="bodyfont">
                 <header class="bg-secondary py-5 text-center" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
                     <div class="container-fluid  h-100">
                         <div class="row h-100 justify-content-center align-items-center">
@@ -668,7 +741,7 @@
                     </div>
                 </div>
             </div>
-            <footer class="footer bg-dark text-light py-5">
+            <footer class="footer text-light py-5" [style.background-color]="'#53565a'" [style.font-family]="bodyfont">
                 <div class="container-fluid">
                     <div class="row ">
                         <!-- <div class="col-lg-8 mb-5 mb-lg-0">
@@ -709,7 +782,7 @@
                     </div>
                 </div>
             </footer>
-            <section class="copyright py-4 text-center bg-light">
+            <section class="copyright py-4 text-center bg-light" [style.font-family]="bodyfont">
                 <div class="container-fluid">
                     <small>&copy; 2020 Identity Works, Inc</small>
                 </div>
@@ -720,7 +793,7 @@
                 <span aria-hidden="true">&times;</span>
             </button>
                 </div>
-                <div class="modal-body text-center {{theme|lowercase}}">
+                <div class="modal-body text-center {{theme|lowercase}}" [style.font-family]="bodyfont">
                     <div class="container-fluid">
                         <div class="row justify-content-center">
                             <div class="col-lg-12">

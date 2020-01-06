@@ -30,6 +30,7 @@ import { FaqComponent } from './faq/faq.component';
 import { PaymentComponent } from './store/admin/payment/payment.component';
 import { SaPaymentComponent } from './superadmin/sa-payment/sa-payment.component';
 import { NgxCurrencyModule } from "ngx-currency";
+import { TestComponent } from './test/test.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +50,7 @@ import { NgxCurrencyModule } from "ngx-currency";
     PrivacyPolicyComponent,
     TosComponent,
     SuperadminComponent,  
-    AccessComponent, ContactUsComponent, FaqComponent, PaymentComponent, SaPaymentComponent
+    AccessComponent, ContactUsComponent, FaqComponent, PaymentComponent, SaPaymentComponent, TestComponent
   ],
   imports: [
     NgxCurrencyModule,

@@ -1,4 +1,8 @@
 @import './variables';
+@import url('https://fonts.googleapis.com/css?family=Bai+Jamjuree:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Aldrich&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Bad+Script&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Antic+Slab&display=swap');
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @import '~@angular/material/theming';
@@ -11,11 +15,16 @@
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
 $buildastore-primary: mat-palette($mat-indigo);
-$buildastore-accent: mat-palette($mat-pink, A200, A100, A400);
+$buildastore-accent: mat-palette($mat-pink,
+A200,
+A100,
+A400);
 // The warn palette is optional (defaults to red).
 $buildastore-warn: mat-palette($mat-red);
 // Create the theme object (a Sass map containing all of the palettes).
-$buildastore-theme: mat-light-theme($buildastore-primary, $buildastore-accent, $buildastore-warn);
+$buildastore-theme: mat-light-theme($buildastore-primary,
+$buildastore-accent,
+$buildastore-warn);
 // Include theme styles for core and each component used in your app.
 // Alternatively, you can import and @include the theme mixins for each component
 // that you are using.

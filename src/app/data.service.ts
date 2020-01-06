@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable()
 export class DataService {
 
-  private manager = new BehaviorSubject(false);
+  private manager = new BehaviorSubject('');
   private admin = new BehaviorSubject(false);
   private userdata= new BehaviorSubject([]);
   currentManager = this.manager.asObservable();
@@ -13,9 +13,9 @@ export class DataService {
 
   constructor() { }
 
-  changeMessage(loggedin: boolean) {
-    this.manager.next(loggedin);
-    sessionStorage.setItem("mgrlgn",JSON.stringify(loggedin));
+  changeMessage(sk) {
+    this.manager.next(sk);
+    sessionStorage.setItem("mgrlgn",JSON.stringify(sk));
   }
 
   changeAdmin(loggedin: boolean) {

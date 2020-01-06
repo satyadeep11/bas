@@ -34,6 +34,7 @@ export class AdminloginComponent implements OnInit {
          this.storeid=user.sitedata[0].StoreID; 
         }
         else{
+          sessionStorage.clear();
           alert("No Such Site with name "+ this.site +" available");
           this.router.navigate(['/stores']);
         }
@@ -77,12 +78,14 @@ export class AdminloginComponent implements OnInit {
           //   // localStorage.setItem("storeid", (user["md"]["StoreID"]));
           //   localStorage.setItem("ud", JSON.stringify(user["ud"]));
           //   // console.log(localStorage.getItem("ud"))
-            this.data.changeMessage(true);   
+          var sk=this.storeid*5+(this.site.charCodeAt(1))*11+(this.site.charCodeAt(this.site.length-1))*1987;
+          console.log(sk);
+            this.data.changeMessage(sk);   
             console.log(user.ud)            
             this.data.changeUserdata(user.ud);  
             alert("Login Successful, you will be redirected.");
             this.router.navigate(['/stores/'+this.site+'/admin']);
-          }
+          } 
         },
         error => console.log(error)
       );

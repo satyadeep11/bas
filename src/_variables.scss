@@ -1,650 +1,643 @@
-.default {
-    $white: #fff;
-    $gray-100: #f8f9fa;
-    $gray-200: #e9ecef;
-    $gray-300: #dee2e6;
-    $gray-400: #ced4da;
-    $gray-500: #AEA79F;
-    $gray-600: #868e96;
-    $gray-700: #495057;
-    $gray-800: #333;
-    $gray-900: #212529;
-    $black: #000;
-    $blue: #007bff;
-    $indigo: #6610f2;
-    $purple: #772953;
-    $pink: #e83e8c;
-    $red: #DF382C;
-    $orange: #E95420;
-    $yellow: #EFB73E;
-    $green: #38B44A;
-    $teal: #20c997;
-    $cyan: #17a2b8;
-    $primary: $orange;
-    $secondary: $gray-500;
-    $success: $green;
-    $info: $cyan;
-    $warning: $yellow;
-    $danger: $red;
-    $light: $gray-200;
-    $dark: $purple;
-    $yiq-contrasted-threshold: 200;
-    $body-color: $gray-800;
-    $font-family-sans-serif: "Ubuntu", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    $table-dark-bg: $dark;
-    $table-dark-border-color: darken($dark, 5%);
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.sketch {
-    $white: #fff !default;
-    $gray-100: #f8f9fa !default;
-    $gray-200: #f7f7f9 !default;
-    $gray-300: #dee2e6 !default;
-    $gray-400: #ccc !default;
-    $gray-500: #aaa !default;
-    $gray-600: #868e96 !default;
-    $gray-700: #555 !default;
-    $gray-800: #333 !default;
-    $gray-900: #212529 !default;
-    $black: #000 !default;
-    $blue: #007bff !default;
-    $indigo: #6610f2 !default;
-    $purple: #6f42c1 !default;
-    $pink: #e83e8c !default;
-    $red: #dc3545 !default;
-    $orange: #fd7e14 !default;
-    $yellow: #ffc107 !default;
-    $green: #28a745 !default;
-    $teal: #20c997 !default;
-    $cyan: #17a2b8 !default;
-    $primary: $gray-800 !default;
-    $secondary: $gray-700 !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $yellow !default;
-    $danger: $red !default;
-    $light: $white !default;
-    $dark: $black !default;
-    $yiq-contrasted-threshold: 200 !default;
-    // Links
-    $link-decoration: underline !default;
-    // Components
-    $border-width: 2px !default;
-    $border-radius: 25px !default;
-    $border-radius-lg: 35px !default;
-    $border-radius-sm: 15px !default;
-    // Fonts
-    $font-family-sans-serif: 'Neucha', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-    $font-weight-base: 700 !default;
-    $headings-font-family: 'Cabin Sketch', cursive !default;
-    $blockquote-small-color: $gray-800 !default;
-    // Tables
-    $table-accent-bg: $gray-400 !default;
-    $table-hover-bg: $white !default;
-    $table-border-width: 1px !default;
-    $table-border-color: $gray-800 !default;
-    // Forms
-    $input-border-color: $gray-800 !default;
-    $input-focus-border-color: $input-border-color !default;
-    // Dropdowns
-    $dropdown-border-color: $gray-800 !default;
-    $dropdown-divider-bg: $gray-800 !default;
-    $dropdown-link-hover-color: $white !default;
-    $dropdown-link-hover-bg: $gray-800 !default;
-    // Navs
-    $nav-tabs-border-color: $gray-800 !default;
-    $nav-tabs-link-hover-border-color: $gray-800 !default;
-    $nav-tabs-link-active-color: $gray-800 !default;
-    $nav-tabs-link-active-border-color: $gray-800 !default;
-    // Navbar
-    $navbar-dark-color: $white !default;
-    $navbar-dark-hover-color: $white !default;
-    $navbar-dark-toggler-border-color: $white !default;
-    $navbar-light-color: $gray-800 !default;
-    $navbar-light-hover-color: $gray-800 !default;
-    $navbar-light-active-color: $gray-800 !default;
-    $navbar-light-toggler-border-color: $gray-800 !default;
-    // Pagination
-    $pagination-border-color: $gray-800 !default;
-    $pagination-hover-color: $white !default;
-    $pagination-hover-bg: $gray-800 !default;
-    $pagination-hover-border-color: $gray-800 !default;
-    $pagination-disabled-color: $gray-400 !default;
-    $pagination-disabled-border-color: $gray-800 !default;
-    // Jumbotron
-    $jumbotron-bg: transparent !default;
-    // Cards
-    $card-border-width: 2px !default;
-    $card-border-color: $gray-800 !default;
-    // Popovers
-    $popover-border-color: $gray-800 !default;
-    // Badges
-    $badge-padding-y: 0.5em !default;
-    $badge-padding-x: 1.2em !default;
-    // Modals
-    $modal-content-border-color: $gray-800 !default;
-    $modal-header-border-color: $gray-800 !default;
-    // Progress bars
-    $progress-bg: $white !default;
-    $progress-bar-bg: $gray-400 !default;
-    // List group
-    $list-group-border-color: $gray-800 !default;
-    $list-group-hover-bg: $gray-300 !default;
-    $list-group-active-color: $white !default;
-    $list-group-active-bg: $gray-800 !default;
-    $list-group-action-color: $gray-800 !default;
-    // Breadcrumbs
-    $breadcrumb-bg: $white !default;
-    $breadcrumb-divider-color: $gray-800 !default;
-    $breadcrumb-active-color: $gray-800 !default;
-    // Close
-    $close-color: $white !default;
-    $close-text-shadow: none !default;
-    .bg-secondary>h3 {
-        color: white;
-    }
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.night {
-    $white: #fff !default;
-    $gray-100: #f8f9fa !default;
-    $gray-200: #e9ecef !default;
-    $gray-300: #dee2e6 !default;
-    $gray-400: #ced4da !default;
-    $gray-500: #999 !default;
-    $gray-600: #7A8288 !default;
-    $gray-700: #52575C !default;
-    $gray-800: #3A3F44 !default;
-    $gray-900: #272B30 !default;
-    $black: #000 !default;
-    $blue: #007bff !default;
-    $indigo: #6610f2 !default;
-    $purple: #6f42c1 !default;
-    $pink: #e83e8c !default;
-    $red: #ee5f5b !default;
-    $orange: #fd7e14 !default;
-    $yellow: #f89406 !default;
-    $green: #62c462 !default;
-    $teal: #20c997 !default;
-    $cyan: #5bc0de !default;
-    $primary: $gray-800 !default;
-    $secondary: $gray-600 !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $yellow !default;
-    $danger: $red !default;
-    $light: $gray-200 !default;
-    $dark: $gray-900 !default;
-    $yiq-contrasted-threshold: 170 !default;
-    // Body
-    $body-bg: $gray-900 !default;
-    $body-color: #aaa !default;
-    // Links
-    $link-color: $white !default;
-    // Fonts
-    $font-size-base: 0.9375rem !default;
-    // Tables
-    $table-color: $black !default;
-    $table-accent-bg: rgba($white, .05) !default;
-    $table-hover-bg: rgba($white, .075) !default;
-    $table-border-color: rgba($black, .6) !default;
-    $table-dark-border-color: $table-border-color !default;
-    $table-dark-color: $white !default;
-    // Buttons
-    $input-btn-padding-y: .75rem !default;
-    $input-btn-padding-x: 1rem !default;
-    // Forms
-    $input-disabled-bg: #ccc !default;
-    // Dropdowns
-    $dropdown-bg: $gray-800 !default;
-    $dropdown-border-color: rgba($black, .6) !default;
-    $dropdown-divider-bg: rgba($black, .15) !default;
-    $dropdown-link-color: $body-color !default;
-    $dropdown-link-hover-color: $white !default;
-    $dropdown-link-hover-bg: $body-bg !default;
-    // Navs
-    $nav-tabs-border-color: rgba($black, 0.6) !default;
-    $nav-tabs-link-hover-border-color: $nav-tabs-border-color !default;
-    $nav-tabs-link-active-color: $white !default;
-    $nav-tabs-link-active-border-color: $nav-tabs-border-color !default;
-    // Navbar
-    $navbar-padding-y: 0 !default;
-    $navbar-dark-hover-color: $white !default;
-    $navbar-light-hover-color: $gray-800 !default;
-    $navbar-light-active-color: $gray-800 !default;
-    // Pagination
-    $pagination-color: $white !default;
-    $pagination-bg: transparent !default;
-    $pagination-border-color: rgba($black, 0.6) !default;
-    $pagination-hover-color: $white !default;
-    $pagination-hover-bg: transparent !default;
-    $pagination-hover-border-color: rgba($black, 0.6) !default;
-    $pagination-active-bg: transparent !default;
-    $pagination-active-border-color: rgba($black, 0.6) !default;
-    $pagination-disabled-bg: transparent !default;
-    $pagination-disabled-border-color: rgba($black, 0.6) !default;
-    // Jumbotron
-    $jumbotron-bg: darken($gray-900, 5%) !default;
-    // Cards
-    $card-border-color: rgba($black, 0.6) !default;
-    $card-cap-bg: lighten($gray-800, 10%) !default;
-    $card-bg: lighten($body-bg, 5%) !default;
-    // Popovers
-    $popover-bg: lighten($body-bg, 5%) !default;
-    // Modals
-    $modal-content-bg: lighten($body-bg, 5%) !default;
-    $modal-header-border-color: rgba(0, 0, 0, .2) !default;
-    // Progress bars
-    $progress-bg: darken($gray-900, 5%) !default;
-    $progress-bar-color: $gray-600 !default;
-    // List group
-    $list-group-bg: lighten($body-bg, 5%) !default;
-    $list-group-border-color: rgba($black, 0.6) !default;
-    $list-group-hover-bg: lighten($body-bg, 10%) !default;
-    $list-group-active-color: $white !default;
-    $list-group-active-bg: $list-group-hover-bg !default;
-    $list-group-active-border-color: $list-group-border-color !default;
-    $list-group-disabled-color: $gray-700 !default;
-    $list-group-action-color: $white !default;
-    // Breadcrumbs
-    $breadcrumb-active-color: $gray-500 !default;
-    // Code
-    $pre-color: inherit !default;
-    .card-body,
-    .card-header {
-        color: white;
-    }
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.stone {
-    $white: #fff !default;
-    $gray-100: #f8f9fa !default;
-    $gray-200: #F8F5F0 !default;
-    $gray-300: #DFD7CA !default;
-    $gray-400: #ced4da !default;
-    $gray-500: #98978B !default;
-    $gray-600: #8E8C84 !default;
-    $gray-700: #495057 !default;
-    $gray-800: #3E3F3A !default;
-    $gray-900: #212529 !default;
-    $black: #000 !default;
-    $blue: #325D88 !default;
-    $indigo: #6610f2 !default;
-    $purple: #6f42c1 !default;
-    $pink: #e83e8c !default;
-    $red: #d9534f !default;
-    $orange: #F47C3C !default;
-    $yellow: #ffc107 !default;
-    $green: #93C54B !default;
-    $teal: #20c997 !default;
-    $cyan: #29ABE0 !default;
-    $primary: $blue !default;
-    $secondary: $gray-600 !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $orange !default;
-    $danger: $red !default;
-    $light: $gray-200 !default;
-    $dark: $gray-800 !default;
-    $yiq-contrasted-threshold: 170 !default;
-    // Body
-    $body-color: $gray-800 !default;
-    // Links
-    $link-color: $success !default;
-    // Fonts
-    $font-family-sans-serif: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
-    $font-size-base: 0.875rem !default;
-    $headings-font-weight: 400 !default;
-    // Dropdowns
-    $dropdown-link-color: $gray-600 !default;
-    $dropdown-link-hover-color: $dropdown-link-color !default;
-    $dropdown-link-hover-bg: $gray-200 !default;
-    $dropdown-link-active-color: $dropdown-link-color !default;
-    $dropdown-link-active-bg: $dropdown-link-hover-bg !default;
-    // Navs
-    $nav-link-padding-x: 0.9rem !default;
-    $nav-link-disabled-color: $gray-300 !default;
-    $nav-tabs-border-color: $gray-300 !default;
-    $nav-tabs-link-hover-border-color: $gray-300 !default;
-    $nav-tabs-link-active-bg: $white !default;
-    $nav-pills-link-active-color: $gray-600 !default;
-    $nav-pills-link-active-bg: $gray-200 !default;
-    // Navbar
-    $navbar-dark-hover-color: $white !default;
-    $navbar-light-hover-color: $black !default;
-    $navbar-light-active-color: $black !default;
-    // Pagination
-    $pagination-color: $gray-600 !default;
-    $pagination-bg: $gray-200 !default;
-    $pagination-border-color: $gray-300 !default;
-    $pagination-hover-color: $pagination-color !default;
-    $pagination-active-color: $pagination-color !default;
-    $pagination-active-bg: $gray-300 !default;
-    $pagination-active-border-color: $gray-300 !default;
-    $pagination-disabled-color: $gray-300 !default;
-    $pagination-disabled-bg: $gray-200 !default;
-    $pagination-disabled-border-color: $pagination-border-color !default;
-    // Cards
-    $card-border-color: rgba($gray-300, .75) !default;
-    $card-cap-bg: rgba($gray-200, .25) !default;
-    // Popovers
-    $popover-header-bg: $gray-200 !default;
-    // Modals
-    $modal-content-border-color: $gray-300 !default;
-    $modal-header-border-color: $modal-content-border-color !default;
-    // Progress bars
-    $progress-bg: $gray-300 !default;
-    $progress-border-radius: 10px !default;
-    $progress-bar-color: $primary !default;
-    // List group
-    $list-group-border-color: $gray-300 !default;
-    $list-group-hover-bg: $gray-200 !default;
-    $list-group-active-color: $body-color !default;
-    $list-group-active-bg: $gray-200 !default;
-    $list-group-active-border-color: $gray-300 !default;
-    $list-group-disabled-color: $gray-500 !default;
-    $list-group-disabled-bg: $white !default;
-    $list-group-action-color: $list-group-active-color !default;
-    $list-group-action-active-color: $list-group-active-color !default;
-    $list-group-action-active-bg: $gray-300 !default;
-    // Close
-    $close-text-shadow: none !default;
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.summer {
-    $white: #fff !default;
-    $gray-100: #f8f9fa !default;
-    $gray-200: #f7f7f9 !default;
-    $gray-300: #eceeef !default;
-    $gray-400: #ced4da !default;
-    $gray-500: #aaa !default;
-    $gray-600: #888 !default;
-    $gray-700: #5a5a5a !default;
-    $gray-800: #343a40 !default;
-    $gray-900: #212529 !default;
-    $black: #000 !default;
-    $blue: #007bff !default;
-    $indigo: #6610f2 !default;
-    $purple: #6f42c1 !default;
-    $pink: #e83e8c !default;
-    $red: #FF7851 !default;
-    $orange: #fd7e14 !default;
-    $yellow: #FFCE67 !default;
-    $green: #56CC9D !default;
-    $teal: #20c997 !default;
-    $cyan: #6CC3D5 !default;
-    $primary: #78C2AD !default;
-    $secondary: #F3969A !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $yellow !default;
-    $danger: $red !default;
-    $light: $gray-100 !default;
-    $dark: $gray-800 !default;
-    $yiq-contrasted-threshold: 250 !default;
-    // Body
-    $body-color: $gray-600 !default;
-    // Components
-    $border-radius: .4rem !default;
-    $border-radius-lg: .6rem !default;
-    $border-radius-sm: .3rem !default;
-    // Fonts
-    $headings-font-family: "Montserrat", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-    $headings-color: $gray-700 !default;
-    // Tables
-    $table-border-color: rgba(0, 0, 0, 0.05) !default;
-    // Dropdowns
-    $dropdown-link-hover-color: $white !default;
-    $dropdown-link-hover-bg: $secondary !default;
-    // Navbar
-    $navbar-dark-color: rgba($white, .6) !default;
-    $navbar-dark-hover-color: $white !default;
-    $navbar-light-color: rgba($black, .3) !default;
-    $navbar-light-hover-color: $gray-700 !default;
-    $navbar-light-active-color: $gray-700 !default;
-    $navbar-light-disabled-color: rgba($black, .1) !default;
-    // Pagination
-    $pagination-color: $white !default;
-    $pagination-bg: $primary !default;
-    $pagination-border-color: $primary !default;
-    $pagination-hover-color: $white !default;
-    $pagination-hover-bg: $secondary !default;
-    $pagination-hover-border-color: $pagination-hover-bg !default;
-    $pagination-active-bg: $secondary !default;
-    $pagination-active-border-color: $pagination-active-bg !default;
-    $pagination-disabled-color: $white !default;
-    $pagination-disabled-bg: #CCE8E0 !default;
-    $pagination-disabled-border-color: $pagination-disabled-bg !default;
-    // Breadcrumbs
-    $breadcrumb-bg: $primary !default;
-    $breadcrumb-divider-color: $white !default;
-    $breadcrumb-active-color: $breadcrumb-divider-color !default;
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.minimal {
-    $white: #fff !default;
-    $gray-100: #f8f9fa !default;
-    $gray-200: #eee !default;
-    $gray-300: #dee2e6 !default;
-    $gray-400: #ced4da !default;
-    $gray-500: #bbb !default;
-    $gray-600: #666 !default;
-    $gray-700: #444 !default;
-    $gray-800: #222 !default;
-    $gray-900: #212121 !default;
-    $black: #000 !default;
-    $blue: #2196F3 !default;
-    $indigo: #6610f2 !default;
-    $purple: #6f42c1 !default;
-    $pink: #e83e8c !default;
-    $red: #e51c23 !default;
-    $orange: #fd7e14 !default;
-    $yellow: #ff9800 !default;
-    $green: #4CAF50 !default;
-    $teal: #20c997 !default;
-    $cyan: #9C27B0 !default;
-    $primary: $blue !default;
-    $secondary: $white !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $yellow !default;
-    $danger: $red !default;
-    $light: $white !default;
-    $dark: $gray-800 !default;
-    $yiq-contrasted-threshold: 170 !default;
-    $enable-gradients: true;
-    // Body
-    $body-color: $gray-700 !default;
-    // Fonts
-    $font-family-sans-serif: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
-    $font-size-base: 0.8125rem !default;
-    $font-weight-base: 400 !default;
-    // Buttons
-    $input-btn-padding-y: 0.8rem !default;
-    $input-btn-padding-x: 1rem !default;
-    // Forms
-    $input-padding-y: 1rem !default;
-    $input-padding-x: 0 !default;
-    $input-padding-y-sm: 0 !default;
-    $input-padding-x-sm: 0 !default;
-    $input-padding-y-lg: ($font-size-base * 1.25) !default;
-    $input-padding-x-lg: 0 !default;
-    $input-bg: transparent !default;
-    $input-disabled-bg: transparent !default;
-    $input-color: $gray-600 !default;
-    $input-border-color: $gray-700 !default;
-    $input-border-width: 1px !default;
-    $input-border-radius: 0 !default;
-    $input-border-radius-lg: 0 !default;
-    $input-border-radius-sm: 0 !default;
-    $input-placeholder-color: rgba(0, 0, 0, 0.4) !default;
-    $input-group-addon-bg: transparent !default;
-    $custom-control-gutter: 1.75rem !default;
-    $custom-control-indicator-focus-box-shadow: 0 !default;
-    $custom-control-indicator-size: 1.25rem !default;
-    $custom-control-indicator-bg: $white;
-    $custom-checkbox-indicator-border-radius: 2px !default;
-    $custom-control-indicator-disabled-bg: $gray-100 !default;
-    $custom-radio-indicator-icon-checked: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='4' fill='%232196F3'/%3E%3C/svg%3E") !default;
-    $custom-select-border-radius: 0 !default;
-    $custom-select-box-shadow: none !default;
-    // Navs
-    $nav-link-disabled-color: $gray-500 !default;
-    $nav-tabs-border-color: transparent !default;
-    // Navbar
-    $navbar-padding-y: 1rem !default;
-    $navbar-dark-color: rgba($white, .75) !default;
-    $navbar-dark-hover-color: $white !default;
-    // Cards
-    $card-border-width: 0;
-    $card-border-color: transparent;
-    // Tooltips
-    $tooltip-bg: $gray-700 !default;
-    // Modals
-    $modal-content-border-color: transparent !default;
-    // Progress bars
-    $progress-height: 0.375rem !default;
-    $progress-border-radius: 0 !default;
-    // Close
-    $close-font-size: 2.125rem !default;
-    $close-font-weight: 300 !default;
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.clean {
-    $white: #fff !default;
-    $gray-100: #f8f9fa !default;
-    $gray-200: #e9ecef !default;
-    $gray-300: #ddd !default;
-    $gray-400: #ced4da !default;
-    $gray-500: #adb5bd !default;
-    $gray-600: #868e96 !default;
-    $gray-700: #495057 !default;
-    $gray-800: #343a40 !default;
-    $gray-900: #212529 !default;
-    $black: #000 !default;
-    $blue: #4582EC !default;
-    $indigo: #6610f2 !default;
-    $purple: #6f42c1 !default;
-    $pink: #e83e8c !default;
-    $red: #d9534f !default;
-    $orange: #fd7e14 !default;
-    $yellow: #f0ad4e !default;
-    $green: #02B875 !default;
-    $teal: #20c997 !default;
-    $cyan: #17a2b8 !default;
-    $primary: $blue !default;
-    $secondary: $gray-500 !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $yellow !default;
-    $danger: $red !default;
-    $light: $gray-100 !default;
-    $dark: $gray-800 !default;
-    $yiq-contrasted-threshold: 190 !default;
-    // Body
-    $body-color: $gray-800 !default;
-    // Fonts
-    $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
-    $font-size-base: 1.063rem !default;
-    $headings-font-weight: 700 !default;
-    // Tables
-    $table-border-color: rgba(0, 0, 0, 0.1) !default;
-    // Buttons
-    $input-btn-padding-y: 0.5rem !default;
-    $input-btn-padding-x: 1.1rem !default;
-    $btn-font-family: $font-family-sans-serif !default;
-    $btn-font-size: 0.875rem !default;
-    $btn-font-size-sm: 0.688rem !default;
-    // Forms
-    $input-border-color: rgba(0, 0, 0, .1) !default;
-    $input-group-addon-bg: $gray-200 !default !default;
-    // Navbar
-    $navbar-dark-color: rgba($white, .6) !default;
-    $navbar-dark-hover-color: $white !default;
-    $navbar-light-hover-color: $body-color !default;
-    $navbar-light-active-color: $body-color !default;
-    // Tooltips
-    $tooltip-font-size: 11px !default;
-    // Badges
-    $badge-font-weight: normal !default;
-    $badge-padding-y: 0.6em !default;
-    $badge-padding-x: 1.2em !default;
-    // Alerts
-    $alert-border-width: 0 !default;
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
-
-.vivid {
-    $white: #fff !default;
-    $gray-100: #fafafa !default;
-    $gray-200: #F9F8FC !default;
-    $gray-300: #EDEDED !default;
-    $gray-400: #cbc8d0 !default;
-    $gray-500: #adb5bd !default;
-    $gray-600: #868e96 !default;
-    $gray-700: #444 !default;
-    $gray-800: #343a40 !default;
-    $gray-900: #17141F !default;
-    $black: #000 !default;
-    $blue: #007bff !default;
-    $indigo: #6610f2 !default;
-    $purple: #593196 !default;
-    $pink: #e83e8c !default;
-    $red: #FC3939 !default;
-    $orange: #fd7e14 !default;
-    $yellow: #EFA31D !default;
-    $green: #13B955 !default;
-    $teal: #20c997 !default;
-    $cyan: #009CDC !default;
-    $primary: $purple !default;
-    $secondary: #A991D4 !default;
-    $success: $green !default;
-    $info: $cyan !default;
-    $warning: $yellow !default;
-    $danger: $red !default;
-    $light: $gray-200 !default;
-    $dark: $gray-900 !default;
-    // Options
-    $enable-rounded: false !default;
-    // Body
-    $body-color: $gray-700 !default;
-    // Links
-    $link-hover-color: $primary !default;
-    // Fonts
-    $font-size-base: 0.875rem !default;
-    // Tables
-    $table-border-color: rgba(0, 0, 0, 0.05) !default;
-    // Forms
-    $input-focus-border-color: $primary !default;
-    // Dropdowns
-    $dropdown-link-color: $gray-700 !default;
-    $dropdown-link-hover-color: $white !default;
-    $dropdown-link-hover-bg: $primary !default;
-    // Navs
-    $nav-tabs-border-color: $gray-300 !default;
-    $nav-tabs-link-hover-border-color: $primary !default;
-    // Navbar
-    $navbar-padding-y: 1.2rem !default;
-    $navbar-dark-hover-color: rgba($white, .9) !default;
-    $navbar-dark-active-color: rgba($white, .9) !default;
-    $navbar-light-color: rgba($black, .4) !default;
-    $navbar-light-active-color: rgba($black, .7) !default;
-    $navbar-light-disabled-color: rgba($black, .2) !default;
-    // Progress bars
-    $progress-bg: $gray-300 !default;
-    $progress-bar-bg: $primary !default;
-    // List group
-    $list-group-bg: $gray-900 !default;
-    $list-group-border-color: transparent !default;
-    $list-group-hover-bg: lighten($list-group-bg, 10%) !default;
-    $list-group-active-color: $white !default;
-    $list-group-active-bg: $list-group-bg !default;
-    $list-group-disabled-color: lighten($list-group-bg, 30%) !default;
-    @import "node_modules/bootstrap/scss/bootstrap";
-}
+// .default {
+//     $white: #fff;
+//     $gray-100: #f8f9fa;
+//     $gray-200: #e9ecef;
+//     $gray-300: #dee2e6;
+//     $gray-400: #ced4da;
+//     $gray-500: #AEA79F;
+//     $gray-600: #868e96;
+//     $gray-700: #495057;
+//     $gray-800: #333;
+//     $gray-900: #212529;
+//     $black: #000;
+//     $blue: #007bff;
+//     $indigo: #6610f2;
+//     $purple: #772953;
+//     $pink: #e83e8c;
+//     $red: #DF382C;
+//     $orange: #E95420;
+//     $yellow: #EFB73E;
+//     $green: #38B44A;
+//     $teal: #20c997;
+//     $cyan: #17a2b8;
+//     $primary: $orange;
+//     $secondary: $gray-500;
+//     $success: $green;
+//     $info: $cyan;
+//     $warning: $yellow;
+//     $danger: $red;
+//     $light: $gray-200;
+//     $dark: $purple;
+//     $yiq-contrasted-threshold: 200;
+//     $body-color: $gray-800;
+//     $font-family-sans-serif: "Ubuntu", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+//     $table-dark-bg: $dark;
+//     $table-dark-border-color: darken($dark, 5%);
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .sketch {
+//     $white: #fff !default;
+//     $gray-100: #f8f9fa !default;
+//     $gray-200: #f7f7f9 !default;
+//     $gray-300: #dee2e6 !default;
+//     $gray-400: #ccc !default;
+//     $gray-500: #aaa !default;
+//     $gray-600: #868e96 !default;
+//     $gray-700: #555 !default;
+//     $gray-800: #333 !default;
+//     $gray-900: #212529 !default;
+//     $black: #000 !default;
+//     $blue: #007bff !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #6f42c1 !default;
+//     $pink: #e83e8c !default;
+//     $red: #dc3545 !default;
+//     $orange: #fd7e14 !default;
+//     $yellow: #ffc107 !default;
+//     $green: #28a745 !default;
+//     $teal: #20c997 !default;
+//     $cyan: #17a2b8 !default;
+//     $primary: $gray-800 !default;
+//     $secondary: $gray-700 !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $yellow !default;
+//     $danger: $red !default;
+//     $light: $white !default;
+//     $dark: $black !default;
+//     $yiq-contrasted-threshold: 200 !default;
+//     // Links
+//     $link-decoration: underline !default;
+//     // Components
+//     $border-width: 2px !default;
+//     $border-radius: 25px !default;
+//     $border-radius-lg: 35px !default;
+//     $border-radius-sm: 15px !default;
+//     // Fonts
+//     $font-family-sans-serif: 'Neucha', -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+//     $font-weight-base: 700 !default;
+//     $headings-font-family: 'Cabin Sketch', cursive !default;
+//     $blockquote-small-color: $gray-800 !default;
+//     // Tables
+//     $table-accent-bg: $gray-400 !default;
+//     $table-hover-bg: $white !default;
+//     $table-border-width: 1px !default;
+//     $table-border-color: $gray-800 !default;
+//     // Forms
+//     $input-border-color: $gray-800 !default;
+//     $input-focus-border-color: $input-border-color !default;
+//     // Dropdowns
+//     $dropdown-border-color: $gray-800 !default;
+//     $dropdown-divider-bg: $gray-800 !default;
+//     $dropdown-link-hover-color: $white !default;
+//     $dropdown-link-hover-bg: $gray-800 !default;
+//     // Navs
+//     $nav-tabs-border-color: $gray-800 !default;
+//     $nav-tabs-link-hover-border-color: $gray-800 !default;
+//     $nav-tabs-link-active-color: $gray-800 !default;
+//     $nav-tabs-link-active-border-color: $gray-800 !default;
+//     // Navbar
+//     $navbar-dark-color: $white !default;
+//     $navbar-dark-hover-color: $white !default;
+//     $navbar-dark-toggler-border-color: $white !default;
+//     $navbar-light-color: $gray-800 !default;
+//     $navbar-light-hover-color: $gray-800 !default;
+//     $navbar-light-active-color: $gray-800 !default;
+//     $navbar-light-toggler-border-color: $gray-800 !default;
+//     // Pagination
+//     $pagination-border-color: $gray-800 !default;
+//     $pagination-hover-color: $white !default;
+//     $pagination-hover-bg: $gray-800 !default;
+//     $pagination-hover-border-color: $gray-800 !default;
+//     $pagination-disabled-color: $gray-400 !default;
+//     $pagination-disabled-border-color: $gray-800 !default;
+//     // Jumbotron
+//     $jumbotron-bg: transparent !default;
+//     // Cards
+//     $card-border-width: 2px !default;
+//     $card-border-color: $gray-800 !default;
+//     // Popovers
+//     $popover-border-color: $gray-800 !default;
+//     // Badges
+//     $badge-padding-y: 0.5em !default;
+//     $badge-padding-x: 1.2em !default;
+//     // Modals
+//     $modal-content-border-color: $gray-800 !default;
+//     $modal-header-border-color: $gray-800 !default;
+//     // Progress bars
+//     $progress-bg: $white !default;
+//     $progress-bar-bg: $gray-400 !default;
+//     // List group
+//     $list-group-border-color: $gray-800 !default;
+//     $list-group-hover-bg: $gray-300 !default;
+//     $list-group-active-color: $white !default;
+//     $list-group-active-bg: $gray-800 !default;
+//     $list-group-action-color: $gray-800 !default;
+//     // Breadcrumbs
+//     $breadcrumb-bg: $white !default;
+//     $breadcrumb-divider-color: $gray-800 !default;
+//     $breadcrumb-active-color: $gray-800 !default;
+//     // Close
+//     $close-color: $white !default;
+//     $close-text-shadow: none !default;
+//     .bg-secondary>h3 {
+//         color: white;
+//     }
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .night {
+//     $white: #fff !default;
+//     $gray-100: #f8f9fa !default;
+//     $gray-200: #e9ecef !default;
+//     $gray-300: #dee2e6 !default;
+//     $gray-400: #ced4da !default;
+//     $gray-500: #999 !default;
+//     $gray-600: #7A8288 !default;
+//     $gray-700: #52575C !default;
+//     $gray-800: #3A3F44 !default;
+//     $gray-900: #272B30 !default;
+//     $black: #000 !default;
+//     $blue: #007bff !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #6f42c1 !default;
+//     $pink: #e83e8c !default;
+//     $red: #ee5f5b !default;
+//     $orange: #fd7e14 !default;
+//     $yellow: #f89406 !default;
+//     $green: #62c462 !default;
+//     $teal: #20c997 !default;
+//     $cyan: #5bc0de !default;
+//     $primary: $gray-800 !default;
+//     $secondary: $gray-600 !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $yellow !default;
+//     $danger: $red !default;
+//     $light: $gray-200 !default;
+//     $dark: $gray-900 !default;
+//     $yiq-contrasted-threshold: 170 !default;
+//     // Body
+//     $body-bg: $gray-900 !default;
+//     $body-color: #aaa !default;
+//     // Links
+//     $link-color: $white !default;
+//     // Fonts
+//     $font-size-base: 0.9375rem !default;
+//     // Tables
+//     $table-color: $black !default;
+//     $table-accent-bg: rgba($white, .05) !default;
+//     $table-hover-bg: rgba($white, .075) !default;
+//     $table-border-color: rgba($black, .6) !default;
+//     $table-dark-border-color: $table-border-color !default;
+//     $table-dark-color: $white !default;
+//     // Buttons
+//     $input-btn-padding-y: .75rem !default;
+//     $input-btn-padding-x: 1rem !default;
+//     // Forms
+//     $input-disabled-bg: #ccc !default;
+//     // Dropdowns
+//     $dropdown-bg: $gray-800 !default;
+//     $dropdown-border-color: rgba($black, .6) !default;
+//     $dropdown-divider-bg: rgba($black, .15) !default;
+//     $dropdown-link-color: $body-color !default;
+//     $dropdown-link-hover-color: $white !default;
+//     $dropdown-link-hover-bg: $body-bg !default;
+//     // Navs
+//     $nav-tabs-border-color: rgba($black, 0.6) !default;
+//     $nav-tabs-link-hover-border-color: $nav-tabs-border-color !default;
+//     $nav-tabs-link-active-color: $white !default;
+//     $nav-tabs-link-active-border-color: $nav-tabs-border-color !default;
+//     // Navbar
+//     $navbar-padding-y: 0 !default;
+//     $navbar-dark-hover-color: $white !default;
+//     $navbar-light-hover-color: $gray-800 !default;
+//     $navbar-light-active-color: $gray-800 !default;
+//     // Pagination
+//     $pagination-color: $white !default;
+//     $pagination-bg: transparent !default;
+//     $pagination-border-color: rgba($black, 0.6) !default;
+//     $pagination-hover-color: $white !default;
+//     $pagination-hover-bg: transparent !default;
+//     $pagination-hover-border-color: rgba($black, 0.6) !default;
+//     $pagination-active-bg: transparent !default;
+//     $pagination-active-border-color: rgba($black, 0.6) !default;
+//     $pagination-disabled-bg: transparent !default;
+//     $pagination-disabled-border-color: rgba($black, 0.6) !default;
+//     // Jumbotron
+//     $jumbotron-bg: darken($gray-900, 5%) !default;
+//     // Cards
+//     $card-border-color: rgba($black, 0.6) !default;
+//     $card-cap-bg: lighten($gray-800, 10%) !default;
+//     $card-bg: lighten($body-bg, 5%) !default;
+//     // Popovers
+//     $popover-bg: lighten($body-bg, 5%) !default;
+//     // Modals
+//     $modal-content-bg: lighten($body-bg, 5%) !default;
+//     $modal-header-border-color: rgba(0, 0, 0, .2) !default;
+//     // Progress bars
+//     $progress-bg: darken($gray-900, 5%) !default;
+//     $progress-bar-color: $gray-600 !default;
+//     // List group
+//     $list-group-bg: lighten($body-bg, 5%) !default;
+//     $list-group-border-color: rgba($black, 0.6) !default;
+//     $list-group-hover-bg: lighten($body-bg, 10%) !default;
+//     $list-group-active-color: $white !default;
+//     $list-group-active-bg: $list-group-hover-bg !default;
+//     $list-group-active-border-color: $list-group-border-color !default;
+//     $list-group-disabled-color: $gray-700 !default;
+//     $list-group-action-color: $white !default;
+//     // Breadcrumbs
+//     $breadcrumb-active-color: $gray-500 !default;
+//     // Code
+//     $pre-color: inherit !default;
+//     .card-body,
+//     .card-header {
+//         color: white;
+//     }
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .stone {
+//     $white: #fff !default;
+//     $gray-100: #f8f9fa !default;
+//     $gray-200: #F8F5F0 !default;
+//     $gray-300: #DFD7CA !default;
+//     $gray-400: #ced4da !default;
+//     $gray-500: #98978B !default;
+//     $gray-600: #8E8C84 !default;
+//     $gray-700: #495057 !default;
+//     $gray-800: #3E3F3A !default;
+//     $gray-900: #212529 !default;
+//     $black: #000 !default;
+//     $blue: #325D88 !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #6f42c1 !default;
+//     $pink: #e83e8c !default;
+//     $red: #d9534f !default;
+//     $orange: #F47C3C !default;
+//     $yellow: #ffc107 !default;
+//     $green: #93C54B !default;
+//     $teal: #20c997 !default;
+//     $cyan: #29ABE0 !default;
+//     $primary: $blue !default;
+//     $secondary: $gray-600 !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $orange !default;
+//     $danger: $red !default;
+//     $light: $gray-200 !default;
+//     $dark: $gray-800 !default;
+//     $yiq-contrasted-threshold: 170 !default;
+//     // Body
+//     $body-color: $gray-800 !default;
+//     // Links
+//     $link-color: $success !default;
+//     // Fonts
+//     $font-family-sans-serif: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+//     $font-size-base: 0.875rem !default;
+//     $headings-font-weight: 400 !default;
+//     // Dropdowns
+//     $dropdown-link-color: $gray-600 !default;
+//     $dropdown-link-hover-color: $dropdown-link-color !default;
+//     $dropdown-link-hover-bg: $gray-200 !default;
+//     $dropdown-link-active-color: $dropdown-link-color !default;
+//     $dropdown-link-active-bg: $dropdown-link-hover-bg !default;
+//     // Navs
+//     $nav-link-padding-x: 0.9rem !default;
+//     $nav-link-disabled-color: $gray-300 !default;
+//     $nav-tabs-border-color: $gray-300 !default;
+//     $nav-tabs-link-hover-border-color: $gray-300 !default;
+//     $nav-tabs-link-active-bg: $white !default;
+//     $nav-pills-link-active-color: $gray-600 !default;
+//     $nav-pills-link-active-bg: $gray-200 !default;
+//     // Navbar
+//     $navbar-dark-hover-color: $white !default;
+//     $navbar-light-hover-color: $black !default;
+//     $navbar-light-active-color: $black !default;
+//     // Pagination
+//     $pagination-color: $gray-600 !default;
+//     $pagination-bg: $gray-200 !default;
+//     $pagination-border-color: $gray-300 !default;
+//     $pagination-hover-color: $pagination-color !default;
+//     $pagination-active-color: $pagination-color !default;
+//     $pagination-active-bg: $gray-300 !default;
+//     $pagination-active-border-color: $gray-300 !default;
+//     $pagination-disabled-color: $gray-300 !default;
+//     $pagination-disabled-bg: $gray-200 !default;
+//     $pagination-disabled-border-color: $pagination-border-color !default;
+//     // Cards
+//     $card-border-color: rgba($gray-300, .75) !default;
+//     $card-cap-bg: rgba($gray-200, .25) !default;
+//     // Popovers
+//     $popover-header-bg: $gray-200 !default;
+//     // Modals
+//     $modal-content-border-color: $gray-300 !default;
+//     $modal-header-border-color: $modal-content-border-color !default;
+//     // Progress bars
+//     $progress-bg: $gray-300 !default;
+//     $progress-border-radius: 10px !default;
+//     $progress-bar-color: $primary !default;
+//     // List group
+//     $list-group-border-color: $gray-300 !default;
+//     $list-group-hover-bg: $gray-200 !default;
+//     $list-group-active-color: $body-color !default;
+//     $list-group-active-bg: $gray-200 !default;
+//     $list-group-active-border-color: $gray-300 !default;
+//     $list-group-disabled-color: $gray-500 !default;
+//     $list-group-disabled-bg: $white !default;
+//     $list-group-action-color: $list-group-active-color !default;
+//     $list-group-action-active-color: $list-group-active-color !default;
+//     $list-group-action-active-bg: $gray-300 !default;
+//     // Close
+//     $close-text-shadow: none !default;
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .summer {
+//     $white: #fff !default;
+//     $gray-100: #f8f9fa !default;
+//     $gray-200: #f7f7f9 !default;
+//     $gray-300: #eceeef !default;
+//     $gray-400: #ced4da !default;
+//     $gray-500: #aaa !default;
+//     $gray-600: #888 !default;
+//     $gray-700: #5a5a5a !default;
+//     $gray-800: #343a40 !default;
+//     $gray-900: #212529 !default;
+//     $black: #000 !default;
+//     $blue: #007bff !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #6f42c1 !default;
+//     $pink: #e83e8c !default;
+//     $red: #FF7851 !default;
+//     $orange: #fd7e14 !default;
+//     $yellow: #FFCE67 !default;
+//     $green: #56CC9D !default;
+//     $teal: #20c997 !default;
+//     $cyan: #6CC3D5 !default;
+//     $primary: #78C2AD !default;
+//     $secondary: #F3969A !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $yellow !default;
+//     $danger: $red !default;
+//     $light: $gray-100 !default;
+//     $dark: $gray-800 !default;
+//     $yiq-contrasted-threshold: 250 !default;
+//     // Body
+//     $body-color: $gray-600 !default;
+//     // Components
+//     $border-radius: .4rem !default;
+//     $border-radius-lg: .6rem !default;
+//     $border-radius-sm: .3rem !default;
+//     // Fonts
+//     $headings-font-family: "Montserrat", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+//     $headings-color: $gray-700 !default;
+//     // Tables
+//     $table-border-color: rgba(0, 0, 0, 0.05) !default;
+//     // Dropdowns
+//     $dropdown-link-hover-color: $white !default;
+//     $dropdown-link-hover-bg: $secondary !default;
+//     // Navbar
+//     $navbar-dark-color: rgba($white, .6) !default;
+//     $navbar-dark-hover-color: $white !default;
+//     $navbar-light-color: rgba($black, .3) !default;
+//     $navbar-light-hover-color: $gray-700 !default;
+//     $navbar-light-active-color: $gray-700 !default;
+//     $navbar-light-disabled-color: rgba($black, .1) !default;
+//     // Pagination
+//     $pagination-color: $white !default;
+//     $pagination-bg: $primary !default;
+//     $pagination-border-color: $primary !default;
+//     $pagination-hover-color: $white !default;
+//     $pagination-hover-bg: $secondary !default;
+//     $pagination-hover-border-color: $pagination-hover-bg !default;
+//     $pagination-active-bg: $secondary !default;
+//     $pagination-active-border-color: $pagination-active-bg !default;
+//     $pagination-disabled-color: $white !default;
+//     $pagination-disabled-bg: #CCE8E0 !default;
+//     $pagination-disabled-border-color: $pagination-disabled-bg !default;
+//     // Breadcrumbs
+//     $breadcrumb-bg: $primary !default;
+//     $breadcrumb-divider-color: $white !default;
+//     $breadcrumb-active-color: $breadcrumb-divider-color !default;
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .minimal {
+//     $white: #fff !default;
+//     $gray-100: #f8f9fa !default;
+//     $gray-200: #eee !default;
+//     $gray-300: #dee2e6 !default;
+//     $gray-400: #ced4da !default;
+//     $gray-500: #bbb !default;
+//     $gray-600: #666 !default;
+//     $gray-700: #444 !default;
+//     $gray-800: #222 !default;
+//     $gray-900: #212121 !default;
+//     $black: #000 !default;
+//     $blue: #2196F3 !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #6f42c1 !default;
+//     $pink: #e83e8c !default;
+//     $red: #e51c23 !default;
+//     $orange: #fd7e14 !default;
+//     $yellow: #ff9800 !default;
+//     $green: #4CAF50 !default;
+//     $teal: #20c997 !default;
+//     $cyan: #9C27B0 !default;
+//     $primary: $blue !default;
+//     $secondary: $white !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $yellow !default;
+//     $danger: $red !default;
+//     $light: $white !default;
+//     $dark: $gray-800 !default;
+//     $yiq-contrasted-threshold: 170 !default;
+//     $enable-gradients: true;
+//     // Body
+//     $body-color: $gray-700 !default;
+//     // Fonts
+//     $font-family-sans-serif: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !default;
+//     $font-size-base: 0.8125rem !default;
+//     $font-weight-base: 400 !default;
+//     // Buttons
+//     $input-btn-padding-y: 0.8rem !default;
+//     $input-btn-padding-x: 1rem !default;
+//     // Forms
+//     $input-padding-y: 1rem !default;
+//     $input-padding-x: 0 !default;
+//     $input-padding-y-sm: 0 !default;
+//     $input-padding-x-sm: 0 !default;
+//     $input-padding-y-lg: ($font-size-base * 1.25) !default;
+//     $input-padding-x-lg: 0 !default;
+//     $input-bg: transparent !default;
+//     $input-disabled-bg: transparent !default;
+//     $input-color: $gray-600 !default;
+//     $input-border-color: $gray-700 !default;
+//     $input-border-width: 1px !default;
+//     $input-border-radius: 0 !default;
+//     $input-border-radius-lg: 0 !default;
+//     $input-border-radius-sm: 0 !default;
+//     $input-placeholder-color: rgba(0, 0, 0, 0.4) !default;
+//     $input-group-addon-bg: transparent !default;
+//     $custom-control-gutter: 1.75rem !default;
+//     $custom-control-indicator-focus-box-shadow: 0 !default;
+//     $custom-control-indicator-size: 1.25rem !default;
+//     $custom-control-indicator-bg: $white;
+//     $custom-checkbox-indicator-border-radius: 2px !default;
+//     $custom-control-indicator-disabled-bg: $gray-100 !default;
+//     $custom-radio-indicator-icon-checked: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='4' fill='%232196F3'/%3E%3C/svg%3E") !default;
+//     $custom-select-border-radius: 0 !default;
+//     $custom-select-box-shadow: none !default;
+//     // Navs
+//     $nav-link-disabled-color: $gray-500 !default;
+//     $nav-tabs-border-color: transparent !default;
+//     // Navbar
+//     $navbar-padding-y: 1rem !default;
+//     $navbar-dark-color: rgba($white, .75) !default;
+//     $navbar-dark-hover-color: $white !default;
+//     // Cards
+//     $card-border-width: 0;
+//     $card-border-color: transparent;
+//     // Tooltips
+//     $tooltip-bg: $gray-700 !default;
+//     // Modals
+//     $modal-content-border-color: transparent !default;
+//     // Progress bars
+//     $progress-height: 0.375rem !default;
+//     $progress-border-radius: 0 !default;
+//     // Close
+//     $close-font-size: 2.125rem !default;
+//     $close-font-weight: 300 !default;
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .clean {
+//     $white: #fff !default;
+//     $gray-100: #f8f9fa !default;
+//     $gray-200: #e9ecef !default;
+//     $gray-300: #ddd !default;
+//     $gray-400: #ced4da !default;
+//     $gray-500: #adb5bd !default;
+//     $gray-600: #868e96 !default;
+//     $gray-700: #495057 !default;
+//     $gray-800: #343a40 !default;
+//     $gray-900: #212529 !default;
+//     $black: #000 !default;
+//     $blue: #4582EC !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #6f42c1 !default;
+//     $pink: #e83e8c !default;
+//     $red: #d9534f !default;
+//     $orange: #fd7e14 !default;
+//     $yellow: #f0ad4e !default;
+//     $green: #02B875 !default;
+//     $teal: #20c997 !default;
+//     $cyan: #17a2b8 !default;
+//     $primary: $blue !default;
+//     $secondary: $gray-500 !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $yellow !default;
+//     $danger: $red !default;
+//     $light: $gray-100 !default;
+//     $dark: $gray-800 !default;
+//     $yiq-contrasted-threshold: 190 !default;
+//     // Body
+//     $body-color: $gray-800 !default;
+//     // Fonts
+//     $font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+//     $font-size-base: 1.063rem !default;
+//     $headings-font-weight: 700 !default;
+//     // Tables
+//     $table-border-color: rgba(0, 0, 0, 0.1) !default;
+//     // Buttons
+//     $input-btn-padding-y: 0.5rem !default;
+//     $input-btn-padding-x: 1.1rem !default;
+//     $btn-font-family: $font-family-sans-serif !default;
+//     $btn-font-size: 0.875rem !default;
+//     $btn-font-size-sm: 0.688rem !default;
+//     // Forms
+//     $input-border-color: rgba(0, 0, 0, .1) !default;
+//     $input-group-addon-bg: $gray-200 !default !default;
+//     // Navbar
+//     $navbar-dark-color: rgba($white, .6) !default;
+//     $navbar-dark-hover-color: $white !default;
+//     $navbar-light-hover-color: $body-color !default;
+//     $navbar-light-active-color: $body-color !default;
+//     // Tooltips
+//     $tooltip-font-size: 11px !default;
+//     // Badges
+//     $badge-font-weight: normal !default;
+//     $badge-padding-y: 0.6em !default;
+//     $badge-padding-x: 1.2em !default;
+//     // Alerts
+//     $alert-border-width: 0 !default;
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
+// .vivid {
+//     $white: #fff !default;
+//     $gray-100: #fafafa !default;
+//     $gray-200: #F9F8FC !default;
+//     $gray-300: #EDEDED !default;
+//     $gray-400: #cbc8d0 !default;
+//     $gray-500: #adb5bd !default;
+//     $gray-600: #868e96 !default;
+//     $gray-700: #444 !default;
+//     $gray-800: #343a40 !default;
+//     $gray-900: #17141F !default;
+//     $black: #000 !default;
+//     $blue: #007bff !default;
+//     $indigo: #6610f2 !default;
+//     $purple: #593196 !default;
+//     $pink: #e83e8c !default;
+//     $red: #FC3939 !default;
+//     $orange: #fd7e14 !default;
+//     $yellow: #EFA31D !default;
+//     $green: #13B955 !default;
+//     $teal: #20c997 !default;
+//     $cyan: #009CDC !default;
+//     $primary: $purple !default;
+//     $secondary: #A991D4 !default;
+//     $success: $green !default;
+//     $info: $cyan !default;
+//     $warning: $yellow !default;
+//     $danger: $red !default;
+//     $light: $gray-200 !default;
+//     $dark: $gray-900 !default;
+//     // Options
+//     $enable-rounded: false !default;
+//     // Body
+//     $body-color: $gray-700 !default;
+//     // Links
+//     $link-hover-color: $primary !default;
+//     // Fonts
+//     $font-size-base: 0.875rem !default;
+//     // Tables
+//     $table-border-color: rgba(0, 0, 0, 0.05) !default;
+//     // Forms
+//     $input-focus-border-color: $primary !default;
+//     // Dropdowns
+//     $dropdown-link-color: $gray-700 !default;
+//     $dropdown-link-hover-color: $white !default;
+//     $dropdown-link-hover-bg: $primary !default;
+//     // Navs
+//     $nav-tabs-border-color: $gray-300 !default;
+//     $nav-tabs-link-hover-border-color: $primary !default;
+//     // Navbar
+//     $navbar-padding-y: 1.2rem !default;
+//     $navbar-dark-hover-color: rgba($white, .9) !default;
+//     $navbar-dark-active-color: rgba($white, .9) !default;
+//     $navbar-light-color: rgba($black, .4) !default;
+//     $navbar-light-active-color: rgba($black, .7) !default;
+//     $navbar-light-disabled-color: rgba($black, .2) !default;
+//     // Progress bars
+//     $progress-bg: $gray-300 !default;
+//     $progress-bar-bg: $primary !default;
+//     // List group
+//     $list-group-bg: $gray-900 !default;
+//     $list-group-border-color: transparent !default;
+//     $list-group-hover-bg: lighten($list-group-bg, 10%) !default;
+//     $list-group-active-color: $white !default;
+//     $list-group-active-bg: $list-group-bg !default;
+//     $list-group-disabled-color: lighten($list-group-bg, 30%) !default;
+//     @import "node_modules/bootstrap/scss/bootstrap";
+// }
