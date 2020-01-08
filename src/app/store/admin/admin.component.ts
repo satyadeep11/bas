@@ -58,6 +58,7 @@ home;
   pcheck=false;
   showpaddress=false;
   emplist= Array();
+  singleuser;
   
 
   constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
@@ -498,10 +499,13 @@ dateChange(control){
     this.router.navigate([url]);  
   }
 
-  suspendFunction(a,b){
+  suspendFunction(a){  }
+  deleteCustomer(a){
+
   }
-  deleteCustomer(a){}
-  editCustomerInfo(a,b,c,d,e,f){}
+  editCustomerInfo(a){
+    this.singleuser=a;
+  }
 
   seeSelections(content){
     this.seeselection=[];
@@ -1030,26 +1034,26 @@ export const ROUTES: RouteInfo[] = [
     bgclass:"",
   },
   {
-    path: "employees",
-    title: "Registered Employees",
-    icon: "fa fa-user",
-    bgclass:"warning",
-  },
-  {
     path: "orders",
-    title: "Orders Placed",
+    title: "Orders",
     icon: "fa fa-shopping-cart",
     bgclass:"primary",
   },
   {
-    path: "payments",
-    title: "Payment Settings",
-    icon: "fa fa-money",
-    bgclass:"success",    
-  },
+    path: "employees",
+    title: "Registered Recipients",
+    icon: "fa fa-user",
+    bgclass:"warning",
+  },  
+  // {
+  //   path: "payments",
+  //   title: "Payment Settings",
+  //   icon: "fa fa-money",
+  //   bgclass:"success",    
+  // },
   {
     path: "storesettings",
-    title: "Store Settings",
+    title: "Settings",
     icon: "fa fa-cog",
     bgclass:"danger",
   }

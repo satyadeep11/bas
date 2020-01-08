@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from "../../app/api.service";
-import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup,FormArray, Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute,Router } from '@angular/router';
 import { DataService } from "../data.service";
 import {ExcelService} from './excel.service';
@@ -36,7 +36,9 @@ export class SuperadminComponent implements OnInit {
   pending=false;
   all_denied=false;
   currentstoreid;
+  currentstorename;
 
+  allcats;
   diffDays=0;
   myData: any;
   colorArray: ColorGroup[] = [];
@@ -47,8 +49,18 @@ export class SuperadminComponent implements OnInit {
   productdata;
   products;
   pb;
+  pcheck=false;
+  addressesarray;
+  addsetting;
+  paddress;
+  ss;
+  Address = Array();
+  addresserrors = false;
+  addAnother = false;
+  showpaddress=false;
 
-  constructor(private modalService: NgbModal,private excelService:ExcelService,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
+
+  constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private excelService:ExcelService,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
   this.data.currentAdmin.subscribe(message => this.lgn=message);
     if(sessionStorage.getItem("adminlgn")=="true"){ 
       // if(this.lgn){ 
@@ -99,14 +111,20 @@ export class SuperadminComponent implements OnInit {
   getstoreorders(storeid,storename){
     this.apiService.getstoreorders(storeid).subscribe(
       user => {
-        this.orders = user["orders"];
-        console.log(this.orders);
-        this.exportexcel(this.orders);
-        this.customer_confirmed=this.orders[0].customer_confirmed==1?true:false;   
-        this.pending=this.orders.some(function(o){return o['Pending'] == '1'});     
-        this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
-        this.section="orders_store";
-        this.title=storename+" Orders";
+        if(!user["error"]){
+          this.orders = user["orders"];
+          console.log(this.orders);
+          this.exportexcel(this.orders);
+          this.customer_confirmed=this.orders[0].customer_confirmed==1?true:false;   
+          this.pending=this.orders.some(function(o){return o['Pending'] == '1'});     
+          this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
+          this.section="orders_store";
+          this.title=storename+" Orders";
+        }
+        else{
+          alert("No Orders Placed Yet");
+        }
+        
       },
       error => console.log(error)
     ); 
@@ -197,15 +215,22 @@ updateimage(storeid,productid,attrid,i){
     this.apiService.updateproductimage(formData).subscribe(
       (res) => {       
           console.log(res);     
-          this.productdetail[i].custom_image=1;
-          this.productdetail[i].custom_image_url=this.customimages[i];     
+          if(!res["error"]){
+            this.productdetail[i].custom_image=1;
+            this.productdetail[i].custom_image_url=this.customimages[i];   
+            alert ("Image updated successfully.")
+            this.storeproductdetails(storeid,this.currentstorename)
+          }            
+          else{
+            alert ("Error uploading image try again.")
+          }
       },
       (err) => {  
         console.log(err);
       });  
   }
   else{
-    alert ("select image first")
+    alert ("Error uploading image try again.")
   }
 }
 
@@ -213,18 +238,167 @@ updateimage(storeid,productid,attrid,i){
 
 
   getstoresettings(storeid,storename){
+    this.apiService.all_cats().subscribe(
+      user => {
+        console.log(user["cats"]);
+        this.allcats=(user["cats"]);
+      },
+      error => console.log(error)
+    );
     this.currentstoreid=storeid;
+    this.currentstorename=storename;
     this.apiService.getStoreSettings(storeid).subscribe(
       user => {
       console.log(user,"datas")
        this.storesettings=user;       
-       this.storesettings= this.storesettings.filter(val => !(["theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));       
+       this.storesettings= this.storesettings.filter(val => !(["nobanner","buttoncolor","primarycolor","transparentbg","textcolor","theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));       
        this.loadupFormGroup();
        this.section="store_storesettings";
        this.title=storename+" Store Settings";
       },
       error => console.log(error)
     );
+  }
+
+  addressmgmt(){
+    
+    this.addressesarray= new FormArray([]);
+    this.apiService.shipsettings(this.currentstoreid).subscribe(
+      user => {        
+        console.log(user); 
+        this.ss=user;        
+        this.addsetting=user.shipping.empshipsetting;
+        this.paddress=user.shipping.personal;
+        if (user.shipping.addressess.length > 0) {          
+          user.shipping.addressess.forEach(
+            (element, i) => {
+              this.addressesarray.push(
+                this.formBuilder.group({
+                  addressname: [element.addressname, Validators.required],
+                  streetaddress: [element.streetaddress, [Validators.required]],
+                  streetaddress2: [element.streetaddress2],
+                  city: [element.city, [Validators.required]],
+                  state: [element.state, [Validators.required]],
+                  zip: [element.zip,[ Validators.required,  Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$")]]
+                })
+              );
+              this.Address[i] = false;
+            }
+          );
+          this.addAnother = true;
+        }
+        this.addsetting=='To a corporate address'?this.showpaddress=true:this.showpaddress=false;
+      },
+      error => console.log(error)
+    ); 
+
+    console.log(this.addressesarray)
+   
+
+  }
+
+  addSingleAd(i) {
+    // console.log(this.dynamicForm.controls);
+    this.addresserrors = true;
+    if (this.addressesarray.invalid) {
+      return;
+    }    
+    this.Address[i] = false;  
+    this.addAnother = true;    
+    this.addresserrors = false;
+  }
+  //remove single address
+  CancelSingleAd(i) {
+    this.addressesarray.removeAt(i);
+    this.addAnother = true;
+  }
+  //edit address
+  EditSingleAd(i) {
+    this.Address[i] = true;
+    for (var x = 0; x <= this.addressesarray.length; x++) {
+      if (this.Address[x] && x != i) {
+        this.CancelSingleAd(x);
+      }
+    }
+  }
+
+  personalcheck(){
+    if(this.addsetting=="To a corporate address"){
+      if(this.paddress.length>0){
+        this.pcheck=true;           
+      }else{
+        this.pcheck=false;
+        this.showpaddress=false; 
+      }
+    }
+    else{
+      this.pcheck=false;
+      this.showpaddress=false;
+    }
+  }
+
+  saveaddress(){
+    if(this.pcheck){
+      alert("Please confirm Shipping Setting");
+      return;
+    }
+    var storedata=({shipping:this.addsetting})
+    var finaldata=({ storedata: storedata,addressdata:this.addressesarray.value,storeid:this.currentstoreid});
+    this.apiService.update_address_setting(finaldata).subscribe(
+      user => {        
+        console.log(user,"fromdb"); 
+        if(!user.error) {
+          alert("Address Settings Updated");
+          this.addressmgmt();
+        }   
+        else{          
+          console.log("error")
+        }    
+      },
+      error => console.log(error)
+    );
+  }
+
+  update2caddress(suid){
+    const ele = document.getElementById(suid) as HTMLInputElement;
+    
+    console.log(this.currentstoreid,suid,ele.value);
+    var adaarray=[ele.value];
+    var finaldata=({storeid:this.currentstoreid ,addressids:adaarray,storeuserid: suid});
+    this.apiService.update_caddress(finaldata).subscribe(
+      user => {        
+        console.log(user);
+        if(!user.error){
+          this.saveaddress();
+        }
+      },
+      error => console.log(error)
+    );
+  
+  }
+  addAnotherAd() {
+    this.addresserrors = true;
+    {
+      this.Address[this.addressesarray.length] = true;
+      this.addressesarray.push(
+        this.formBuilder.group({
+          addressname: ["", Validators.required],
+          streetaddress: ["", [Validators.required]],
+          streetaddress2: [""],
+          city: ["", [Validators.required]],
+          state: ["", [Validators.required]],
+          zip: [
+            "",
+            [
+              Validators.required,
+              Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$")
+            ]
+          ]
+        })
+      );
+      this.addresserrors = false;
+      this.addAnother = false;
+    }
   }
 
   loadupFormGroup(){

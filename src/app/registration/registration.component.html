@@ -243,10 +243,10 @@
                                         </div>
                                         <br>
                                         <div class="text-center">
-                                            <button matStepperPrevious class="basbtnsdy" style="border-radius: 2rem;">Back</button>
+                                            <button matStepperPrevious class="basbtnsdysmall" style="border-radius: 2rem;">Back</button>
                                             <button (click)="seeSelections(content)" class="border-light basbtn mx-5">NEXT: Review My Selections</button>
-                                            <button *ngIf="!alldataloaded" class="basbtnsdy" style="border-radius: 2rem;" (click)="changeData()">Show More</button>
-                                            <button *ngIf="selection.length>0" class="basbtnsdy d-lg-none" style="border-radius: 2rem;" (click)="seeSelections(content)">({{seeselection.length}}) Selections</button>
+                                            <button *ngIf="!alldataloaded" class="basbtnsdysmall" style="border-radius: 2rem;" (click)="changeData()">Show More</button>
+                                            <button *ngIf="selection.length>0" class="basbtnsdysmall d-lg-none" style="border-radius: 2rem;" (click)="seeSelections(content)">({{seeselection.length}}) Selections</button>
                                         </div>
                                     </mat-step>
                                     <mat-step>
@@ -367,7 +367,7 @@
                                             </div>
                                         </div>
                                         <div class="justify-content-center text-center">
-                                            <button matStepperPrevious class="basbtnsdy mx-5">Back</button>
+                                            <button matStepperPrevious class="basbtnsdysmall mx-5">Back</button>
                                             <button (click)="checkSection(2)" class="basbtn">NEXT: Create My Account </button>
                                         </div>
                                     </mat-step>
@@ -595,7 +595,7 @@
                                         </div>
 
                                         <div class="justify-content-center text-center">
-                                            <button matStepperPrevious class="basbtnsdy mx-5">Back</button>
+                                            <button matStepperPrevious class="basbtnsdysmall mx-5">Back</button>
                                             <button type="button" (click)="checkSection(3)" class="border-light basbtn">NEXT: Save My Details</button>
                                             <!-- <button mat-raised-button (click)="onSubmit(formdone)">Submit</button> -->
                                         </div>
@@ -643,7 +643,7 @@
                                                         <div class="col align-self-center">
                                                             <p><b>{{selection.ProductName}}</b>({{selection.A2_Label}})</p>
                                                             <p>{{selection.minimum|currency:'USD'}} - {{selection.maximum|currency:'USD'}}</p>
-                                                            <button *ngIf="removeCheck(selection.Attr2)" (click)="removefromcart(selection.ProductName,selection.ProductID,selection.Attr2)" class="basbtnsdy">Remove from Store</button>
+                                                            <button *ngIf="removeCheck(selection.Attr2)" (click)="removefromcart(selection.ProductName,selection.ProductID,selection.Attr2)" class="basbtnsdysmall">Remove from Store</button>
                                                         </div>
                                                     </div>
 
@@ -742,7 +742,7 @@
                                                                     <h5 class="card-title">{{item.A2_Label[i]}}</h5>
                                                                     <div>
                                                                         <button *ngIf="!removeCheck(item.Attr2[i])" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2[i],item.A2_Label[i],item.ImageFile[i])" class="basbtn">Add to Store</button>
-                                                                        <button *ngIf="removeCheck(item.Attr2[i])" class="basbtnsdy " (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2[i])">Remove from Store</button>
+                                                                        <button *ngIf="removeCheck(item.Attr2[i])" class="basbtnsdysmall " (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2[i])">Remove from Store</button>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -766,7 +766,7 @@
                                                                     </p>
                                                                     <div>
                                                                         <button *ngIf="!removeCheck(item.Attr2)" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2,item.A2_Label,item.ImageFile)" class="basbtn">Add to Store</button>
-                                                                        <button *ngIf="removeCheck(item.Attr2)" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2)" class="basbtnsdy">Remove from Store</button>
+                                                                        <button *ngIf="removeCheck(item.Attr2)" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2)" class="basbtnsdysmall">Remove from Store</button>
                                                                     </div>
                                                                 </div>
                                                             </div>

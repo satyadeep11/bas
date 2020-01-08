@@ -25,7 +25,7 @@ export class PaymentComponent implements OnInit {
 
   braintreewidget(){
     var button = document.querySelector('#submit-button');
-    button.setAttribute("hidden","true");
+    // button.setAttribute("hidden","true");
     this.apiService.get_customer_id(this.storeid).subscribe(
       user => {
         console.log(user);  
@@ -36,6 +36,7 @@ export class PaymentComponent implements OnInit {
               dropin.create({      
                 authorization: this.token,
                 container: '#dropin-container',
+                // vaultManager: true,
                 card: {
                   cardholderName: {
                     required: false
@@ -61,7 +62,7 @@ export class PaymentComponent implements OnInit {
                     this.apiService.vault(finaldata).subscribe(
                       user => {
                         console.log(user);  
-                        button.setAttribute("hidden","true");
+                        // button.setAttribute("hidden","true");
                         this.braintreewidget();                        
                         },
                         error => console.log(error)
@@ -105,7 +106,7 @@ export class PaymentComponent implements OnInit {
                   return;
                 }
                 this.loading=false;
-                button.setAttribute("hidden","true");
+                // button.setAttribute("hidden","true");
                 button.addEventListener('click',  ()=> {
                   instance.requestPaymentMethod((requestPaymentMethodErr, payload)=>{
                     console.log(payload);

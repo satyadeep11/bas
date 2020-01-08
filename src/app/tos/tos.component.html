@@ -252,30 +252,37 @@
 
     <footer class="page-footer font-small bg-dark text-white font-small pt-4">
         <div class="container-fluid text-center text-md-left">
-            <div class="row">
-                <div class="col mx-5 mt-3">
+            <div class="row mx-5 pb-3">
+                <div class="col">
                     <h5 class="text-uppercase">About Us</h5>
-                    <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996. <br>
+                    <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
                         <a [routerLink]="['/about-us']" class="text-white">Learn More</a></p>
                 </div>
                 <hr class="clearfix w-100 d-md-none pb-3">
-                <div class="col mx-7 pl-5 mb-md-0 mb-3">
+                <div class="col">
                     <h5 class="text-uppercase">Support</h5>
-                    <ul class="list-unstyled">
-                        <li>
-                            <a class="text-white" href="#!">800-658-9014</a>
-                        </li>
-                        <li>
-                            <a class="text-white" href="#!">helpmybrand@idworks.com</a>
-                        </li>
-                        <br>
-                        <li>
-                            <a class="text-white" [routerLink]="['/privacy-policy']">Privacy Policy</a>
-                        </li>
-                        <li>
-                            <a class="text-white" [routerLink]="['/terms-of-service']">Terms of Service</a>
-                        </li>
-                    </ul>
+                    <div class="row">
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" href="#!">800-658-9014</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" href="#!">helpmybrand@idworks.com</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col">
+                            <ul class="list-unstyled">
+                                <li>
+                                    <a class="text-white" [routerLink]="['/privacy-policy']">Privacy Policy</a>
+                                </li>
+                                <li>
+                                    <a class="text-white" [routerLink]="['/terms-of-service']">Terms of Service</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

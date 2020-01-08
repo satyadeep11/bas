@@ -69,13 +69,14 @@ body {
     color: white;
     font-weight: 500;
     border: solid;
+    display: inline-block;
 }
 
 .basbtn {
     border-radius: 2rem;
     min-width: 10rem;
     background-color: rgb(168, 173, 0);
-    padding: 1rem;
+    padding: 0.5rem;
     color: white;
     font-weight: 500;
     border: solid;

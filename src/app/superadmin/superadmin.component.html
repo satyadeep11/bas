@@ -217,7 +217,7 @@
     <!-- sidebar-wrapper  -->
     <main class="page-content">
         <div class="container-fluid">
-            <h2>{{title||"Dashboard"}}</h2>
+            <h2>{{title||"Dashboard"|titlecase}}</h2>
             <hr>
 
             <div class="row" *ngIf="section=='dashboard'">
@@ -272,7 +272,7 @@
                         <td>{{store.SDate}}</td>
                         <td>{{store.EDate}}</td>
                         <td id="actions_td">
-                            <button (click)="getstoreorders(store.StoreID,store.StoreName)" class='btn btn-primary m-1'>Store orders</button>
+                            <button (click)="getstoreorders(store.StoreID,store.StoreName)" class='basbtn'>Store orders</button>
                             <!-- edit customer button -->
 
                             <!-- <button (click)="openStore(store.StoreUrl)" class='btn btn-primary m-1'>Change Visual Settings</button>
@@ -320,9 +320,9 @@
                         <td>{{store.StoreName}}</td>
                         <td>{{store.CName}}</td>
                         <td id="actions_td">
-                            <button (click)="openStore(store.StoreUrl)" class='btn btn-primary m-1'>Change Visual Settings</button>
-                            <button (click)="getstoresettings(store.StoreID,store.StoreName)" class='btn btn-primary m-1'>Update Store Settings</button>
-                            <button (click)="storeproductdetails(store.StoreID,store.StoreName)" class='btn btn-primary m-1'>Update Product Images</button>
+                            <button (click)="openStore(store.StoreUrl)" class='basbtnsdysmall'>Change Visual Settings</button>
+                            <button (click)="getstoresettings(store.StoreID,store.StoreName)" class='basbtnsdysmall'>Update Store Settings</button>
+                            <button (click)="storeproductdetails(store.StoreID,store.StoreName)" class='basbtnsdysmall'>Update Product Images</button>
                         </td>
                     </tr>
                 </table>
@@ -344,7 +344,7 @@
                         </div>
                         <div class="card-footer">
                             <input class="form-control" type="file" accept=".jpg,.jpeg,.png" (change)="fileChangeEvent($event,item.StoreID,item.Productid,item.Attribute1ID,i)">
-                            <button class="btn btn-primary m-1" (click)="updateimage(item.StoreID,item.Productid,item.Attribute1ID,i)">Save</button>
+                            <button class="basbtnsdysmall" (click)="updateimage(item.StoreID,item.Productid,item.Attribute1ID,i)">Save</button>
                         </div>
                     </div>
                 </div>
@@ -396,13 +396,15 @@
                     <tr>
                         <th>Store Name</th>
                         <th>Company Name</th>
+                        <th>End Date</th>
                         <th>Actions</th>
                     </tr>
                     <tr *ngFor="let store of stores">
                         <td>{{store.StoreName}}</td>
                         <td>{{store.CName}}</td>
+                        <td>{{store.EDate}}</td>
                         <td id="actions_td">
-                            <button *ngIf="store.Payment==1" (click)="section='store_payment';currentstoreid=store.StoreID" class='btn btn-primary m-1'>Charge Customer</button>
+                            <button *ngIf="store.Payment==1" (click)="section='store_payment';currentstoreid=store.StoreID" class='basbtnsdysmall m-1'>Charge Customer</button>
                             <!-- <button (click)="section='store_invoice';title='Sample Store Invoice';" class='btn btn-primary m-1'>Invoice</button> -->
                             <p *ngIf="store.Payment==0">Payment Method Unavailable.</p>
                         </td>
@@ -521,16 +523,30 @@
                             </div>
                             <div *ngSwitchCase="'select'" class="form-group">
                                 <label for="{{form_elem.control}}">{{form_elem.label}}</label>
-                                <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="form_elem.value">
-                            <option value="-1"> Select an Option</option>
-                            <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
-                                {{opt}}
-                            </option>
-                        </select>
+
+                                <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="form_elem.value">
+                                    <option value="-1"> Select an Option</option>
+                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                        {{opt}}
+                                    </option>
+                                </select> -->
+                                <select id="{{form_elem.control}}" *ngIf="form_elem.control!='budget'" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
+                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
+                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                        {{opt}}
+                                    </option>
+                                </select>
+                                <select *ngIf="form_elem.control=='budget'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control">                                                      
+                                    <option *ngFor="let opt of allcats; let i = index" [value]="opt.CategoryID">
+                                        {{opt.CategoryName}}
+                                    </option>                                                       
+                                </select>
+
                                 <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
                                     <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>
                                 </div>
                             </div>
+
                             <div *ngSwitchCase="'file'" class="form-group">
 
                                 <label for="{{form_elem.control}}">{{form_elem.label}}</label>
@@ -545,12 +561,223 @@
 
                 </form>
 
-                <button class="btn btn-primary" (click)="section='productmgmt';title='Product Management';productmgmt();">Edit Products</button>
+                <button class="basbtnsdysmall" (click)="section='productmgmt';title='Product Management';productmgmt();">Edit Products</button>
                 <p><small>Change Products on your Store</small></p>
-                <button class="btn btn-primary" (click)="section='addressmgmt';title='Address Management';">Edit Addresses</button>
+                <button class="basbtnsdysmall" (click)="section='addressmgmt';title='Address Management';addressmgmt()">Edit Addresses</button>
                 <p><small>Change Addresses associated with your Store</small></p>
                 <div>
-                    <button (click)="submit()">Save</button>
+                    <button class="basbtnsdysmall" (click)="submit()">Save</button>
+                </div>
+            </div>
+
+
+            <div class="row" *ngIf="section=='addressmgmt'">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-2 "></div>
+                        <div class="col align-self-center">
+                            <div class="py-5">
+                                <label>Choose Shipping Setting </label>
+                                <select class="form-control" [(ngModel)]="addsetting" (change)="personalcheck()">
+                                                <option value="To a corporate address">To a corporate address</option>
+                                                <option value="To the recipient's home address">To the recipient's home address</option>
+                                                <option value="Recipients can choose from a corporate address or enter their home address">Recipients can choose from a corporate address or enter their home address</option>                                          
+                                        </select>
+                            </div>
+
+                            <div *ngIf="pcheck" class="alert alert-warning" role="alert">
+                                <p class=""><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Some orders placed are being shipped to a personal address. You will have to manually assign the corporate address to each of those orders. <br>Do you want to
+                                    continue?
+                                </p>
+                                <button class="basbtnsdysmall mx-2" (click)="pcheck=false;showpaddress=true">Yes</button>
+                                <button class="basbtnsdysmall mx-2" (click)="pcheck=false;addsetting=ss.shipping.empshipsetting;addsetting=='To a corporate address'?showpaddress=true:showpaddress=false">No</button>
+                            </div>
+
+                            <!-- <div class="row" *ngIf="showpaddress">
+                                <div class="col" *ngFor="let address of paddress">
+                                    <p>{{address.Firstname}} {{address.Lastname}} , {{address.Phone}}, {{address.Username}}</p>
+                                    <select id={{address.StoreUserID}} class="form-control">                                    
+                                            <option *ngFor="let address of ss.shipping.addressess" [value]="address.AddressID">{{address.addressname}}</option> 
+                                        </select>
+                                    <button class="btn btn-primary" (click)="update2caddress(address.StoreUserID)">Update Address</button>
+                                </div>
+                            </div> -->
+
+                            <div *ngIf="showpaddress">
+                                <div class="alert alert-warning" role="alert">
+                                    <p class=""><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> The following need their addressess updated.
+                                    </p>
+                                </div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="card-deck">
+                                            <div class="col" *ngFor="let address of paddress">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{address.Firstname}} {{address.Lastname}}</h5>
+                                                        <p class="card-text"><i class="fa fa-phone" aria-hidden="true"></i> {{address.Phone}}</p>
+                                                        <p class="card-text"><i class="fa fa-envelope" aria-hidden="true"></i>{{address.Username}}</p>
+                                                        <div class="">
+                                                            <label><small>Select Corporate Address</small></label>
+                                                            <select id={{address.StoreUserID}} class="form-control">                                    
+                                                                        <option *ngFor="let address of ss.shipping.addressess" [value]="address.AddressID">{{address.addressname|titlecase}}</option> 
+                                                                    </select>
+                                                        </div>
+                                                        <button class="btn btn-primary mt-3" (click)="update2caddress(address.StoreUserID)">Update Address</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="py-5" *ngIf="addsetting=='To a corporate address' || addsetting=='Recipients can choose from a corporate address or enter their home address'">
+                                <label>Corporate Address</label>
+                                <p><small>You indicated that you would like to have gifts shipped to a corporate address. Please share that address in the section below.</small></p>
+                                <div class="card-group" *ngIf="addressesarray.controls.length>0">
+                                    <div *ngFor="let address of addressesarray.value; let i = index">
+                                        <div class="card">
+                                            <div *ngIf="!this.Address[i]" class="card-body" id="AddressResp{{i}}">
+                                                <div class="card-title">
+                                                    <p>{{address.addressname|titlecase}}</p>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p>{{address.streetaddress}} {{address.streetaddress2}}</p>
+                                                </div>
+                                                <div class="card-text">
+                                                    <p>{{address.city}} , {{address.state}}, {{address.zip}}</p>
+                                                </div>
+                                            </div>
+                                            <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngFor="let address of addressesarray.controls; let i = index" class="list-group list-group-flush">
+                                    <div class="list-group-item" *ngIf="this.Address[i]">
+
+                                        <div *ngIf="this.Address[i]" [formGroup]="address" class="form-row" id="Address{{i}}">
+                                            <div class="form-group col-6">
+                                                <label>Address Name</label>
+                                                <input type="text" autocomplete="name" formControlName="addressname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.addressname.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.addressname.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.addressname.errors.required">Address Name is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Street Address</label>
+                                                <input type="text" autocomplete="shipping address-line1" formControlName="streetaddress" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.streetaddress.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.streetaddress.errors.required">Street Address is required
+                                                    </div>
+                                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Street Address 2</label>
+                                                <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress2.errors }" />
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>City</label>
+                                                <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.city.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.city.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.city.errors.required">City is required</div>
+                                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>State</label>
+                                                <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }">
+                                                                <option value="AL">Alabama</option>
+                                                                <option value="AK">Alaska</option>
+                                                                <option value="AZ">Arizona</option>
+                                                                <option value="AR">Arkansas</option>
+                                                                <option value="CA">California</option>
+                                                                <option value="CO">Colorado</option>
+                                                                <option value="CT">Connecticut</option>
+                                                                <option value="DE">Delaware</option>
+                                                                <option value="DC">District Of Columbia</option>
+                                                                <option value="FL">Florida</option>
+                                                                <option value="GA">Georgia</option>
+                                                                <option value="HI">Hawaii</option>
+                                                                <option value="ID">Idaho</option>
+                                                                <option value="IL">Illinois</option>
+                                                                <option value="IN">Indiana</option>
+                                                                <option value="IA">Iowa</option>
+                                                                <option value="KS">Kansas</option>
+                                                                <option value="KY">Kentucky</option>
+                                                                <option value="LA">Louisiana</option>
+                                                                <option value="ME">Maine</option>
+                                                                <option value="MD">Maryland</option>
+                                                                <option value="MA">Massachusetts</option>
+                                                                <option value="MI">Michigan</option>
+                                                                <option value="MN">Minnesota</option>
+                                                                <option value="MS">Mississippi</option>
+                                                                <option value="MO">Missouri</option>
+                                                                <option value="MT">Montana</option>
+                                                                <option value="NE">Nebraska</option>
+                                                                <option value="NV">Nevada</option>
+                                                                <option value="NH">New Hampshire</option>
+                                                                <option value="NJ">New Jersey</option>
+                                                                <option value="NM">New Mexico</option>
+                                                                <option value="NY">New York</option>
+                                                                <option value="NC">North Carolina</option>
+                                                                <option value="ND">North Dakota</option>
+                                                                <option value="OH">Ohio</option>
+                                                                <option value="OK">Oklahoma</option>
+                                                                <option value="OR">Oregon</option>
+                                                                <option value="PA">Pennsylvania</option>
+                                                                <option value="RI">Rhode Island</option>
+                                                                <option value="SC">South Carolina</option>
+                                                                <option value="SD">South Dakota</option>
+                                                                <option value="TN">Tennessee</option>
+                                                                <option value="TX">Texas</option>
+                                                                <option value="UT">Utah</option>
+                                                                <option value="VT">Vermont</option>
+                                                                <option value="VA">Virginia</option>
+                                                                <option value="WA">Washington</option>
+                                                                <option value="WV">West Virginia</option>
+                                                                <option value="WI">Wisconsin</option>
+                                                                <option value="WY">Wyoming</option>
+                                                                <option value="AS">American Samoa</option>
+                                                                <option value="GU">Guam</option>
+                                                                <option value="MP">Northern Mariana Islands</option>
+                                                                <option value="PR">Puerto Rico</option>
+                                                                <option value="UM">United States Minor Outlying Islands</option>
+                                                                <option value="VI">Virgin Islands</option>
+                                                                <option value="AA">Armed Forces Americas</option>
+                                                                <option value="AP">Armed Forces Pacific</option>
+                                                                <option value="AE">Armed Forces Others</option>	
+                                                            </select>
+                                                <!-- <input type="text" autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }" /> -->
+                                                <div *ngIf="addresserrors && address.controls.state.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.state.errors.required">State is required</div>
+                                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Zip Code</label>
+                                                <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.zip.errors.required">Zip Code is required</div>
+                                                    <div *ngIf="address.controls.zip.errors.pattern">Invalid Zip</div>
+                                                </div>
+                                            </div>
+                                            <button mat-raised-button (click)="addSingleAd(i)" type="button">Add</button>
+                                            <button mat-raised-button *ngIf="i>0" (click)="CancelSingleAd(i)" type="button">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <button *ngIf="this.addAnother" (click)="addAnotherAd()" type="button" class="basbtnsdysmall" style="border-radius: 2rem;">Add Another Address</button>
+                            </div>
+                            <div class="py-5 text-center">
+                                <button class="basbtn" (click)="saveaddress()">Save</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-2"></div>
+                    </div>
                 </div>
             </div>
 
@@ -847,7 +1074,7 @@
         </div>
     </div>
     <div class="modal-footer justify-content-center">
-        <button *ngIf="seeselection.length!=0" ngbAutofocus (click)="closeModal(); saveproductselection()" class=" btn border-light basbtn">Save</button>
+        <button *ngIf="seeselection.length!=0" ngbAutofocus (click)="closeModal(); saveproductselection()" class="  border-light basbtn">Save</button>
         <button *ngIf="seeselection.length==0" class="btn btn-secondary" style="border-radius: 2rem;" (click)="closeModal()">Go Back</button>
         <!-- <button type="button" class="btn btn-primary" [routerLink]="['/products',catid]" [routerLinkActive]="['router-link-active']" (click)="closeModal()">Add More Products</button>   -->
     </div>
@@ -879,7 +1106,7 @@
                                         <div class="card-body">
                                             <h5 class="card-title">{{item.A2_Label[i]}}</h5>
                                             <div>
-                                                <button *ngIf="!removeCheck(item.Attr2[i])" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2[i],item.A2_Label[i],item.ImageFile[i])" class="btn border-light basbtn">Add to Store</button>
+                                                <button *ngIf="!removeCheck(item.Attr2[i])" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2[i],item.A2_Label[i],item.ImageFile[i])" class=" border-light basbtn">Add to Store</button>
                                                 <button *ngIf="removeCheck(item.Attr2[i])" class="btn btn-secondary btn-sm mx-5 " style="border-radius: 2rem;" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2[i])">Remove from store</button>
                                             </div>
                                         </div>
@@ -903,7 +1130,7 @@
                                                 {{item.minimum|currency:'USD'}} - {{item.maximum|currency:'USD'}}
                                             </p>
                                             <div>
-                                                <button *ngIf="!removeCheck(item.Attr2)" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2,item.A2_Label,item.ImageFile)" class="btn border-light basbtn text-uppercase">Add to Store</button>
+                                                <button *ngIf="!removeCheck(item.Attr2)" (click)="addtocart(item.ProductName,item.ProductID,item.Attr2,item.A2_Label,item.ImageFile)" class=" border-light basbtn text-uppercase">Add to Store</button>
                                                 <button *ngIf="removeCheck(item.Attr2)" (click)="removefromcart(item.ProductName,item.ProductID,item.Attr2)" style="border-radius: 2rem;" class="btn btn-secondary btn-sm mx-5">Remove from store</button>
                                             </div>
                                         </div>

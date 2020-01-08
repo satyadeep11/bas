@@ -294,6 +294,46 @@ form_template:Settings=[
     validator:"",
     options: ["Red", "Green", "Blue"],
     section: 0
+  },
+  {
+    name:"textcolor",
+    type: "textBox",
+    label: "Headline Text Color",
+    control: "textcolor",
+    validator:"",
+    section: 0
+  },
+  {
+    name:"transparentbg",
+    type: "textBox",
+    label: "White Background",
+    control: "transparentbg",
+    validator:"",
+    section: 0
+  },
+  {
+    name:"primarycolor",
+    type: "textBox",
+    label: "Primary Color",
+    control: "primarycolor",
+    validator:"",
+    section: 0
+  },
+  {
+    name:"buttoncolor",
+    type: "textBox",
+    label: "Button Color",
+    control: "buttoncolor",
+    validator:"",
+    section: 0
+  },
+  {
+    name:"nobanner",
+    type: "textBox",
+    label: "No Banner Image",
+    control: "nobanner",
+    validator:"",
+    section: 0
   }
 ];
 
@@ -1130,6 +1170,8 @@ checkSection(i) {
                   }
                 );
               }
+              this.dynamicForm.controls.textcolor.patchValue('white');
+              this.dynamicForm.controls.theme.patchValue('Default');
             var userdata=({fname:this.dynamicForm.value.fname,lname:this.dynamicForm.value.lname,phone:this.dynamicForm.value.phone,email:this.dynamicForm.value.email,password:this.dynamicForm.value.password});
             var finaldata=({ storedata: this.dynamicForm.value , productdata: this.selection,addressdata:this.dynamicForm.value["addressesarray"],userdata:userdata});
             // console.log(finaldata.storedata,finaldata.productdata,finaldata.addressdata,finaldata.userdata);

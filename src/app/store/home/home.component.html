@@ -94,7 +94,7 @@
                                         <li class="m-2">
                                             <p>
                                                 <small>
-                                                    Choose your company colors in the Color Picker section or select a predetermined theme using the drop down.
+                                                    Use the drop down below to customize your site's theme. Select Default to choose colors closest to your brand.
                                                 </small>
                                             </p>
                                             <select title="Colors" title="Colors" class="form-control" [(ngModel)]="theme" (change)="themechange($event.target.value)">     
@@ -114,7 +114,7 @@
                                                 </label>
                                                 <label class="checkbox-inline">
                                                     <input type="color" [(ngModel)]="buttoncolor" (change)="hexToLuma()" >
-                                                    <small> Buttons Color</small>
+                                                    <small> Button Color</small>
                                                 </label>
                                             </div>
                                         </li>
@@ -125,29 +125,17 @@
                                 <div class="card-header" role="tab" id="headingTwo2">
                                     <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseTwo2" aria-expanded="true" aria-controls="collapseTwo2">
                                         <p class="mb-0 text-dark">
-                                            Banner Background
+                                            Banner Background & Text
                                         </p>
                                     </a>
                                 </div>
                                 <div id="collapseTwo2" class="collapse" role="tabpanel" aria-labelledby="headingTwo2" data-parent="#accordionEx">
                                     <div class="card-body p-0">
                                         <li class="m-2">
-                                            <div class="custom-control custom-switch">
-                                                <input type="checkbox" [checked]="!nobanner" (change)="nobanner = !nobanner;nobanneroption();" class="custom-control-input" id="nbb">
-                                                <label class="custom-control-label" for="nbb"><small>Background Image</small></label>
-                                            </div>
-                                        </li>
-                                        <li class="m-2">
-                                            <div class="custom-control custom-switch">
-                                                <input type="checkbox" [checked]="transparentbg" (change)="transparentbg = !transparentbg" class="custom-control-input" id="tbg">
-                                                <label class="custom-control-label" for="tbg"><small>White Text Background</small></label>
-                                            </div>
-                                        </li>
-                                        <li class="m-2">
-                                            <div *ngIf="!ie">
+                                            <div *ngIf="!ie" class="m-2">
                                                 <label class="checkbox-inline">
-                                                                        <input type="color" [(ngModel)]="textcolor" >
-                                                                        <small>Text Color</small>
+                                                                        <input type="color" [(ngModel)]="textcolor" (change)="textcolorbup=textcolor" >
+                                                                        <small> Text Color</small>
                                                                 </label>
                                             </div>
                                             <div *ngIf="ie">
@@ -159,9 +147,19 @@
                                             </div>
                                         </li>
 
+                                        <li class="m-2">
+                                            <div class="custom-control custom-switch m-2">
+                                                <input type="checkbox" [checked]="transparentbg" (change)="transparentbg = !transparentbg" class="custom-control-input" id="tbg">
+                                                <label class="custom-control-label" for="tbg"><small>White Text Background</small></label>
+                                            </div>
+                                        </li>
 
-
-
+                                        <li class="m-2">
+                                            <div class="custom-control custom-switch m-2">
+                                                <input type="checkbox" [checked]="!nobanner" (change)="nobanner = !nobanner;nobanneroption();" class="custom-control-input" id="nbb">
+                                                <label class="custom-control-label" for="nbb"><small>Background Image</small></label>
+                                            </div>
+                                        </li>
 
 
                                         <li *ngIf="!nobanner" class="m-2">
@@ -195,8 +193,8 @@
                                 <div id="collapseThree3" class="collapse" role="tabpanel" aria-labelledby="headingThree3" data-parent="#accordionEx">
                                     <div class="card-body p-0">
                                         <li class="m-2">
-                                            <input class="form-control" type="text" [(ngModel)]="bannerheading" #headline placeholder="Banner heading">
-                                            <p><small>Max characters: 300</small></p>
+                                            <input class="form-control" type="text" [(ngModel)]="bannerheading" #headline placeholder="Banner heading" maxlength="24">
+                                            <p><small>Max characters: 25</small></p>
                                         </li>
                                     </div>
                                 </div>
@@ -280,7 +278,7 @@
         </nav>
 
         <div class="page-content {{theme|lowercase}}">
-            <nav class="bg-light " id="mainNav">
+            <nav class="" id="mainNav">
                 <div class="container-fluid">
                     <div class="row h-100 justify-content-center align-items-center">
                         <div class="col-lg-11">
@@ -296,43 +294,87 @@
                     </div>
                 </div>
             </nav>
+            <div *ngIf="welcome" [style.font-family]="bodyfont">
 
-            <header *ngIf="welcome" class="bg-secondary py-5 text-center" [style.backgroundImage]='"url("+ bannerimage +")"' style="background:no-repeat center ;height: 100%;background-size:cover">
+                <!-- <header class="bg-secondary py-5 text-center" [style.backgroundImage]='"url("+ bannerimage +")"' style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont?mainheadlinefont:'white'" style="font-size: 5vw;"><b>Welcome</b></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header> -->
+                <header *ngIf="!bgimage && nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Welcome</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="!bgimage && !nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Welcome</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="bgimage" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bgimage + ')'">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Welcome</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
                 <div class="container-fluid h-100">
                     <div class="row h-100 justify-content-center align-items-center">
                         <div class="col" style="max-width: max-content;">
-                            <div class="bg-light p-5">
-                                <h1 class=" mb-2">WELCOME</h1>
+                            <div class="text-center p-5">
                                 <h4 class="lead mb-5">Please enter your {{domain?'email address':'access code'|lowercase}} below to view the gift options {{companyname||'Store Name'|titlecase}} has chosen for you.
                                     <br> This site will accept orders until 11:00 PM CST on {{storeclose||'Store Close Date'}}.
                                     <br> Don't miss out! Be sure to place your order before that day.</h4>
                                 <form [formGroup]="loginForm">
                                     <div *ngIf="domain" class="input-group input-group-lg">
                                         <!-- <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-lg">Enter Email</span>
-                                        </div> -->
+                                        <span class="input-group-text" id="inputGroup-sizing-lg">Enter Email</span>
+                                    </div> -->
                                         <input formControlName="email" type="text" class="form-control" aria-label="Enter Email" aria-describedby="inputGroup-sizing-sm" placeholder="Enter Email">
                                     </div>
                                     <div *ngIf="code" class="input-group input-group-lg">
                                         <!-- <div class="input-group-prepend">
-                                            <span class="input-group-text" id="inputGroup-sizing-lg">Enter Access Code</span>
-                                        </div> -->
+                                        <span class="input-group-text" id="inputGroup-sizing-lg">Enter Access Code</span>
+                                    </div> -->
                                         <input formControlName="access" type="text" class="form-control" aria-label="Enter Access Code" aria-describedby="inputGroup-sizing-sm" placeholder="Enter Access Code">
                                     </div>
-                                    <button (click)="preAuth()" class="btn btn-primary mt-5">Submit</button>
+                                    <!-- <button (click)="preAuth()" class="btn btn-primary mt-5">Submit</button> -->
+                                    <button class="btn btn-secondary basbtnhomesecondary m-3" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="preAuth()">Submit</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                 </div>
-            </header>
+            </div>
 
             <div *ngIf="home" [style.font-family]="bodyfont">
-                <header *ngIf="!bgimage" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                <header *ngIf="!bgimage && nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" style="background:no-repeat center ;height: 100%;background-size:cover">
                     <div class="container-fluid  h-100">
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
-                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class=" p-5">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
                                     <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
                                     <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
                                 </div>
@@ -340,11 +382,23 @@
                         </div>
                     </div>
                 </header>
-                <header *ngIf="bgimage" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bgimage + ')'">
+                <header *ngIf="!bgimage && !nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
                     <div class="container-fluid  h-100">
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
-                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class=" p-5">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="bgimage" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bgimage + ')'">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
                                     <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
                                     <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
                                 </div>
@@ -418,21 +472,53 @@
                 </section>
             </div>
             <div *ngIf="checkout" [style.font-family]="bodyfont">
-                <header class="bg-secondary py-5 text-center" id="bannerbg2" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size: cover;">
+                <!-- <header class="bg-secondary py-5 text-center" id="bannerbg2" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size: cover;">
                     <div class="container-fluid h-100">
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col-lg-8">
-                                <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class="p-5">
-                                    <h1 class=" mb-2" [style.color]="textcolor" style="font-size: 5vw;"><strong>CHECKOUT</strong></h1>
-                                    <!-- <h4 class="lead mb-5">Please confirm your gift selection, delivery location and submit your order below.</h4> -->
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class="p-5">
+                                    <h1 class=" mb-2" [style.color]="textcolor" style="font-size: 5vw;"><strong>Checkout</strong></h1>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header> -->
+                <header *ngIf="!bgimage && nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class=" mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Checkout</strong></h1>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </header>
-                <section *ngIf="checkout && !successful" class="p-lg-5 py-5">
-                    <h4 class="text-center p-2">Your Selection</h4>
-                    <div class="container-fluid bg-light">
+                <header *ngIf="!bgimage && !nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class=" mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Checkout</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="bgimage" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bgimage + ')'">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class=" mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Checkout</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <section *ngIf="checkout && !successful" class="mt-3">
+                    <h3 class="text-center p-2"><strong>Your Selection</strong> </h3>
+                    <div class="container-fluid ">
                         <div class="container-fluid">
                             <!-- <table id="cart" class="table table-condensed table-borderless">
                                 <tbody>
@@ -452,15 +538,16 @@
                                     </tr>
                                 </tbody>
                             </table> -->
-                            <div class="row p-lg-5 py-5">
+                            <div class="row">
                                 <div class="col-sm-12">
-                                    <div class="card text-center mb-2 ">
+                                    <div class="card border-0 text-center mb-2 ">
                                         <div class="card-body">
-                                            <img class="card-img-top" style="max-width: 7rem;" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap">
-                                            <h4 class="card-title">{{pselect.ProductName|titlecase}} ({{pselect.A2_Label}})</h4>
-                                            <p class="card-text">{{pselect.ProductDesc1}}</p>
+                                            <img class="card-img-top" style="max-width: 14rem;" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap">
+                                            <h6 class="card-title"><strong>{{pselect.ProductName|titlecase}} </strong>({{pselect.A2_Label}})</h6>
+                                            <p class="card-text px-lg-5">{{pselect.ProductDesc1}}</p>
                                             <div>
-                                                <button class="btn btn-secondary basbtnhomesecondary" (click)="home=!home;checkout=!checkout">Change</button>
+                                                <button class="btn btn-secondary basbtnhomesecondary" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="home=!home;checkout=!checkout">Change</button>
+
                                             </div>
                                         </div>
                                     </div>
@@ -470,17 +557,17 @@
                     </div>
                 </section>
                 <hr class="bg-dark w-75">
-                <section *ngIf="checkout && !successful" class="p-lg-5 py-5">
-                    <h4 class="text-center text-uppercase p-2">Delivery Location</h4>
-                    <div class="container-fluid bg-light">
-                        <div class="row p-lg-5 py-5 text-center">
+                <section *ngIf="checkout && !successful" class="mb-2">
+                    <h3 class="text-center p-2"><strong>Delivery Location</strong></h3>
+                    <div class="container-fluid">
+                        <div class="row px-md-5 text-center">
                             <div *ngFor="let address of addresses; let i=index" class="col-sm-12">
                                 <div class="card text-center mb-2 {{successclass[i]}}">
                                     <div class="card-body form-inline-lg d-lg-flex justify-content-between align-items-center">
                                         <h5 class="card-title">{{address.addressname|titlecase}}</h5>
                                         <h6 class="card-text">{{address.streetaddress|titlecase}}, {{address.streetaddress2|titlecase}}{{address.streetaddress2?',':''}} {{address.city|titlecase}}, {{address.state|titlecase}}, {{address.zip}}</h6>
                                         <div>
-                                            <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)="adselect(i,address)">Select</button>
+                                            <button [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" class="btn btn-secondary basbtnhomesecondary mr-2" (click)="adselect(i,address)">Select</button>
                                             <button *ngIf="!address.AddressID" (click)="this.addresses.splice(i, 1); hideaddaddress=false;finalcheckout=!finalcheckout" class="btn btn-secondary basbtnhomesecondary">Delete</button>
                                         </div>
                                     </div>
@@ -488,7 +575,7 @@
                             </div>
                             <div *ngIf="empaddress" class="col-sm-12">
                                 <div *ngIf="!showshipping && !hideaddaddress">
-                                    <button class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=true;" type="button">Use My Address</button>
+                                    <button class="btn btn-secondary basbtnhomesecondary" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="showshipping=true;" type="button">Use My Address</button>
                                 </div>
                             </div>
                         </div>
@@ -611,7 +698,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-center">
-                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)=" onSubmit()" type="button">Add</button>
+                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)=" onSubmit()" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Add</button>
                                         <button class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=false" type="button">Cancel</button>
                                     </div>
                                 </div>
@@ -620,9 +707,9 @@
                         </div>
                     </div>
                 </section>
-                <hr class="bg-dark w-75">
-                <section *ngIf="finalcheckout" class="page-section p-lg-5 py-5">
-                    <h4 class="text-center p-2">Contact Information</h4>
+                <hr *ngIf="finalcheckout" class="bg-dark w-75">
+                <section *ngIf="finalcheckout" class="page-section ">
+                    <h3 class="text-center p-2"><strong>Contact Information</strong></h3>
                     <div class="container-fluid bg-light">
                         <div [formGroup]="registerForm" class="form-row col-sm-12 p-lg-5 py-5 text-center">
                             <div class="form-group col-6">
@@ -669,7 +756,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="form-group col-6">
+                            <!-- <div class="form-group col-6">
                                 <label for="password">Password</label>
                                 <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.password.errors }" />
                                 <div *ngIf="registrationerrors && f.password.errors" class="invalid-feedback">
@@ -695,7 +782,7 @@
                                         Password does not match
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div *ngIf="code" class="form-group col-6">
                                 <label for="code">Store Access Code</label>
                                 <input type="text" formControlName="code" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.code.errors }" />
@@ -710,9 +797,9 @@
                             </div>
                         </div>
                         <div class="text-center">
-                            <button class="btn btn-secondary basbtnhomesecondary" (click)="finalcheckouts()" type="button">Place My Order</button>
+                            <button class="btn btn-secondary basbtnhomesecondary" (click)="finalcheckouts()" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Place My Order</button>
                         </div>
-                        <div class="py-3">
+                        <div class="py-3 mx-5">
                             <p>
                                 Please note: The items offered in this gift store will be produced as they are ordered. As a result, all selections and sales are final and cannot be returned, except in the case of defective merchandise. Please contact customer service with your questions
                                 about this policy.
@@ -722,12 +809,45 @@
                 </section>
             </div>
             <div *ngIf="successful" [style.font-family]="bodyfont">
-                <header class="bg-secondary py-5 text-center" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                <!-- <header class="bg-secondary py-5 text-center" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
                     <div class="container-fluid  h-100">
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
                                 <div [ngClass]="transparentbg?'bg-light':'bg-transparent'" class="p-5">
-                                    <h1 class="mb-2" style="font-size: 5vw;"><strong>Thank You</strong></h1>
+                                    <h1 class="mb-2" [style.color]="textcolor" style="font-size: 5vw;"><strong>Thank You</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header> -->
+                <header *ngIf="!bgimage && nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Thank You</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="!bgimage && !nobanner" [style.background-color]="'#53565a'" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bannerimage + ')'" style="background:no-repeat center ;height: 100%;background-size:cover">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Thank You</strong></h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <header *ngIf="bgimage" class="py-5 text-center" id="bannerbg" [style.backgroundImage]=" 'url('+ bgimage + ')'">
+                    <div class="container-fluid  h-100">
+                        <div class="row h-100 justify-content-center align-items-center">
+                            <div class="col" style="max-width: max-content;">
+                                <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
+                                    <h1 class="mb-2" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><strong>Thank You</strong></h1>
                                 </div>
                             </div>
                         </div>
@@ -751,7 +871,7 @@
                                 creative, and personalized approach to customer service to outfit your team with exactly what they need.
                             </p>
                         </div> -->
-                        <div class="col"></div>
+                        <div class="col-md-4"></div>
 
                         <div class="col">
                             <h5 class="text-uppercase">Support</h5>
@@ -778,7 +898,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col"></div>
+                        <div class="col-md-3"></div>
                     </div>
                 </div>
             </footer>
@@ -803,7 +923,7 @@
                                         <div class="card-body">
                                             <p class="card-text">{{product.A2_Label}}</p>
                                         </div>
-                                        <button class="btn btn-secondary basbtnhomesecondary" (click)="checkouts(product)">Select</button>
+                                        <button [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" class="btn btn-secondary basbtnhomesecondary" (click)="checkouts(product)">Select</button>
                                     </div>
                                 </div>
 

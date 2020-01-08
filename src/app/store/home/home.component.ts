@@ -87,7 +87,7 @@ export class HomeComponent implements OnInit {
   tempbanner;
   tempbannernamebup;
   transparentbg=true; 
-  textcolor;
+  textcolor="white";
   textcolorbup;
   uploadResponse = { status: '', message: '', filePath: '' };
   error;
@@ -212,8 +212,9 @@ export class HomeComponent implements OnInit {
                 }        
                 this.primarycolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'primarycolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'primarycolor').SettingValue:"");       
                 this.buttoncolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'buttoncolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'buttoncolor').SettingValue:"");       
-                this.textcolorbup=this.textcolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor').SettingValue:"");       
+                this.textcolorbup=this.textcolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor').SettingValue:"white");       
                 this.transparentbgbup=this.transparentbg=this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg')?((this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg').SettingValue)==1?true:false):false;    
+                this.nobanner=this.storedata.sitedata.find(o => o.Settingcontrol === 'nobanner')?((this.storedata.sitedata.find(o => o.Settingcontrol === 'nobanner').SettingValue)==0?true:false):false;  
                 this.reason=this.storedata.sitedata.find(o => o.Settingcontrol === 'reason').SettingValue;
                 this.storename=this.storedata.sitedata.find(o => o.Settingcontrol === 'storename').SettingValue;
                 this.companyname=this.storedata.sitedata.find(o => o.Settingcontrol === 'cname').SettingValue;
@@ -311,8 +312,8 @@ export class HomeComponent implements OnInit {
         lname: ['', Validators.required],
         phone: ['', Validators.required],
         email: ['', [Validators.required,this.validateEmail.bind(this)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
+        // password: ['', [Validators.required, Validators.minLength(6)]],
+        // confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
     });
     this.formControlValueChanged();
     }
@@ -322,8 +323,8 @@ export class HomeComponent implements OnInit {
         lname: ['', Validators.required],
         email: ['', Validators.required],
         phone: ['', Validators.required],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-        confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
+        // password: ['', [Validators.required, Validators.minLength(6)]],
+        // confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
         code: ['', [Validators.required, Validators.pattern("^"+this.accesscode+"$")]],
     });
     this.formControlValueChanged();
@@ -590,6 +591,12 @@ console.log(this.pending);
   }
 
   preAuth() {
+    var storeclosed=new Date(this.storeclose)
+    var CurrentDate = new Date();
+    if(storeclosed<CurrentDate){
+      alert("Sorry. The store is closed");
+      return;
+    }
     console.log(this.loginForm.value);
     var home= "/stores/" + this.site +"/home" ;
     if (this.domain && this.loginForm.controls.email.value.length>0) {
@@ -631,19 +638,23 @@ console.log(this.pending);
   }
 
   nobanneroption(){
-    if(this.nobanner){
-      this.tempbannernamebup=this.tempbannername;
-      this.tempbannername='';
-      this.tempbanner=this.bannerimage;
-      this.bannerimage='';
-      document.querySelector('#bannerbg').removeAttribute("style");
-      document.querySelector('#bannerbg').setAttribute("style","background-color:#53565a");
-    }
-    else{      
-      this.tempbannername=this.tempbannernamebup;      
-      this.bannerimage=this.tempbanner;
-      document.querySelector('#bannerbg').setAttribute("style","background-size:cover");
-    }
+    // if(this.nobanner){
+    //   //off
+    //   this.tempbannernamebup=this.tempbannername;
+    //   this.tempbannername='';
+    //   this.tempbanner=this.bannerimage;
+    //   this.bannerimage='';
+    //   document.querySelector('#bannerbg').removeAttribute("style");
+    //   document.querySelector('#bannerbg').setAttribute("style","background-color:#53565a");
+    //   console.log(this.tempbannernamebup,this.tempbannername,this.tempbanner,this.bannerimage)
+    // }
+    // else{    
+    //   //on  
+    //   this.tempbannername=this.tempbannernamebup;      
+    //   this.bannerimage=this.tempbanner;
+    //   document.querySelector('#bannerbg').setAttribute("style","background-size:cover");
+    //   console.log(this.tempbannernamebup,this.tempbannername,this.tempbanner,this.bannerimage)
+    // }
   }
 
   // textcolor(color){
@@ -748,7 +759,7 @@ submit(){
       }
       this.tempbannername=this.tempbannername.replace(/ /g,"_");
       this.templogoname=this.templogoname.replace(/ /g,"_");
-      var storedata=({logoimage:this.templogoname,bannerimage:this.tempbannername,bannerheading:this.bannerheading,bannerdesc:this.bannerdesc,reason:this.reason,theme:this.theme, transparentbg:(this.transparentbg?1:0),textcolor:(this.textcolor),primarycolor:(this.primarycolor),buttoncolor:(this.buttoncolor)});
+      var storedata=({logoimage:this.templogoname,bannerimage:this.tempbannername,bannerheading:this.bannerheading,bannerdesc:this.bannerdesc,reason:this.reason,theme:this.theme, transparentbg:(this.transparentbg?1:0),nobanner:(this.nobanner?0:1),textcolor:(this.textcolor),primarycolor:(this.primarycolor),buttoncolor:(this.buttoncolor)});
       var finaldata=({ storedata:  storedata , storeid:this.storeid});
 
       console.log(storedata,finaldata)
