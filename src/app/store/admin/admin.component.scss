@@ -460,3 +460,15 @@
 .chiller-theme .sidebar-footer>a:last-child {
     border-right: none;
 }
+
+.accordion .card-header>a:before {
+    font-family: 'FontAwesome';
+    content: "\f068";
+    float: right;
+    color: black;
+}
+
+.accordion .card-header>a.collapsed:before {
+    color: black;
+    content: "\f067";
+}

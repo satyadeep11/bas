@@ -177,7 +177,7 @@ export class HomeComponent implements OnInit {
             alert("No Such Site with name "+ this.site +" available");
           this.router.navigate(['/stores']);
           }
-          this.storeid=user.sitedata[0].StoreID; 
+          this.storeid=user.sitedata[0].StoreID?user.sitedata[0].StoreID:0; 
          var sk=this.storeid*5+(this.site.charCodeAt(1))*11+(this.site.charCodeAt(this.site.length-1))*1987;
          if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
            sessionStorage.clear();

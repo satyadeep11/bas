@@ -1,14 +1,14 @@
 <body id="page-top">
 
-  <!-- Navigation -->
-  <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
-    <div class="container">
-      <a class="navbar-brand js-scroll-trigger" href="#page-top">{{storename||'Store Name'}}</a>
-      <!-- <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg bg-secondary text-uppercase fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger" href="#page-top">{{storename||'Store Name'}}</a>
+            <!-- <button class="navbar-toggler navbar-toggler-right text-uppercase font-weight-bold bg-primary text-white rounded" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         Menu
         <i class="fas fa-bars"></i>
       </button> -->
-      <!-- <div class="collapse navbar-collapse" id="navbarResponsive">
+            <!-- <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item mx-0 mx-lg-1">
             <a class="nav-link py-3 px-0 px-lg-3 rounded js-scroll-trigger" href="#portfolio">Portfolio</a>
@@ -21,77 +21,78 @@
           </li>
         </ul>
       </div> -->
-    </div>
-  </nav>
-
-  <!-- Masthead -->
-  <header  class="masthead bg-primary text-white text-center"  [style.backgroundImage]="'url('+ bannerimage +')'" style="background-size: cover;background-repeat: no-repeat;">
-    <div class="container d-flex align-items-center flex-column">
-
-      <!-- Masthead Avatar Image -->
-      <img class="masthead-avatar mb-5" src="img/avataaars.svg" alt="">
-
-      <!-- Masthead Heading -->
-      <h1 class="masthead-heading text-uppercase mb-0">{{bannerheading||'Banner Heading'}}</h1>
-
-      <!-- Icon Divider -->
-      <div class="divider-custom divider-light">
-        <div class="divider-custom-line"></div>
-        <div class="divider-custom-icon">
-          <i class="fas fa-star"></i>
         </div>
-        <div class="divider-custom-line"></div>
-      </div>
+    </nav>
 
-      <!-- Masthead Subheading -->
-      <p class="masthead-subheading font-weight-light mb-0">{{bannerdesc||'Banner Description'}}</p>
+    <!-- Masthead -->
+    <header class="masthead bg-primary text-white text-center" [style.backgroundImage]="'url('+ bannerimage +')'" style="background-size: cover;background-repeat: no-repeat;">
+        <div class="container d-flex align-items-center flex-column">
 
-    </div>
-  </header>
+            <!-- Masthead Avatar Image -->
+            <img class="masthead-avatar mb-5" src="img/avataaars.svg" alt="">
 
-  <!-- Portfolio Section -->
-  <section  class="page-section portfolio" id="portfolio">
-    <div class="container">
+            <!-- Masthead Heading -->
+            <h1 class="masthead-heading text-uppercase mb-0">{{bannerheading||'Banner Heading'}}</h1>
 
-      <!-- Portfolio Section Heading -->
-      <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Products</h2>
-
-      <!-- Icon Divider -->
-      <div class="divider-custom">
-        <div class="divider-custom-line"></div>
-        <div class="divider-custom-icon">
-          <i class="fas fa-star"></i>
-        </div>
-        <div class="divider-custom-line"></div>
-      </div>
-
-      <!-- Portfolio Grid Items -->
-      <div class="row">
-
-        <!-- Portfolio Item 1 -->
-        <div *ngFor="let item of uniqueprods" class="col-md-6 col-lg-4">
-          <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1" >
-            <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
-              <div class="portfolio-item-caption-content text-center text-white">
-                <i class="fas fa-plus fa-3x"></i>
-              </div>
+            <!-- Icon Divider -->
+            <div class="divider-custom divider-light">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="divider-custom-line"></div>
             </div>
-            <img class="img-fluid" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="">
-            <div class="text-center"><h2 class="item-title-fluid"><a href="#">{{item.ProductName|titlecase}}</a></h2>
-              <!-- <strong class="item-price">{{item.Price|currency}}</strong> -->
-            </div>
-            
-          </div>
+
+            <!-- Masthead Subheading -->
+            <p class="masthead-subheading font-weight-light mb-0">{{bannerdesc||'Banner Description'}}</p>
+
         </div>
-      </div>
-      <!-- /.row -->
+    </header>
 
-    </div>
-  </section>
+    <!-- Portfolio Section -->
+    <section class="page-section portfolio" id="portfolio">
+        <div class="container">
+
+            <!-- Portfolio Section Heading -->
+            <h2 class="page-section-heading text-center text-uppercase text-secondary mb-0">Products</h2>
+
+            <!-- Icon Divider -->
+            <div class="divider-custom">
+                <div class="divider-custom-line"></div>
+                <div class="divider-custom-icon">
+                    <i class="fas fa-star"></i>
+                </div>
+                <div class="divider-custom-line"></div>
+            </div>
+
+            <!-- Portfolio Grid Items -->
+            <div class="row">
+
+                <!-- Portfolio Item 1 -->
+                <div *ngFor="let item of uniqueprods" class="col-md-6 col-lg-4">
+                    <div class="portfolio-item mx-auto" data-toggle="modal" data-target="#portfolioModal1">
+                        <div class="portfolio-item-caption d-flex align-items-center justify-content-center h-100 w-100">
+                            <div class="portfolio-item-caption-content text-center text-white">
+                                <i class="fas fa-plus fa-3x"></i>
+                            </div>
+                        </div>
+                        <img class="img-fluid" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="">
+                        <div class="text-center">
+                            <h2 class="item-title-fluid"><a href="#">{{item.ProductName|titlecase}}</a></h2>
+                            <!-- <strong class="item-price">{{item.Price|currency}}</strong> -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- /.row -->
+
+        </div>
+    </section>
 
 
-   <!-- Checkout Section -->
-   <!-- <section *ngIf="checkout && !successful" class="page-section portfolio bg-primary text-white mt-1">
+    <!-- Checkout Section -->
+    <!-- <section *ngIf="checkout && !successful" class="page-section portfolio bg-primary text-white mt-1">
       <div class="container">
   
         <h2 class="page-section-heading text-center text-uppercase text-white mb-0">Checkout</h2>
@@ -115,7 +116,7 @@
                       <tr>
                         <td data-th="Product">
                           <div class="row">
-                            <div class="col-sm-2 hidden-xs"><img style="max-width: 7rem;" [src]="'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+'_'+pselect.ImageFile" alt="..." class="img-responsive"/></div>
+                            <div class="col-sm-2 hidden-xs"><img style="max-width: 7rem;" [src]="'https://securedgear.com/sites/997/products/997_' +pselect.ProductID+'_'+pselect.ImageFile" alt="..." class="img-responsive"/></div>
                             <div class="col-sm-8">
                               <h4 class="nomargin">{{pselect.ProductName|titlecase}}</h4>
                               <p>{{pselect.ProductDesc1}}</p>
@@ -231,7 +232,7 @@
         </div>
       </section> -->
 
-      <!-- <section *ngIf="successful" class="page-section">
+    <!-- <section *ngIf="successful" class="page-section">
       <div class="container">
           <div class="row text-center">
                 <div class="mx-auto">
@@ -245,31 +246,31 @@
         </div>
       </section> -->
 
-  <!-- Footer -->
-  <footer class="footer text-center">
-    <div class="container">
-      <div class="row">
+    <!-- Footer -->
+    <footer class="footer text-center">
+        <div class="container">
+            <div class="row">
 
-        <!-- Footer Location -->
-        <!-- <div class="col-lg-4 mb-5 mb-lg-0">
+                <!-- Footer Location -->
+                <!-- <div class="col-lg-4 mb-5 mb-lg-0">
           <h4 class="text-uppercase mb-4">Location</h4>
           <p class="lead mb-0">920 Industrial Drive,
             <br>West Salem, WI 54669</p>
         </div> -->
 
-        <div class="col-lg-4 mb-5 mb-lg-0">
-            <h4 class="text-uppercase mb-4">Information</h4>
-            <p class="lead mb-0">{{reason}}</p>
-          </div>
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">Information</h4>
+                    <p class="lead mb-0">{{reason}}</p>
+                </div>
 
-          <div class="col-lg-4 mb-5 mb-lg-0">
-              <h4 class="text-uppercase mb-4">Links</h4>
-              <p class="lead mb-0">Terms & Condtions</p>
-              <p class="lead mb-0">Privacy Policy</p>
-            </div>
+                <div class="col-lg-4 mb-5 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">Links</h4>
+                    <p class="lead mb-0">Terms & Condtions</p>
+                    <p class="lead mb-0">Privacy Policy</p>
+                </div>
 
-        <!-- Footer Social Icons -->
-        <!-- <div class="col-lg-4 mb-5 mb-lg-0">
+                <!-- Footer Social Icons -->
+                <!-- <div class="col-lg-4 mb-5 mb-lg-0">
           <h4 class="text-uppercase mb-4">Social Links</h4>
           <a class="btn btn-outline-light btn-social mx-1" href="#">
             <i class="fab fa-fw fa-facebook-f"></i>
@@ -285,68 +286,68 @@
           </a>
         </div> -->
 
-        <!-- Footer About Text -->
-        <!-- <div class="col-lg-4">
+                <!-- Footer About Text -->
+                <!-- <div class="col-lg-4">
           <h4 class="text-uppercase mb-4">About Freelancer</h4>
           <p class="lead mb-0">Freelance is a free to use, MIT licensed Bootstrap theme created by
             <a href="http://startbootstrap.com">Start Bootstrap</a>.</p>
         </div> -->
 
-      </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Copyright Section -->
+    <section class="copyright py-4 text-center text-white">
+        <div class="container">
+            <small>Copyright &copy; {{storename||'Store Name'}} 2019</small>
+        </div>
+    </section>
+
+    <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
+    <div class="scroll-to-top d-lg-none position-fixed ">
+        <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
+            <i class="fa fa-chevron-up"></i>
+        </a>
     </div>
-  </footer>
 
-  <!-- Copyright Section -->
-  <section class="copyright py-4 text-center text-white">
-    <div class="container">
-      <small>Copyright &copy; {{storename||'Store Name'}} 2019</small>
-    </div>
-  </section>
+    <!-- Portfolio Modals -->
 
-  <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->
-  <div class="scroll-to-top d-lg-none position-fixed ">
-    <a class="js-scroll-trigger d-block text-center text-white rounded" href="#page-top">
-      <i class="fa fa-chevron-up"></i>
-    </a>
-  </div>
-
-  <!-- Portfolio Modals -->
-
-  <!-- Portfolio Modal 1 -->
-  <ng-template #content let-modal>
-      <div class="modal-header">          
-    <button type="button" class="close" aria-label="Close" >
+    <!-- Portfolio Modal 1 -->
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <button type="button" class="close" aria-label="Close">
       <span aria-hidden="true">&times;</span>
     </button>
-  </div>
-    <div class="modal-body text-center">
-        <div class="container">
-            <div class="row justify-content-center">
-              <div class="col-lg-12">
-                <!-- Portfolio Modal - Title -->
-                  <!-- Icon Divider -->
-                  <div class="divider-custom">
-                      <div class="divider-custom-line"></div>
-                      <div class="divider-custom-icon">
-                        <i class="fas fa-star"></i>
-                      </div>
-                      <div class="divider-custom-line"></div>
-                    </div>
-                <div class="d-flex justify-content-center">
-                
-                <!-- <div *ngFor="let product of products" >
+        </div>
+        <div class="modal-body text-center">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-12">
+                        <!-- Portfolio Modal - Title -->
+                        <!-- Icon Divider -->
+                        <div class="divider-custom">
+                            <div class="divider-custom-line"></div>
+                            <div class="divider-custom-icon">
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <div class="divider-custom-line"></div>
+                        </div>
+                        <div class="d-flex justify-content-center">
+
+                            <!-- <div *ngFor="let product of products" >
                
-                <img class="img-fluid rounded w-75" [src]="'https://www.securedgear.com/sites/997/products/997_' +product.ProductID+'_'+product.ImageFile" alt="">
+                <img class="img-fluid rounded w-75" [src]="'https://securedgear.com/sites/997/products/997_' +product.ProductID+'_'+product.ImageFile" alt="">
                 <br><button class="btn btn-primary" > Add </button>
                 </div> -->
-              </div>
-                <!-- Portfolio Modal - Text -->
-                
-              </div>
+                        </div>
+                        <!-- Portfolio Modal - Text -->
+
+                    </div>
+                </div>
             </div>
-          </div>
-    </div>
-</ng-template>
+        </div>
+    </ng-template>
 
 
 </body>

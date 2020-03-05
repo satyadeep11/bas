@@ -271,10 +271,10 @@ deliverdate=new Date();
 promolength=0;
 diffDays=0;
 secs;
-  // public url="url(https://www.securedgear.com/sites/998/products/998_";
+  // public url="url(https://securedgear.com/sites/998/products/998_";
   // public url_close=")";
 
-  public url = "url(https://www.securedgear.com/sites/997/products/997_";
+  public url = "url(https://securedgear.com/sites/997/products/997_";
   public url_close = ")";
 
   sites=["site1","site2","site3"];
@@ -525,7 +525,7 @@ updateImage(product, image, imageid) {
     // console.log("here")
     var inputElement = <HTMLInputElement>document.getElementById(imageid);
     if (document.getElementById(imageid)) {
-      var url = "https://www.securedgear.com/sites/997/products/997_";
+      var url = "https://securedgear.com/sites/997/products/997_";
       inputElement.style.backgroundImage ="url(" + url + product + "_" + image + ")";
     }
   }

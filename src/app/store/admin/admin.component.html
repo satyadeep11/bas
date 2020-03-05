@@ -6,9 +6,9 @@
         <div class="sidebar-content">
             <div class="sidebar-brand">
                 <a>{{storename||'Store Name'|titlecase}}</a>
-                <!-- <div id="close-sidebar" (click)="this.sidebar = !this.sidebar;">
+                <div id="close-sidebar" (click)="this.sidebar = !this.sidebar;">
                     <i class="fas fa-times"></i>
-                </div> -->
+                </div>
             </div>
             <div class="sidebar-header ">
                 <!-- <div class="user-pic">
@@ -268,12 +268,10 @@
                                     </button>&nbsp;
 
 
-                            <button (click)="deleteCustomer(user.StoreUserID)" class='basbtnsdysmall '>
-                                       Delete
-                                    </button>&nbsp;
-                            <button (click)="suspendFunction(user.StoreUserID)" class='basbtnsdysmall '>
+
+                            <!-- <button (click)="suspendFunction(user.StoreUserID)" class='basbtnsdysmall '>
                                         Suspend
-                                    </button>
+                                    </button> -->
                         </td>
                     </tr>
 
@@ -281,9 +279,170 @@
             </div>
 
             <div class="row" *ngIf="section=='editsingleuser'">
-                <button class='basbtnsdysmall'>Edit Recipient's Address</button>
-                <button class='basbtnsdysmall'>Edit Recipient's Order</button>
-                <button class='basbtnsdysmall'>Edit Recipient's Details</button>
+                <div class="container-fluid">
+                    <div class="row">
+                        <button class='basbtnsdysmall' (click)="editsingleuseraddress()">Edit Recipient's Address</button>
+                        <!-- <button class='basbtnsdysmall'>Edit Recipient's Order</button> -->
+                        <button class='basbtnsdysmall' (click)="editsingleuserdetails()">Edit Recipient's Details</button>
+                    </div>
+
+                    <div *ngIf="singleuseraddress=='corporate'">
+                        <p><strong>Corporate Adddress is used.</strong></p>
+                    </div>
+                    <div *ngIf="singleuserdetails">
+                        <div [formGroup]="singledetailsForm" class="form-row">
+                            <div class="form-group col-6">
+                                <label>First Name</label>
+                                <input type="text" autocomplete="name" formControlName="firstname" class="form-control" [ngClass]="{ 'is-invalid': singledetailserrors && singledetailsForm.controls.firstname.errors }" />
+                                <div *ngIf="singledetailserrors && singledetailsForm.controls.firstname.errors" class="invalid-feedback">
+                                    <div *ngIf="singledetailsForm.controls.firstname.errors.required">First Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Last Name</label>
+                                <input type="text" autocomplete="shipping address-line1" formControlName="lastname" class="form-control" [ngClass]="{ 'is-invalid': singledetailserrors && singledetailsForm.controls.lastname.errors }" />
+                                <div *ngIf="singledetailserrors && singledetailsForm.controls.lastname.errors" class="invalid-feedback">
+                                    <div *ngIf="singledetailsForm.controls.lastname.errors.required">Last Name is required
+                                    </div>
+                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                </div>
+                            </div>
+
+                            <div class="form-group col-6">
+                                <label>Phone</label>
+                                <input type="text" autocomplete="shipping locality" formControlName="phone" class="form-control" [ngClass]="{ 'is-invalid': singledetailserrors && singledetailsForm.controls.phone.errors }" />
+                                <div *ngIf="singledetailserrors && singledetailsForm.controls.phone.errors" class="invalid-feedback">
+                                    <div *ngIf="singledetailsForm.controls.phone.errors.required">Phone is required</div>
+                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Email</label>
+                                <input type="text" autocomplete="shipping postal-code" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': singledetailserrors && singledetailsForm.controls.email.errors }" />
+                                <div *ngIf="singledetailserrors && singledetailsForm.controls.email.errors" class="invalid-feedback">
+                                    <div *ngIf="singledetailsForm.controls.email.errors.required">Email is required</div>
+                                </div>
+                            </div>
+                            <button class="basbtn" (click)="savesingledetails()" type="button">Save</button>
+                            <button class="basbtnsdysmall" (click)="section='employees';title='Registered Recipients'" type="button">Cancel</button>
+                        </div>
+                    </div>
+
+                    <div *ngIf="singleuseraddress=='personal'">
+                        <div [formGroup]="singleaddressForm" class="form-row">
+                            <div class="form-group col-6">
+                                <label>Address Name</label>
+                                <input type="text" autocomplete="name" formControlName="addressname" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.addressname.errors }" />
+                                <div *ngIf="singleaddresserrors && singleaddressForm.controls.addressname.errors" class="invalid-feedback">
+                                    <div *ngIf="singleaddressForm.controls.addressname.errors.required">Address Name is required
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Street Address</label>
+                                <input type="text" autocomplete="shipping address-line1" formControlName="streetaddress" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.streetaddress.errors }" />
+                                <div *ngIf="singleaddresserrors && singleaddressForm.controls.streetaddress.errors" class="invalid-feedback">
+                                    <div *ngIf="singleaddressForm.controls.streetaddress.errors.required">Street Address is required
+                                    </div>
+                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Street Address 2</label>
+                                <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.streetaddress2.errors }" />
+                            </div>
+                            <div class="form-group col-6">
+                                <label>City</label>
+                                <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.city.errors }" />
+                                <div *ngIf="singleaddresserrors && singleaddressForm.controls.city.errors" class="invalid-feedback">
+                                    <div *ngIf="singleaddressForm.controls.city.errors.required">City is required</div>
+                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>State</label>
+                                <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.state.errors }">
+                                            <option value="AL">Alabama</option>
+                                            <option value="AK">Alaska</option>
+                                            <option value="AZ">Arizona</option>
+                                            <option value="AR">Arkansas</option>
+                                            <option value="CA">California</option>
+                                            <option value="CO">Colorado</option>
+                                            <option value="CT">Connecticut</option>
+                                            <option value="DE">Delaware</option>
+                                            <option value="DC">District Of Columbia</option>
+                                            <option value="FL">Florida</option>
+                                            <option value="GA">Georgia</option>
+                                            <option value="HI">Hawaii</option>
+                                            <option value="ID">Idaho</option>
+                                            <option value="IL">Illinois</option>
+                                            <option value="IN">Indiana</option>
+                                            <option value="IA">Iowa</option>
+                                            <option value="KS">Kansas</option>
+                                            <option value="KY">Kentucky</option>
+                                            <option value="LA">Louisiana</option>
+                                            <option value="ME">Maine</option>
+                                            <option value="MD">Maryland</option>
+                                            <option value="MA">Massachusetts</option>
+                                            <option value="MI">Michigan</option>
+                                            <option value="MN">Minnesota</option>
+                                            <option value="MS">Mississippi</option>
+                                            <option value="MO">Missouri</option>
+                                            <option value="MT">Montana</option>
+                                            <option value="NE">Nebraska</option>
+                                            <option value="NV">Nevada</option>
+                                            <option value="NH">New Hampshire</option>
+                                            <option value="NJ">New Jersey</option>
+                                            <option value="NM">New Mexico</option>
+                                            <option value="NY">New York</option>
+                                            <option value="NC">North Carolina</option>
+                                            <option value="ND">North Dakota</option>
+                                            <option value="OH">Ohio</option>
+                                            <option value="OK">Oklahoma</option>
+                                            <option value="OR">Oregon</option>
+                                            <option value="PA">Pennsylvania</option>
+                                            <option value="RI">Rhode Island</option>
+                                            <option value="SC">South Carolina</option>
+                                            <option value="SD">South Dakota</option>
+                                            <option value="TN">Tennessee</option>
+                                            <option value="TX">Texas</option>
+                                            <option value="UT">Utah</option>
+                                            <option value="VT">Vermont</option>
+                                            <option value="VA">Virginia</option>
+                                            <option value="WA">Washington</option>
+                                            <option value="WV">West Virginia</option>
+                                            <option value="WI">Wisconsin</option>
+                                            <option value="WY">Wyoming</option>
+                                            <option value="AS">American Samoa</option>
+                                            <option value="GU">Guam</option>
+                                            <option value="MP">Northern Mariana Islands</option>
+                                            <option value="PR">Puerto Rico</option>
+                                            <option value="UM">United States Minor Outlying Islands</option>
+                                            <option value="VI">Virgin Islands</option>
+                                            <option value="AA">Armed Forces Americas</option>
+                                            <option value="AP">Armed Forces Pacific</option>
+                                            <option value="AE">Armed Forces Others</option>	
+                                        </select>
+                                <!-- <input type="text" autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && address.controls.state.errors }" /> -->
+                                <div *ngIf="singleaddresserrors && singleaddressForm.controls.state.errors" class="invalid-feedback">
+                                    <div *ngIf="singleaddressForm.controls.state.errors.required">State is required</div>
+                                    <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
+                                </div>
+                            </div>
+                            <div class="form-group col-6">
+                                <label>Zip Code</label>
+                                <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.zip.errors }" />
+                                <div *ngIf="singleaddresserrors && singleaddressForm.controls.zip.errors" class="invalid-feedback">
+                                    <div *ngIf="singleaddressForm.controls.zip.errors.required">Zip Code is required</div>
+                                    <div *ngIf="singleaddressForm.controls.zip.errors.pattern">Invalid Zip</div>
+                                </div>
+                            </div>
+                            <button class="basbtn" (click)="savesingleaddress()" type="button">Save</button>
+                            <button class="basbtnsdysmall" (click)="section='employees';title='Registered Recipients'" type="button">Cancel</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
 
@@ -305,10 +464,13 @@
                     <div *ngIf="pending && !all_denied" class="alert alert-danger" role="alert">
                         Please Approve all orders before you can confirm order processing.
                     </div>
+                    <div *ngIf="!payment" class="alert alert-danger" role="alert">
+                        Please add a payment method using Settings>Payment>Manage Payment Settings or <button class="basbtn" (click)="section='payments';title='Payment Settings'">Click Here.</button>
+                    </div>
                     <div *ngIf="all_denied" class="alert alert-danger" role="alert">
                         No Orders. All Orders Denied.
                     </div>
-                    <button *ngIf="!customer_confirmed && !all_denied" [disabled]="pending ? true : null" class='basbtn m-1' (click)="confirmorders()">Finalize My Order</button>
+                    <button *ngIf="!customer_confirmed && !all_denied && payment" [disabled]="pending ? true : null" class='basbtn m-1' (click)="confirmorders()">Finalize My Order</button>
                 </div>
                 <table class='table  table-borderless table-hover table-responsive'>
                     <tr>
@@ -330,7 +492,7 @@
                     <!-- Use *ngFor directive to loop throught our list of products. -->
                     <tr *ngFor="let user of orders;let i=index">
                         <td>
-                            <img [src]="'https://www.securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
                         </td>
                         <td class="align-middle">{{user.ProductName}} ({{user.ImageFile.split('.').slice(0, -1).join('.')}})</td>
                         <td class="align-middle">{{user.Firstname}}</td>
@@ -377,176 +539,223 @@
 
             <div *ngIf="section=='storesettings'">
                 <div>
-                    <button class="basbtn" (click)="submit()">Save Changes</button>
+                    <button *ngIf="dynamicForm.dirty" class="basbtn" (click)="submit()">Save Changes</button>
                 </div>
                 <form [formGroup]="dynamicForm">
-                    <p><strong>Account</strong></p>
-                    <div *ngFor="let form_elem of storesettings">
-                        <div *ngIf="form_elem.control=='cname'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='cname'">Company Name</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='cname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                    <div class="accordion md-accordion text-dark" id="accordionEx" role="tablist" aria-multiselectable="true">
+                        <div class="card">
+                            <div class="card-header" role="tab" id="headingOne1">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapseOne1" aria-expanded="true" aria-controls="collapseOne1">
+                                    <p class="mb-0 text-dark">
+                                        <strong>Account</strong>
+                                    </p>
+                                </a>
                             </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='fname'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='fname'">First Name</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='fname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='lname'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='lname'">Last Name</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='lname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='phone'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='phone'">Phone</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='phone'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='email'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='email'">Email</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='email'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                    </div>
-
-                    <p><strong>Payment</strong></p>
-                    <button class="basbtnsdysmall mb-2" (click)="section='payments';title='Payment Settings'">Manage Payment Settings</button>
-                    <br><br>
-                    <p><strong>Store</strong></p>
-                    <div *ngFor="let form_elem of storesettings">
-                        <div *ngIf="form_elem.control=='storename'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='storename'">Store Name</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='storename'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='storeurl'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='storeurl'">Store Url</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='storeurl'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                    </div>
-                    <div *ngFor="let form_elem of storesettings">
-                        <div *ngIf="form_elem.control=='launchdate'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='launchdate'">Go Live Date</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='launchdate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                            <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
-                                Start date cannot be less than 1 day from today
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='enddate'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='enddate'">Close Date</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='enddate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                            <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.enddate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
-                                End date cannot be less than Reward program length from Start date
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='loginoption'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='loginoption'">Visitors to gain access to your store with:</p></label>
-                            <div class="col-sm-10">
-                                <select *ngIf="form_elem.control=='loginoption'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
-                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
-                                    <option  *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
-                                        {{opt}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div *ngIf="form_elem.control=='domainname'">
-                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('email')">
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label" for="{{form_elem.control}}">Add Domain</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
-                                        <button class="btn btn-primary mt-1" (click)="addDomain()">Add</button>
-                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && domainerror)" class="error-msg">
-                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
-                                                {{form_elem.name}} is required.</div>
-                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.pattern">
-                                                {{form_elem.name}} is invalid domain name.(avoid http,https and www)
+                            <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
+                                <div class="card-body ">
+                                    <div *ngFor="let form_elem of storesettings">
+                                        <div *ngIf="form_elem.control=='cname'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='cname'">Company Name</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='cname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='fname'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='fname'">First Name</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='fname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='lname'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='lname'">Last Name</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='lname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='phone'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='phone'">Phone</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='phone'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='email'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='email'">Email</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='email'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label"><p>List of Domains</p></label>
-                                    <div class="col-sm-10">
-                                        <div *ngFor="let item of domaindata">
-                                            <ul id="list" class="list-inline mt-1 pb-1">
-                                                <li class="list-group-item d-flex justify-content-between align-items-center">
-                                                    {{ item }}
-                                                    <button (click)="removeDomain(item)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" role="tab" id="heading2">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapse2" aria-expanded="true" aria-controls="collapse2">
+                                    <p class="mb-0 text-dark">
+                                        <strong>Payment</strong>
+                                    </p>
+                                </a>
+                            </div>
+                            <div id="collapse2" class="collapse" role="tabpanel" aria-labelledby="heading2" data-parent="#accordionEx">
+                                <div class="card-body ">
+                                    <button class="basbtnsdysmall mb-2" (click)="section='payments';title='Payment Settings'">Manage Payment Settings</button>
                                 </div>
                             </div>
-
                         </div>
-                        <div *ngIf="form_elem.control=='accesscode'">
-                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')">
-                                <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label" for="{{form_elem.control}}">Add Code</label>
-                                    <div class="col-sm-10">
-                                        <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
-                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
-                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
-                                                {{form_elem.name}} is required.</div>
+                        <div class="card">
+                            <div class="card-header" role="tab" id="heading3">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapse3" aria-expanded="true" aria-controls="collapse3">
+                                    <p class="mb-0 text-dark">
+                                        <strong>Store</strong>
+                                    </p>
+                                </a>
+                            </div>
+                            <div id="collapse3" class="collapse" role="tabpanel" aria-labelledby="heading3" data-parent="#accordionEx">
+                                <div class="card-body ">
+                                    <div *ngFor="let form_elem of storesettings">
+                                        <div *ngIf="form_elem.control=='storename'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='storename'">Store Name</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='storename'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='storeurl'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='storeurl'">Store Url</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='storeurl'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
                                         </div>
                                     </div>
+                                    <div *ngFor="let form_elem of storesettings">
+                                        <div *ngIf="form_elem.control=='launchdate'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='launchdate'">Go Live Date</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='launchdate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                            <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                                Start date cannot be less than 1 day from today
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='enddate'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='enddate'">Close Date</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='enddate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                            <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.enddate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                                End date cannot be less than Reward program length from Start date
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='loginoption'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='loginoption'">Visitors to gain access to your store with:</p></label>
+                                            <div class="col-sm-10">
+                                                <select *ngIf="form_elem.control=='loginoption'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
+                                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
+                                                    <option  *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                                        {{opt}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div *ngIf="form_elem.control=='domainname'">
+                                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('email')">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label" for="{{form_elem.control}}">Add Domain</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
+                                                        <button class="btn btn-primary mt-1" (click)="addDomain()">Add</button>
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors && domainerror)" class="error-msg">
+                                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.name}} is required.</div>
+                                                            <div *ngIf="dynamicForm.controls[form_elem.control].errors.pattern">
+                                                                {{form_elem.name}} is invalid domain name.(avoid http,https and www)
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label"><p>List of Domains</p></label>
+                                                    <div class="col-sm-10">
+                                                        <div *ngFor="let item of domaindata">
+                                                            <ul id="list" class="list-inline mt-1 pb-1">
+                                                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                                                    {{ item }}
+                                                                    <button (click)="removeDomain(item)"><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div *ngIf="form_elem.control=='accesscode'">
+                                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label" for="{{form_elem.control}}">Add Code</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
+                                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                                                {{form_elem.name}} is required.</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <button class="basbtnsdysmall mb-2" [routerLink]="home">Manage Store Appearance</button>
+                                    <button class="basbtnsdysmall mb-2" (click)="section='addressmgmt';title='Address Management'; addressmgmt()">Manage Corp Addresses</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-header" role="tab" id="heading4">
+                                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx" href="#collapse4" aria-expanded="true" aria-controls="collapse4">
+                                    <p class="mb-0 text-dark">
+                                        <strong>Gifts</strong>
+                                    </p>
+                                </a>
+                            </div>
+                            <div id="collapse4" class="collapse" role="tabpanel" aria-labelledby="heading4" data-parent="#accordionEx">
+                                <div class="card-body ">
+                                    <div *ngFor="let form_elem of storesettings.slice().reverse()">
+                                        <div *ngIf="form_elem.control=='deliverdate'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='deliverdate'">Gift Delivery Date</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='deliverdate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='shipping'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='shipping'">Gifts Will Be Shipped To</p></label>
+                                            <div class="col-sm-10">
+                                                <select id="{{form_elem.control}}" *ngIf="form_elem.control=='shipping'" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
+                                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
+                                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                                        {{opt}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='empcount'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='empcount'">Number of People Who Will Be Invited To Choose A Gift</p></label>
+                                            <div class="col-sm-10">
+                                                <select *ngIf="form_elem.control=='empcount'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
+                                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
+                                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
+                                                        {{opt}}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button class="basbtnsdysmall mb-2" (click)="section='productmgmt';title='Product Management '+ selection.length+ ' Selections';productmgmt();">Manage Gift Selections</button>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <button class="basbtnsdysmall mb-2" [routerLink]="home">Manage Store Appearance</button>
-
-                    <p><strong>Gifts</strong></p>
-                    <div *ngFor="let form_elem of storesettings.slice().reverse()">
-                        <div *ngIf="form_elem.control=='deliverdate'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='deliverdate'">Gift Delivery Date</p></label>
-                            <div class="col-sm-10">
-                                <input *ngIf="form_elem.control=='deliverdate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='shipping'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='shipping'">Gifts Will Be Shipped To</p></label>
-                            <div class="col-sm-10">
-                                <select id="{{form_elem.control}}" *ngIf="form_elem.control=='shipping'" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
-                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
-                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
-                                        {{opt}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div *ngIf="form_elem.control=='empcount'" class="form-group row">
-                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='empcount'">Number of People Who Will Be Invited To Choose A Gift</p></label>
-                            <div class="col-sm-10">
-                                <select *ngIf="form_elem.control=='empcount'" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" [value]="form_elem.value" class="form-control">
-                                    <!-- <select formControlName="{{form_elem.control}}" class="form-control" (change)="selectChange(form_elem.control)" [value]="-1"> -->                                                                 
-                                    <option *ngFor="let opt of form_elem.options.split(','); let i = index" [value]="opt">
-                                        {{opt}}
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <button class="basbtnsdysmall mb-2" (click)="section='productmgmt';title='Product Management '+ selection.length+ ' Selections';productmgmt();">Manage Gift Selections</button>
-                    <br>
-                    <button class="basbtnsdysmall mb-2" (click)="section='addressmgmt';title='Address Management'; addressmgmt()">Manage Corp Addresses</button>
                 </form>
 
                 <!-- <div>
@@ -558,7 +767,7 @@
                     <p><small>Change Addresses associated with your Store</small></p>
                 </div> -->
                 <div>
-                    <button class="basbtn" (click)="submit()">Save Changes</button>
+                    <button *ngIf="dynamicForm.dirty" class="basbtn" (click)="submit()">Save Changes</button>
                 </div>
             </div>
 
@@ -779,10 +988,10 @@
                                 <ng-container *ngIf="isArray(item.ImageFile); then hascolor; else singlecolor">
                                 </ng-container>
                                 <ng-template #hascolor>
-                                    <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
+                                    <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
                                 </ng-template>
                                 <ng-template #singlecolor>
-                                    <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                    <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
                                 </ng-template>
                                 <!-- <div class="card-body">
                                     <h5 class="card-title">{{item.ProductName}}</h5>
@@ -835,7 +1044,7 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <img [src]="'https://www.securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
+                                    <img [src]="'https://securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
                                 </div>
                                 <div class="col align-self-center">
                                     <p><b>{{selection.ProductName}}</b>({{selection.A2_Label}})</p>
@@ -888,7 +1097,7 @@
                             <div class="row">
                                 <div *ngFor="let option of item.Attr2; let i = index;let fst = first;" class="col-sm-6">
                                     <div class="card">
-                                        <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
+                                        <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
                                         <div class="card-body">
                                             <h5 class="card-title">{{item.A2_Label[i]}}</h5>
                                             <div>
@@ -909,7 +1118,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm-6">
                                     <div class="card d-block">
-                                        <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                        <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
                                         <div class="card-body">
                                             <h5 class="card-title">{{item.A2_Label}}</h5>
                                             <p class="card-text">

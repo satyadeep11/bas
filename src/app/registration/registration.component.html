@@ -216,10 +216,10 @@
                                                         <ng-container *ngIf="isArray(item.ImageFile); then hascolor; else singlecolor">
                                                         </ng-container>
                                                         <ng-template #hascolor>
-                                                            <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
+                                                            <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
                                                         </ng-template>
                                                         <ng-template #singlecolor>
-                                                            <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                                            <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
                                                         </ng-template>
                                                         <!-- <div class="card-body">
                                                             <h5 class="card-title">{{item.ProductName}}</h5>
@@ -638,7 +638,7 @@
 
                                                     <div class="row">
                                                         <div class="col">
-                                                            <img [src]="'https://www.securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
+                                                            <img [src]="'https://securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
                                                         </div>
                                                         <div class="col align-self-center">
                                                             <p><b>{{selection.ProductName}}</b>({{selection.A2_Label}})</p>
@@ -737,7 +737,7 @@
                                                     <div class="row">
                                                         <div *ngFor="let option of item.Attr2; let i = index;let fst = first;" class="col-sm-6">
                                                             <div class="card">
-                                                                <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
+                                                                <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
                                                                 <div class="card-body">
                                                                     <h5 class="card-title">{{item.A2_Label[i]}}</h5>
                                                                     <div>
@@ -758,7 +758,7 @@
                                                     <div class="row justify-content-center">
                                                         <div class="col-sm-6">
                                                             <div class="card d-block">
-                                                                <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                                                <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
                                                                 <div class="card-body">
                                                                     <h5 class="card-title">{{item.A2_Label}}</h5>
                                                                     <p class="card-text">

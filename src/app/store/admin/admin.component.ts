@@ -21,6 +21,8 @@ orders:any;
 storename;
 storesettings;
 dynamicForm: FormGroup;
+singleaddressForm: FormGroup;
+singledetailsForm: FormGroup;
 cname
 launchdate=new Date();
 enddate=new Date();
@@ -38,6 +40,7 @@ diffDays=0;
 customer_confirmed=false;
 all_denied=false;
 myData: any;
+payment;
 home;
   seeselection= Array();
   uniqueprods=Array();
@@ -59,6 +62,9 @@ home;
   showpaddress=false;
   emplist= Array();
   singleuser;
+  singleuseraddress;
+  singleaddresserrors;
+  singleuserdetails;
   
 
   constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
@@ -103,6 +109,7 @@ home;
           }
           console.log(user);
          this.storeid=user.sitedata[0].StoreID; 
+         this.payment=user.sitedata[0].Payment==1?true:false;
          var sk=this.storeid*5+(this.site.charCodeAt(1))*11+(this.site.charCodeAt(this.site.length-1))*1987;
 if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
   sessionStorage.clear();
@@ -164,7 +171,8 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
           user => {
             console.log(user,"datas")
            this.storesettings=user;
-           console.log(this.storesettings)
+           var name= this.storesettings.filter(val => (["fname","lname"].includes(val.control)));
+           this.cname= name[0].value + " " +name[1].value;
            this.storesettings= this.storesettings.filter(val => !(["theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));
            console.log(this.storesettings)           
            this.loadupFormGroup();
@@ -182,7 +190,7 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
   
         }
          ); 
-         this.cname=JSON.parse(sessionStorage.getItem("ud"))["Firstname"]+' '+JSON.parse(sessionStorage.getItem("ud"))["Lastname"];
+        //  this.cname=JSON.parse(sessionStorage.getItem("ud"))["Firstname"]+' '+JSON.parse(sessionStorage.getItem("ud"))["Lastname"];
     }    
    }
 
@@ -290,6 +298,11 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
       window.scroll(0,0);
       return;
   }
+
+  if (!this.dynamicForm.dirty) {
+    alert("No Changes")
+    return;
+}
 
     if(this.dynamicForm.controls.loginoption.value.includes('email')){
       if(this.domaindata.length==0){
@@ -505,6 +518,82 @@ dateChange(control){
   }
   editCustomerInfo(a){
     this.singleuser=a;
+    console.log(a)
+
+    this.singleaddressForm = this.formBuilder.group({
+      addressname: ["", Validators.required],
+      streetaddress: ["", [Validators.required]],
+      streetaddress2: [""],
+      city: ["", [Validators.required]],
+      state: ["", [Validators.required]],
+      zip: [
+        "",
+        [
+          Validators.required,
+          Validators.pattern("^[0-9]{5}(?:-[0-9]{4})?$")
+        ]
+      ]
+      });
+
+      this.singledetailsForm = this.formBuilder.group({
+        firstname: ["", Validators.required],
+        lastname: ["", [Validators.required]],
+        phone: [""],
+        email: ["", [Validators.required]]      
+        });
+      this.editsingleuseraddress();
+  }
+
+  editsingleuseraddress(){
+    this.singleuserdetails=""; 
+    this.apiService.getsingleuseraddress(this.singleuser.StoreUserID).subscribe(
+      user => {
+        console.log(user,"datas")  
+         
+        this.singleaddressForm.controls.addressname.patchValue(user.useraddress[0].Address_Name); 
+        this.singleaddressForm.controls.streetaddress.patchValue(user.useraddress[0].Address);   
+        this.singleaddressForm.controls.streetaddress2.patchValue(user.useraddress[0].Address2);   
+        this.singleaddressForm.controls.city.patchValue(user.useraddress[0].CityID);   
+        this.singleaddressForm.controls.state.patchValue(user.useraddress[0].StateID);   
+        this.singleaddressForm.controls.zip.patchValue(user.useraddress[0].PostalCode);
+        if(this.singleuser.Shipping==1){
+          this.singleuseraddress='personal';  
+        }        
+        else {
+          this.singleuseraddress='corporate';
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
+  editsingleuserdetails(){
+    this.singledetailsForm.controls.firstname.patchValue(this.singleuser.Firstname);
+    this.singledetailsForm.controls.lastname.patchValue(this.singleuser.Lastname);
+    this.singledetailsForm.controls.phone.patchValue(this.singleuser.Phone);
+    this.singledetailsForm.controls.email.patchValue(this.singleuser.Email);
+    this.singleuserdetails=true; 
+    this.singleuseraddress="";
+  }
+
+  savesingleaddress(){
+    console.log(this.singleaddressForm.value)
+    var addressdata=Array();
+    addressdata.push(this.singleaddressForm.value);
+    var finaldata=({storeuserid:this.singleuser.StoreUserID ,addressdata: addressdata});
+    this.apiService.savesingleuseraddress(finaldata).subscribe(
+      user => {
+        console.log(user,"datas") 
+        if(!user["error"]){
+          alert("Address updated")
+          this.editsingleuseraddress();
+        } 
+        else{
+          alert("Something went wrong.")
+        }
+      },
+      error => console.log(error)
+    );
   }
 
   seeSelections(content){
@@ -777,6 +866,7 @@ EditSingleAd(i) {
     }
   }
 }
+
 //add annother addrress
 addAnotherAd() {
   this.addresserrors = true;

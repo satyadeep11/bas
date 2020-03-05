@@ -196,7 +196,13 @@ export class ApiService {
   check_store_product_order(finaldata){    
     return this.httpClient.post<any>(baseurl+'/php_api/check-store-product-order.php',finaldata);
   }
-  
+
+  getsingleuseraddress(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/get-single-user-address.php',finaldata);
+  }
+  savesingleuseraddress(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/save-single-user-address.php',finaldata);
+  }
 
   uploadFile(data) {
     let uploadURL = baseurl+'/php_api/image-upload.php';

@@ -333,7 +333,7 @@
                 <div *ngFor="let item of productdetail;index as i;" class="col-sm-3 mb-5 text-center">
                     <div class="card h-100">
                         <span *ngIf="item.custom_image==0">
-                                <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.Productid+ '_'+item.ImageFile" alt="">
+                                <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.Productid+ '_'+item.ImageFile" alt="">
                         </span>
                         <span *ngIf="item.custom_image==1">
                                 <img class="card-img-top" [src]="item.custom_image_url" alt="">
@@ -367,7 +367,7 @@
                     <!-- Use *ngFor directive to loop throught our list of products. -->
                     <tr *ngFor="let user of orders;let i=index;">
                         <td>
-                            <img [src]="'https://www.securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid" style="max-width: 150px;" alt="">
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid" style="max-width: 150px;" alt="">
                         </td>
                         <td class="align-middle">{{user.ProductName}}</td>
                         <td class="align-middle">{{user.Firstname}}</td>
@@ -418,7 +418,7 @@
                 </div>
 
                 <div>
-                    <button (click)="section='payments';title='Store Payment Settings';" class='btn btn-primary m-1 float-right'>Back</button>
+                    <button (click)="section='payments';title='Store Payment Settings';" class='basbtnsdysmall m-1 float-right'>Back</button>
                 </div>
 
             </div>
@@ -993,10 +993,10 @@
                                 <ng-container *ngIf="isArray(item.ImageFile); then hascolor; else singlecolor">
                                 </ng-container>
                                 <ng-template #hascolor>
-                                    <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
+                                    <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[0]" alt="Card image cap">
                                 </ng-template>
                                 <ng-template #singlecolor>
-                                    <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                    <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
                                 </ng-template>
                                 <!-- <div class="card-body">
                                         <h5 class="card-title">{{item.ProductName}}</h5>
@@ -1049,7 +1049,7 @@
 
                             <div class="row">
                                 <div class="col">
-                                    <img [src]="'https://www.securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
+                                    <img [src]="'https://securedgear.com/sites/997/products/997_' +selection.ProductID+'_'+selection.ImageFile" class="rounded float-left" style="max-width: 200px;">
                                 </div>
                                 <div class="col align-self-center">
                                     <p><b>{{selection.ProductName}}</b>({{selection.A2_Label}})</p>
@@ -1102,7 +1102,7 @@
                             <div class="row">
                                 <div *ngFor="let option of item.Attr2; let i = index;let fst = first;" class="col-sm-6">
                                     <div class="card">
-                                        <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
+                                        <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile[i]" alt="Card image cap">
                                         <div class="card-body">
                                             <h5 class="card-title">{{item.A2_Label[i]}}</h5>
                                             <div>
@@ -1123,7 +1123,7 @@
                             <div class="row justify-content-center">
                                 <div class="col-sm-6">
                                     <div class="card d-block">
-                                        <img class="card-img-top" [src]="'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
+                                        <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.ProductID+'_'+item.ImageFile" alt="Card image cap">
                                         <div class="card-body">
                                             <h5 class="card-title">{{item.A2_Label}}</h5>
                                             <p class="card-text">

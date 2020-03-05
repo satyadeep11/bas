@@ -447,7 +447,7 @@
                         <div class="row p-lg-5">
                             <!-- <div *ngFor="let item of uniqueprods" class="col-md-6 col-lg-4 text-center">
                                 <div class="portfolio-item mx-auto" (click)="productdetails(content,item)">
-                                    <img class="img-fluid" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
+                                    <img class="img-fluid" [src]=" 'https://securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
                                     <div class="text-center">
                                         <h4 class="item-title-fluid"><a [routerLink]="">{{item.ProductName|titlecase}}</a></h4>
                                     </div>
@@ -456,7 +456,7 @@
                             </div> -->
                             <div *ngFor="let item of uniqueprods" class="col-sm-4 mb-5 text-center">
                                 <div class="card h-100" [ngStyle]="{'border': '3px solid'+primarycolor }">
-                                    <img class="card-img-top" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
+                                    <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
                                     <div class="card-body">
                                         <p class="card-title"><b>{{item.ProductName|titlecase}}</b></p>
                                         <!-- <p class="card-text">{{item.ProductDesc1}}</p> -->
@@ -525,7 +525,7 @@
                                     <tr>
                                         <td data-th="">
                                             <div class="row">
-                                                <div class="col-sm-2 hidden-xs"><img style="max-width: 7rem;" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="..." class="img-responsive" /></div>
+                                                <div class="col-sm-2 hidden-xs"><img style="max-width: 7rem;" [src]=" 'https://securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="..." class="img-responsive" /></div>
                                                 <div class="col-sm-8">
                                                     <h4 class="nomargin">{{pselect.ProductName|titlecase}} ({{pselect.A2_Label}})</h4>
                                                     <p>{{pselect.ProductDesc1}}</p>
@@ -542,7 +542,7 @@
                                 <div class="col-sm-12">
                                     <div class="card border-0 text-center mb-2 ">
                                         <div class="card-body">
-                                            <img class="card-img-top" style="max-width: 14rem;" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap">
+                                            <img class="card-img-top" style="max-width: 14rem;" [src]=" 'https://securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap">
                                             <h6 class="card-title"><strong>{{pselect.ProductName|titlecase}} </strong>({{pselect.A2_Label}})</h6>
                                             <p class="card-text px-lg-5">{{pselect.ProductDesc1}}</p>
                                             <div>
@@ -919,7 +919,7 @@
                             <div class="col-lg-12">
                                 <div class="d-flex justify-content-center">
                                     <div *ngFor="let product of products">
-                                        <img class="card-img-top" [src]=" 'https://www.securedgear.com/sites/997/products/997_' +product.ProductID+ '_'+product.ImageFile" alt="" style="max-width: 350px;">
+                                        <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +product.ProductID+ '_'+product.ImageFile" alt="" style="max-width: 350px;">
                                         <div class="card-body">
                                             <p class="card-text">{{product.A2_Label}}</p>
                                         </div>

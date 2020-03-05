@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { FormBuilder,  FormGroup,  FormArray,  FormControl,  Validators, ValidationErrors } from "@angular/forms";
 import { MatStepper } from "@angular/material/stepper";
 import { ApiService } from "../../app/api.service";
@@ -63,7 +63,7 @@ deliverdate=new Date();
 promolength=0;
 diffDays=0;
 domainerror=false;
-public url = "url(https://www.securedgear.com/sites/997/products/997_";
+public url = "url(https://securedgear.com/sites/997/products/997_";
 public url_close = ")";
 uname="a";
 pword="b";
@@ -342,6 +342,13 @@ formTemplate= this.form_template;
 
 @ViewChild("stepper", { static: false }) stepper: MatStepper;
 
+// @HostListener('window:beforeunload', ['$event'])
+//     unloadNotification($event: any) {
+        // this.savedFormState = formGroup.getRawValue()
+
+//         formGroup.patchValue(this.saveFormState);
+//     }
+
 public setTitle( newTitle: string) {
   this.titleService.setTitle( newTitle );
 }
@@ -616,7 +623,7 @@ updateImage(product, image, imageid) {
     // console.log("here")
     var inputElement = <HTMLInputElement>document.getElementById(imageid);
     if (document.getElementById(imageid)) {
-      var url = "https://www.securedgear.com/sites/997/products/997_";
+      var url = "https://securedgear.com/sites/997/products/997_";
       inputElement.style.backgroundImage ="url(" + url + product + "_" + image + ")";
     }
   }
@@ -799,6 +806,16 @@ removeCheck(attr2) {
 }
 //add color to color array
 addtocart(pname, pid, attr2, a2_label,imagefile) {
+var prods= [...new Set(this.seeselection.map(item => item.productid))];
+console.log(prods)
+  if(prods.length>5 && !prods.includes(pid)){
+    var r = confirm("Adding more than 6 items usally leads to more products to show and less chances of getting pricing breaks for products. This would cost you more.");
+    if (r == true) {
+    
+    } else {
+    return;
+    }
+  }
   var i = 0;
   if (Array.isArray(attr2)) {
     attr2.forEach((a2id,i) => {
