@@ -65,6 +65,8 @@ home;
   singleuseraddress;
   singleaddresserrors;
   singleuserdetails;
+  singledetailserrors;
+  savesingledetails;
   
 
   constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
