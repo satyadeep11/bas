@@ -94,7 +94,7 @@
                                         <li class="m-2">
                                             <p>
                                                 <small>
-                                                    Use the drop down below to customize your site's theme. Select Default to choose colors closest to your brand.
+                                                    Use the drop down below to customize your site's theme. Select <i>Default</i> to choose colors closest to your brand.
                                                 </small>
                                             </p>
                                             <select title="Colors" title="Colors" class="form-control" [(ngModel)]="theme" (change)="themechange($event.target.value)">     
@@ -286,7 +286,7 @@
                                 <img [src]="logoimage" alt="" class="img-rounded float-left" style="height: 100px;width: 100px;">
                             </a>
                             <div *ngIf="!logoimage" class="py-3">
-                                <span class="text-center border border-secondary rounded p-1">
+                                <span class="text-center p-1">
                                             <a class="navbar-brand js-scroll-trigger mr-0 px-2" [style.font-family]="storenamefont"><b>{{storename||'Store Name'|titlecase}}</b></a>
                                     </span>
                             </div>
@@ -348,13 +348,11 @@
                                     <br> This site will accept orders until 11:00 PM CST on {{storeclose||'Store Close Date'}}.
                                     <br> Don't miss out! Be sure to place your order before that day.</h4>
                                 <form [formGroup]="loginForm">
-                                    <div *ngIf="domain" class="input-group input-group-lg">
-                                        <!-- <div class="input-group-prepend">
-                                        <span class="input-group-text" id="inputGroup-sizing-lg">Enter Email</span>
-                                    </div> -->
+                                    <!-- <div *ngIf="domain" class="input-group input-group-lg">                                        
                                         <input formControlName="email" type="text" class="form-control" aria-label="Enter Email" aria-describedby="inputGroup-sizing-sm" placeholder="Enter Email">
-                                    </div>
-                                    <div *ngIf="code" class="input-group input-group-lg">
+                                    </div> -->
+                                    <!-- <div *ngIf="code" class="input-group input-group-lg"> -->
+                                    <div class="input-group input-group-lg">
                                         <!-- <div class="input-group-prepend">
                                         <span class="input-group-text" id="inputGroup-sizing-lg">Enter Access Code</span>
                                     </div> -->
@@ -375,8 +373,8 @@
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
                                 <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
-                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
-                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'}}</b></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -387,8 +385,8 @@
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
                                 <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
-                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
-                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'}}</b></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -399,8 +397,8 @@
                         <div class="row h-100 justify-content-center align-items-center">
                             <div class="col" style="max-width: max-content;">
                                 <div [ngClass]="transparentbg?'bg-white':'bg-transparent'" class=" p-5">
-                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'|titlecase}}</b></h1>
-                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc|titlecase}}</h3>
+                                    <h1 class="mb-2" id="headline" [style.color]="textcolor" [style.font-family]="mainheadlinefont" style="font-size: 5vw;"><b>{{bannerheading||'Banner Heading'}}</b></h1>
+                                    <h3 class="lead" id="sub-head" [style.color]="textcolor" [style.font-family]="subheadlinefont" style="font-size: 2.5vw;">{{bannerdesc}}</h3>
                                 </div>
                             </div>
                         </div>
@@ -418,11 +416,11 @@
                     </div>
                 </header> -->
                 <div class="container-fluid">
-                    <div class="row h-100 pt-5">
+                    <div class="row h-100 pt-4">
                         <div class="col-md-2"></div>
                         <div class="col-md-8 col-lg-8 ">
                             <span *ngIf="reason">
-                                <p>{{reason|titlecase}}</p>
+                                <p>{{reason}}</p>
                                 <br>
                             </span>
 
@@ -575,7 +573,7 @@
                             </div>
                             <div *ngIf="empaddress" class="col-sm-12">
                                 <div *ngIf="!showshipping && !hideaddaddress">
-                                    <button class="btn btn-secondary basbtnhomesecondary" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="showshipping=true;" type="button">Use My Address</button>
+                                    <button class="btn btn-secondary basbtnhomesecondary" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="showshipping=true;" type="button">Type in My Own Address</button>
                                 </div>
                             </div>
                         </div>
@@ -783,7 +781,7 @@
                                     </div>
                                 </div>
                             </div> -->
-                            <div *ngIf="code" class="form-group col-6">
+                            <!-- <div *ngIf="code" class="form-group col-6">
                                 <label for="code">Store Access Code</label>
                                 <input type="text" formControlName="code" class="form-control" [ngClass]="{ 'is-invalid': registrationerrors && f.code.errors }" />
                                 <div *ngIf="(registrationerrors && f.code.errors)" class="invalid-feedback">
@@ -794,7 +792,7 @@
                                         Access Code is wrong
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <div class="text-center">
                             <button class="btn btn-secondary basbtnhomesecondary" (click)="finalcheckouts()" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Place My Order</button>
@@ -879,10 +877,10 @@
                                 <div class="col">
                                     <ul class="list-unstyled">
                                         <li>
-                                            <a class="text-white" href="#!">800-658-9014</a>
+                                            <a class="text-white" href="#!">{{contactphone}}</a>
                                         </li>
                                         <li>
-                                            <a class="text-white" href="#!">helpmybrand@idworks.com</a>
+                                            <a class="text-white" href="#!">{{contactemail}}</a>
                                         </li>
                                     </ul>
                                 </div>

@@ -96,14 +96,14 @@ form_template:Settings=[
     validator:"required",
     section: 1
   },    
-  {
+ {
     name:"Store Login Type",
     type: "select",
     label: "How do you want visitors to gain access to your store?",
     control: "loginoption",
-    options: ["Use their company email address", "Use an access code I give them"],
-    validator:"required",
-    section: 1   
+    options: ["Use an access code I give them"],
+    validator:"",
+    section: 0   
   },
   {
     name:"Domain Name",
@@ -115,7 +115,7 @@ form_template:Settings=[
   {
     name:"Access Code",
     type: "textBox",
-    label: "Please enter the code you would like to use in the the field below.",
+    label: "For security purposes, visitors will need to enter a code to gain access to your store. Please enter the code you would like to use in the field below.",
     control: "accesscode",
     validator:"required",
     section: 1
@@ -287,6 +287,22 @@ form_template:Settings=[
     section: 3
   },
   {
+    name:"Contact Phone",
+    type: "textBox",
+    label: "What phone can your store's visitors contact if they have questions?",
+    control: "contactphone",
+    validator:"required",
+    section: 3
+  },
+  {
+    name:"Contact Email",
+    type: "textBox",
+    label: "What email can your store's visitors contact if they have questions?",
+    control: "contactemail",    
+    section: 3,
+    validator:"required,email"
+  },
+  {
     name:"Theme",
     type: "select",
     label: "Select Theme",
@@ -422,6 +438,7 @@ ngOnInit() {
           this.t.push(
             this.formBuilder.group({
               addressname: [element.addressname, Validators.required],
+              shiptoname: [element.shiptoname, Validators.required],
               streetaddress: [element.streetaddress, [Validators.required]],
               streetaddress2: [element.streetaddress2],
               city: [element.city, [Validators.required]],
@@ -1014,6 +1031,7 @@ addAnotherAd() {
     this.t.push(
       this.formBuilder.group({
         addressname: ["", Validators.required],
+        shiptoname: ["", Validators.required],
         streetaddress: ["", [Validators.required]],
         streetaddress2: [""],
         city: ["", [Validators.required]],
@@ -1235,7 +1253,7 @@ checkSection(i) {
       this.dynamicForm.controls.domainname.patchValue(this.domaindata.join());
       this.progress=35;
       this.sectiontitle="Choose the gifts they'll love.";
-      this.sectiondesc="Make your selections, then you'll get to design your store! In our experience offering 4-6 gift choices works best.";
+      this.sectiondesc="Make your selections, then you'll get to design your store!<br><small>Pro Tip: Fewer gift choices may get you better pricing per item. Try offering 6 options or less.</small>";
       this.sectionbtn="Save & Preview My Store";
     }
     if(i=="gift"){

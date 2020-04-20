@@ -101,6 +101,8 @@ export class HomeComponent implements OnInit {
   bodyfont="Open Sans";
   transparentbgbup;
   ie = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
+  contactemail;
+  contactphone;
 
   constructor(private data: DataService,private modalService: NgbModal,private route: ActivatedRoute,private formBuilder: FormBuilder,private router: Router,private apiService: ApiService,) {
     this.loading=true;
@@ -218,6 +220,8 @@ export class HomeComponent implements OnInit {
                 this.reason=this.storedata.sitedata.find(o => o.Settingcontrol === 'reason').SettingValue;
                 this.storename=this.storedata.sitedata.find(o => o.Settingcontrol === 'storename').SettingValue;
                 this.companyname=this.storedata.sitedata.find(o => o.Settingcontrol === 'cname').SettingValue;
+                this.contactemail=this.storedata.sitedata.find(o => o.Settingcontrol === 'contactemail').SettingValue;
+                this.contactphone=this.storedata.sitedata.find(o => o.Settingcontrol === 'contactphone').SettingValue;
                this.bannerimage=this.storedata.sitedata.find(o => o.Settingcontrol === 'bannerimage').SettingValue;
                if(this.bannerimage){
                 this.tempbannername=this.bannerimage;
@@ -233,6 +237,7 @@ export class HomeComponent implements OnInit {
                 var loginoption=this.storedata.sitedata.find(o => o.Settingcontrol === 'loginoption').SettingValue;
                 this.domain=loginoption.toLowerCase().includes("email");
                 this.code=loginoption.toLowerCase().includes("code");
+                this.code=true;
                 console.log(loginoption,this.domain,this.code,"xx")
                 this.domainname=this.storedata.sitedata.find(o => o.Settingcontrol === 'domainname').SettingValue;
                 this.accesscode=this.storedata.sitedata.find(o => o.Settingcontrol === 'accesscode').SettingValue;

@@ -120,7 +120,7 @@
                                                             </div>
                                                         </div>
                                                         <div *ngIf="form_elem.control=='accesscode'">
-                                                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')">
+                                                            <div>
                                                                 <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
                                                                 <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
                                                                 <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section1errors)" class="error-msg">
@@ -155,6 +155,9 @@
                                                         <div *ngIf="form_elem.control=='deliverdate' && this.dynamicForm.controls.deliverdate.value<this.deliverdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
                                                             Deliver date cannot be less than 2 weeks from End date.
                                                         </div>
+                                                        <div *ngIf="form_elem.control=='deliverdate'">
+                                                            <p><small>Keep in mind that the more time you can allow before delivery, the more gifts you'll have to choose from.</small></p>
+                                                        </div>
                                                     </div>
                                                     <div *ngSwitchCase="'textArea'" class="form-group">
                                                         <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
@@ -175,6 +178,9 @@
                                                         </select>
                                                         <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section1errors)" class="error-msg">
                                                             <div *ngIf="dynamicForm.controls[form_elem.control].errors.required">Field is required.</div>
+                                                        </div>
+                                                        <div *ngIf="form_elem.control=='shipping'">
+                                                            <p><small>Shipping to your first address is free. Any additional addresses will be $10 each.</small></p>
                                                         </div>
                                                     </div>
                                                     <div *ngSwitchCase="'file'" class="form-group">
@@ -383,9 +389,9 @@
 
                                                         <div *ngIf="(dynamicForm.controls[form_elem.control].errors && section3errors)" class="error-msg">
                                                             <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
-                                                                {{form_elem.label}} is required.</div>
+                                                                {{form_elem.name}} is required.</div>
                                                             <div [hidden]="!dynamicForm.controls[form_elem.control].errors.email">
-                                                                {{form_elem.label}} is invalid.</div>
+                                                                {{form_elem.name}} is invalid.</div>
                                                         </div>
                                                         <div class="error-msg" *ngIf="dupemail && form_elem.control=='email'">
                                                             {{form_elem.label}} is already in use.</div>
@@ -447,13 +453,16 @@
                                         </div>
                                         <div *ngIf="dynamicForm.controls.shipping.value=='To a corporate address' || dynamicForm.controls.shipping.value=='Recipients can choose from a corporate address or enter their home address'">
                                             <label>Corporate Address</label>
-                                            <p><small>You indicated that you would like to have gifts shipped to a corporate address. Please share that address in the section below. You will have a chance to add additional addresses once the first one is created.</small></p>
+                                            <p><small>You indicated that you would like to have gifts shipped to a corporate address. Please share that address in the section below. You will have a chance to add additional addresses once the first one is created. Shipping to your first address is free. Any additional addresses will be $10 each.</small></p>
                                             <div class="card-group" *ngIf="t.controls.length>0">
                                                 <div *ngFor="let address of t.controls; let i = index">
                                                     <div class="card">
                                                         <div *ngIf="!this.Address[i]" class="card-body" id="AddressResp{{i}}">
                                                             <div class="card-title">
                                                                 <p>{{this.dynamicForm.value["addressesarray"][i].addressname|titlecase}}</p>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <p>Attn: {{this.dynamicForm.value["addressesarray"][i].shiptoname}}</p>
                                                             </div>
                                                             <div class="card-text">
                                                                 <p>{{this.dynamicForm.value["addressesarray"][i].streetaddress}} {{this.dynamicForm.value["addressesarray"][i].streetaddress2}}</p>
@@ -487,6 +496,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="form-group col-6">
+                                                            <label>Ship To Attention</label>
+                                                            <input type="text" autocomplete="name" formControlName="shiptoname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.shiptoname.errors }" />
+                                                            <div *ngIf="addresserrors && address.controls.shiptoname.errors" class="invalid-feedback">
+                                                                <div *ngIf="address.controls.addressname.errors.required">Ship to Name is required
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group col-6">
                                                             <label>Street Address</label>
                                                             <input type="text" autocomplete="shipping address-line1" formControlName="streetaddress" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress.errors }" />
                                                             <div *ngIf="addresserrors && address.controls.streetaddress.errors" class="invalid-feedback">
@@ -499,7 +516,7 @@
                                                             <label>Street Address 2</label>
                                                             <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress2.errors }" />
                                                         </div>
-                                                        <div class="form-group col-6">
+                                                        <div class="form-group col-4">
                                                             <label>City</label>
                                                             <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.city.errors }" />
                                                             <div *ngIf="addresserrors && address.controls.city.errors" class="invalid-feedback">
@@ -507,7 +524,7 @@
                                                                 <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
                                                             </div>
                                                         </div>
-                                                        <div class="form-group col-6">
+                                                        <div class="form-group col-4">
                                                             <label>State</label>
                                                             <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }">
                                                                     <option value="AL">Alabama</option>
@@ -577,7 +594,7 @@
                                                                 <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
                                                             </div>
                                                         </div>
-                                                        <div class="form-group col-6">
+                                                        <div class="form-group col-4">
                                                             <label>Zip Code</label>
                                                             <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
                                                             <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
@@ -792,8 +809,8 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr *ngFor="let row of pb;let last=last">
-                                                                        <td>{{row.QtyMin}}</td>
-                                                                        <td>{{last?'Max':row.QtyMax}}</td>
+                                                                        <td>{{last?row.QtyMin+'+':row.QtyMin}}</td>
+                                                                        <td>{{last?'':row.QtyMax}}</td>
                                                                         <td>{{row.Price|currency}}</td>
                                                                     </tr>
                                                                 </tbody>
