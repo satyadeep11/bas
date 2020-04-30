@@ -30,7 +30,7 @@ export class SuperadminComponent implements OnInit {
   domainerror=false;
   promolength;
   productdetail;
-  baseurl="http://localhost";
+  baseurl= window.location.hostname.includes("localhost")?"http://localhost":"";
   customimages=[];
   customer_confirmed=false;
   pending=false;

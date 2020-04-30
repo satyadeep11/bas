@@ -4,7 +4,7 @@ import { Products } from './registration/registration.component';
 import { Observable,BehaviorSubject} from 'rxjs';
 import { map } from  'rxjs/operators';
 
-var baseurl="http://localhost";
+var   baseurl= window.location.hostname.includes("localhost")?"http://localhost":"";
 
 @Injectable({
   providedIn: 'root'

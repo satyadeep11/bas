@@ -345,7 +345,7 @@
                         <div class="col" style="max-width: max-content;">
                             <div class="text-center p-5">
                                 <h4 class="lead mb-5">Please enter your {{domain?'email address':'access code'|lowercase}} below to view the gift options {{companyname||'Store Name'|titlecase}} has chosen for you.
-                                    <br> This site will accept orders until 11:00 PM CST on {{storeclose||'Store Close Date'}}.
+                                    <br> This site will accept orders until 11:00 PM CST on {{storeclose||'Store Close Date'|date}}.
                                     <br> Don't miss out! Be sure to place your order before that day.</h4>
                                 <form [formGroup]="loginForm">
                                     <!-- <div *ngIf="domain" class="input-group input-group-lg">                                        
@@ -566,7 +566,7 @@
                                         <h6 class="card-text">{{address.streetaddress|titlecase}}, {{address.streetaddress2|titlecase}}{{address.streetaddress2?',':''}} {{address.city|titlecase}}, {{address.state|titlecase}}, {{address.zip}}</h6>
                                         <div>
                                             <button [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" class="btn btn-secondary basbtnhomesecondary mr-2" (click)="adselect(i,address)">Select</button>
-                                            <button *ngIf="!address.AddressID" (click)="this.addresses.splice(i, 1); hideaddaddress=false;finalcheckout=!finalcheckout" class="btn btn-secondary basbtnhomesecondary">Delete</button>
+                                            <button *ngIf="!address.AddressID" (click)="this.successclass[i]=[];this.addresses.splice(i, 1); hideaddaddress=false;finalcheckout=!finalcheckout" class="btn btn-secondary basbtnhomesecondary">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -696,7 +696,7 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-center">
-                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)=" onSubmit()" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Add</button>
+                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)=" onSubmit(addressmodal)" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Add</button>
                                         <button class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=false" type="button">Cancel</button>
                                     </div>
                                 </div>
@@ -941,6 +941,49 @@
         </div>
     </div>
 </body>
+
+<ng-template #addressmodal let-modal>
+    <div class="modal-header">
+        <h6 class="text-center">Suggested Address</h6>
+        <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div class="container">
+            <div class="row">
+                <div class="card-group mx-auto">
+                    <div *ngFor=" let saddress of saddress;let i = index;">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    <p>{{saddress.name|titlecase}}</p>
+                                </div>
+                                <!-- <div class="card-text">
+                                    <p>Attn: </p>
+                                </div> -->
+                                <div class="card-text">
+                                    <p>{{saddress.addr1}} , {{saddress.addr2}}</p>
+                                </div>
+                                <div class="card-text">
+                                    <p>{{saddress.city}} , {{saddress.state}}, {{saddress.zipcode}} - {{saddress.zipcode_addon}} </p>
+                                </div>
+                            </div>
+                            <!-- <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button> -->
+                            <button ngbAutofocus (click)="closeModal();updatesaddress(i)" class=" border-light basbtn">Accept</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer justify-content-center">
+        <button ngbAutofocus (click)="addresspush();closeModal();" class=" border-light basbtn">Use Original Address</button>
+        <button class="btn btn-secondary" style="border-radius: 2rem;" (click)="closeModal();">Cancel</button>
+    </div>
+
+</ng-template>
 <div *ngIf="loading" class="container-fluid  h-100">
     <div class="row d-flex align-items-center justify-content-center h-100">
         <div class="">
@@ -949,3 +992,5 @@
         </div>
     </div>
 </div>
+
+<div *ngIf="loadingspinner" class="loading"></div>

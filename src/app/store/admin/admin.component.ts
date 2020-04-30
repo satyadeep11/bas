@@ -129,6 +129,7 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
           user => {
             if(!user.error){
             this.orders = user["orders"];
+            console.log(this.orders,"xherex");
             this.pending=this.orders.some(function(o){return o['Pending'] == '1'});
             this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
             
@@ -853,9 +854,11 @@ addSingleAd(i) {
   this.Address[i] = false;  
   this.addAnother = true;    
   this.addresserrors = false;
+  console.log(this.addressesarray.value);
 }
 //remove single address
 CancelSingleAd(i) {
+  console.log(this.addressesarray);
   this.addressesarray.removeAt(i);
   this.addAnother = true;
 }
@@ -876,6 +879,9 @@ addAnotherAd() {
     this.Address[this.addressesarray.length] = true;
     this.addressesarray.push(
       this.formBuilder.group({
+        type:'C',
+        cost:'10',
+        main:'0',
         addressname: ["", Validators.required],
         streetaddress: ["", [Validators.required]],
         streetaddress2: [""],
@@ -918,7 +924,7 @@ update2caddress(suid){
     this.addressesarray= new FormArray([]);
     this.apiService.shipsettings(this.storeid).subscribe(
       user => {        
-        console.log(user); 
+        console.log(user,"ship"); 
         this.ss=user;        
         this.addsetting=user.shipping.empshipsetting;
         this.paddress=user.shipping.personal;
@@ -927,6 +933,9 @@ update2caddress(suid){
             (element, i) => {
               this.addressesarray.push(
                 this.formBuilder.group({
+                  type:element.type,
+                  cost:element.cost,
+                  main:element.main,
                   addressname: [element.addressname, Validators.required],
                   streetaddress: [element.streetaddress, [Validators.required]],
                   streetaddress2: [element.streetaddress2],
@@ -1101,6 +1110,7 @@ update2caddress(suid){
         if(!user.error) {
           alert("Address Settings Updated");
           this.addressmgmt();
+          this.personalcheck()
         }   
         else{          
           console.log("error")

@@ -837,6 +837,12 @@
                                 <div class="card-group" *ngIf="addressesarray.controls.length>0">
                                     <div *ngFor="let address of addressesarray.value; let i = index">
                                         <div class="card">
+                                            <div *ngIf="!this.Address[i] && address.main==1" class="card-header text-center">
+                                                <p>Free Shipping (Primary)</p>
+                                            </div>
+                                            <div *ngIf="!this.Address[i] && address.main==0" class="card-header text-center">
+                                                <p>$10 per Shipment</p>
+                                            </div>
                                             <div *ngIf="!this.Address[i]" class="card-body" id="AddressResp{{i}}">
                                                 <div class="card-title">
                                                     <p>{{address.addressname|titlecase}}</p>

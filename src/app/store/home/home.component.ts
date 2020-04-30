@@ -18,6 +18,7 @@ export class HomeComponent implements OnInit {
   id:any;
   address: FormGroup;
   loading = false;
+  loadingspinner= false;
   submitted = false;
   returnUrl: string;
   storeurl=''
@@ -52,7 +53,7 @@ export class HomeComponent implements OnInit {
   code;
   registerForm: FormGroup; 
   pending=0;
-  baseurl="http://localhost";
+  baseurl= window.location.hostname.includes("localhost")?"http://localhost":"";
   loginForm: FormGroup;
   domainname;
   accesscode;
@@ -103,6 +104,7 @@ export class HomeComponent implements OnInit {
   ie = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
   contactemail;
   contactphone;
+  saddress
 
   constructor(private data: DataService,private modalService: NgbModal,private route: ActivatedRoute,private formBuilder: FormBuilder,private router: Router,private apiService: ApiService,) {
     this.loading=true;
@@ -110,6 +112,7 @@ export class HomeComponent implements OnInit {
       this.site=params['id'];  
       this.uname=params['uid'];  
       this.pword=params['pwd'];   
+      console.log( this.baseurl);
       console.log(this.site,this.uname,this.pword); 
       
       this.storeurl='/stores/'+this.site; 
@@ -246,7 +249,7 @@ export class HomeComponent implements OnInit {
                 this.themechange(this.theme);            
                 // this.storeclose= new Date(this.storeclose).toDateString();
                 var options = {year: 'numeric', month: 'long', day: 'numeric' };
-                this.storeclose=new Date(this.storeclose).toLocaleDateString("en-US", options);
+                // this.storeclose=new Date(this.storeclose).toLocaleDateString("en-US", options);
               
                 // localStorage.setItem("storeurl",myData.sitedata[0].StoreUrl);
                 this.storeid=this.storedata.sitedata[0].StoreID;
@@ -296,6 +299,9 @@ export class HomeComponent implements OnInit {
                   console.log(this.empaddress,this.addresses);    
                   if(this.empaddress){
                     this.address = this.formBuilder.group({
+                      type:['P'],
+                      cost:[10],
+                      main:[0],
                       addressname: ["", Validators.required],
                       streetaddress: ["", [Validators.required]],
                       streetaddress2: [""],
@@ -330,7 +336,7 @@ export class HomeComponent implements OnInit {
         phone: ['', Validators.required],
         // password: ['', [Validators.required, Validators.minLength(6)]],
         // confirmpassword: ['', [Validators.required, Validators.minLength(6)]],
-        code: ['', [Validators.required, Validators.pattern("^"+this.accesscode+"$")]],
+        code: ['', [Validators.pattern("^"+this.accesscode+"$")]],
     });
     this.formControlValueChanged();
     }
@@ -469,9 +475,11 @@ else{
 
         // stop here if form is invalid
         if (this.registerForm.invalid) {
+          console.log(this.registerForm)
             return;
         }
         else{
+          this.loadingspinner=true;
           // console.log(this.registerForm.value)
     var finaldata=({storeid:this.storeid,userdata:this.registerForm.value , productdata: this.productdata, addressdata:this.addressdata,pending:this.pending});
     console.log(finaldata);
@@ -486,9 +494,11 @@ else{
           this.finalcheckout=!this.finalcheckout;
           this.addressdata=[];
           this.successclass=[];
+          this.loadingspinner=false;
         }   
         else{
           this.dupemail=true;
+          this.loadingspinner=false;
           console.log("here")
         }    
       },
@@ -542,19 +552,106 @@ this.addressdata.push(address);
 console.log(this.pending);
   }
 
-  onSubmit() {
+  onSubmit(addressmodal) {
     this.addresserrors = true;
     if (this.address.invalid) {
       return;
   }
   else{
-    this.addresses.push(this.address.value);
+    this.loadingspinner=true;
+    console.log(this.address.controls)
+    this.shiprocket(this.address.value,addressmodal);  
+  }
+  }
+
+  shiprocket(address,addressmodal){  
+    var self=this;
+    var UPS_KEY = "0C8479FDBF9C0038";
+    var UPS_USER = "ryanborn";
+    var UPS_PASS = "idworks";
+      var url = "https://api.rocketship.it/v1";
+      var method = "POST";
+      var postData = { "carrier": "UPS",
+                        "action": "AddressValidate","params": {
+                          "username": UPS_USER,
+                          "password": UPS_PASS,
+                          "key": UPS_KEY,
+  
+                          "to_name": address.addressname,
+                          "to_addr1": address.streetaddress,
+                          "to_addr2": address.streetaddress2,
+                          "to_state": address.state,
+                          "to_city": address.city,
+                          "to_code": (address.zip).toString(),
+                          "to_country": "US"
+                        } 
+                    };
+      
+      // You REALLY want shouldBeAsync = true.
+      // Otherwise, it'll block ALL execution waiting for server response.
+      var shouldBeAsync = true;    
+      var request = new XMLHttpRequest();
+      request.onload = function () {
+        self.loadingspinner=false;
+         var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+         var data = request.responseText; // Returned data, e.g., an HTML document.
+         console.log(request.responseText);
+         if(!JSON.parse(data).data.city_state_zip_match){
+          if(JSON.parse(data).data.suggestions!=null){
+           self.saddress=JSON.parse(data).data.suggestions;
+           // self.saddress.addr2=self.saddress.addr2==''?self.dynamicForm.value["addressesarray"][i].streetaddress2:self.saddress.addr2;
+           console.log(self.saddress,JSON.parse(data));
+           self.openDialog(addressmodal);
+          }
+        }
+        else{
+          self.addresspush();
+        } 
+      }
+      request.open(method, url, shouldBeAsync);
+      request.setRequestHeader("Content-Type", "application/json");
+      request.setRequestHeader("x-api-key", "9TipcqNm5542LB9IoPRJu7Ja3nwGF3Ne2ga71Zdg");    
+      request.send(JSON.stringify(postData));
+  
+      
+  }
+
+  //Open Dialog
+openDialog(formdone){
+  this.modalReference=this.modalService.open(formdone, { centered: true });
+}
+
+updatesaddress(j){
+console.log()
+  this.address.controls.streetaddress.patchValue(this.saddress[j].addr1, {onlySelf: true});
+  this.saddress[j].addr2=this.saddress[j].addr2==''?this.address.value.streetaddress2:this.saddress[j].addr2;
+  this.address.controls.streetaddress2.patchValue(this.saddress[j].addr2, {onlySelf: true});
+  this.address.controls.city.patchValue(this.saddress[j].city, {onlySelf: true});
+  this.address.controls.state.patchValue(this.saddress[j].state, {onlySelf: true});
+  this.address.controls.zip.patchValue(this.saddress[j].zipcode +'-'+ this.saddress[j].zipcode_addon, {onlySelf: true});
+
+
+  this.address.value.streetaddress=(this.saddress[j].addr1);
+  this.address.value.streetaddress2=(this.saddress[j].addr2);
+  this.address.value.city=(this.saddress[j].city);
+  this.address.value.state=(this.saddress[j].state);
+  this.address.value.zip=(this.saddress[j].zipcode +'-'+ this.saddress[j].zipcode_addon);
+ 
+  console.log(this.address.value);
+this.addresspush();
+
+}
+
+addresspush(){
+  //
+  this.addresses.push(this.address.value);
     console.log(this.addresses,this.address.value);
     this.showshipping=false;
     this.hideaddaddress=true;
     this.addresserrors = false;
-  }
-  }
+  //
+  console.log(this.addressdata)
+}
 
   mergeandflat(myData) {
     myData.forEach(element => {

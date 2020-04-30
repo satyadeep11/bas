@@ -455,24 +455,33 @@
                                             <label>Corporate Address</label>
                                             <p><small>You indicated that you would like to have gifts shipped to a corporate address. Please share that address in the section below. You will have a chance to add additional addresses once the first one is created. Shipping to your first address is free. Any additional addresses will be $10 each.</small></p>
                                             <div class="card-group" *ngIf="t.controls.length>0">
-                                                <div *ngFor="let address of t.controls; let i = index">
+                                                <div class="text-center" *ngFor="let address of t.controls; let i = index">
                                                     <div class="card">
-                                                        <div *ngIf="!this.Address[i]" class="card-body" id="AddressResp{{i}}">
-                                                            <div class="card-title">
-                                                                <p>{{this.dynamicForm.value["addressesarray"][i].addressname|titlecase}}</p>
+                                                        <div *ngIf="!this.Address[i]" id="AddressResp{{i}}">
+                                                            <div *ngIf="i==0" class="card-header">
+                                                                Free Shipping (Primary)
                                                             </div>
-                                                            <div class="card-text">
-                                                                <p>Attn: {{this.dynamicForm.value["addressesarray"][i].shiptoname}}</p>
+                                                            <div *ngIf="i!=0" class="card-header">
+                                                                $10 for each Shipment
                                                             </div>
-                                                            <div class="card-text">
-                                                                <p>{{this.dynamicForm.value["addressesarray"][i].streetaddress}} {{this.dynamicForm.value["addressesarray"][i].streetaddress2}}</p>
-                                                            </div>
-                                                            <div class="card-text">
-                                                                <p>{{this.dynamicForm.value["addressesarray"][i].city}} , {{this.dynamicForm.value["addressesarray"][i].state}}, {{this.dynamicForm.value["addressesarray"][i].zip}}</p>
+                                                            <div class="card-body text-left">
+                                                                <div class="card-title">
+                                                                    <p>{{this.dynamicForm.value["addressesarray"][i].addressname|titlecase}}</p>
+                                                                </div>
+                                                                <div class="card-text">
+                                                                    <p>Attn: {{this.dynamicForm.value["addressesarray"][i].shiptoname}}</p>
+                                                                </div>
+                                                                <div class="card-text">
+                                                                    <p>{{this.dynamicForm.value["addressesarray"][i].streetaddress}} , {{this.dynamicForm.value["addressesarray"][i].streetaddress2}}</p>
+                                                                </div>
+                                                                <div class="card-text">
+                                                                    <p>{{this.dynamicForm.value["addressesarray"][i].city}} , {{this.dynamicForm.value["addressesarray"][i].state}}, {{this.dynamicForm.value["addressesarray"][i].zip}}</p>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                         <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button>
                                                     </div>
+                                                    <button mat-raised-button *ngIf="!this.Address[i] && i!=0" (click)="MakePrimary(i)" type="button">Make Primary</button>
                                                 </div>
                                             </div>
                                             <div *ngFor="let address of t.controls; let i = index" class="list-group list-group-flush">
@@ -497,9 +506,9 @@
                                                         </div>
                                                         <div class="form-group col-6">
                                                             <label>Ship To Attention</label>
-                                                            <input type="text" autocomplete="name" formControlName="shiptoname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.shiptoname.errors }" />
+                                                            <input type="text" autocomplete="shiptoname" formControlName="shiptoname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.shiptoname.errors }" />
                                                             <div *ngIf="addresserrors && address.controls.shiptoname.errors" class="invalid-feedback">
-                                                                <div *ngIf="address.controls.addressname.errors.required">Ship to Name is required
+                                                                <div *ngIf="address.controls.shiptoname.errors.required">Ship to Name is required
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -596,13 +605,13 @@
                                                         </div>
                                                         <div class="form-group col-4">
                                                             <label>Zip Code</label>
-                                                            <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
+                                                            <input type="text" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
                                                             <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
                                                                 <div *ngIf="address.controls.zip.errors.required">Zip Code is required</div>
                                                                 <div *ngIf="address.controls.zip.errors.pattern">Invalid Zip</div>
                                                             </div>
                                                         </div>
-                                                        <button mat-raised-button (click)="addSingleAd(i)" type="button">Add</button>
+                                                        <button mat-raised-button (click)="addSingleAd(i,addressmodal)" type="button">Add</button>
                                                         <button mat-raised-button *ngIf="i>0" (click)="CancelSingleAd(i)" type="button">Cancel</button>
                                                     </div>
                                                 </div>
@@ -684,6 +693,50 @@
                                 <button *ngIf="seeselection.length!=0" ngbAutofocus (click)="closeModal();checkSection('gift')" class=" border-light basbtn">NEXT: Customize My Store</button>
                                 <button *ngIf="seeselection.length==0" class="btn btn-secondary" style="border-radius: 2rem;" (click)="closeModal()">Go Back</button>
                                 <!-- <button type="button" class="btn btn-primary" [routerLink]="['/products',catid]" [routerLinkActive]="['router-link-active']" (click)="closeModal()">Add More Products</button>   -->
+                            </div>
+
+                        </ng-template>
+
+
+                        <ng-template #addressmodal let-modal>
+                            <div class="modal-header">
+                                <h6 class="text-center">Suggested Address</h6>
+                                <button type="button" class="close" aria-label="Close" (click)="closeModal()">
+                                        <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="card-group mx-auto">
+                                            <div *ngFor=" let saddress of saddress;let i = index;">
+                                                <div class="card">
+                                                    <div class="card-body">
+                                                        <div class="card-title">
+                                                            <p>{{saddress.name|titlecase}}</p>
+                                                        </div>
+                                                        <!-- <div class="card-text">
+                                                            <p>Attn: </p>
+                                                        </div> -->
+                                                        <div class="card-text">
+                                                            <p>{{saddress.addr1}} , {{saddress.addr2}}</p>
+                                                        </div>
+                                                        <div class="card-text">
+                                                            <p>{{saddress.city}} , {{saddress.state}}, {{saddress.zipcode}} - {{saddress.zipcode_addon}} </p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button> -->
+                                                    <button ngbAutofocus (click)="closeModal();updatesaddress(saddressi,i)" class=" border-light basbtn">Accept</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer justify-content-center">
+                                <button ngbAutofocus (click)="closeModal();" class=" border-light basbtn">Use Original Address</button>
+                                <button class="btn btn-secondary" style="border-radius: 2rem;" (click)="closeModal();EditSingleAd(saddressi)">Cancel</button>
                             </div>
 
                         </ng-template>
@@ -943,4 +996,5 @@
         </div>
     </footer>
     <div class="footer-copyright text-center py-3">© 2020 Identity Works, Inc</div>
+    <div *ngIf="loading" class="loading"></div>
 </div>

@@ -69,6 +69,9 @@ uname="a";
 pword="b";
 siteurl="c";
 allcats;
+loading=false;
+saddress;
+saddressi=0;
 
 form_template:Settings=[    
   {
@@ -437,6 +440,9 @@ ngOnInit() {
         (element, i) => {
           this.t.push(
             this.formBuilder.group({
+              type:['C'],
+              cost:[10],
+              main:[0],
               addressname: [element.addressname, Validators.required],
               shiptoname: [element.shiptoname, Validators.required],
               streetaddress: [element.streetaddress, [Validators.required]],
@@ -457,6 +463,7 @@ ngOnInit() {
     this.addAnotherAd();
   }
   this.formControlValueChanged();  
+  console.log(this.t.controls);
 }
 
 //Pricing Breaks
@@ -995,14 +1002,137 @@ onClear() {
   }
 }
 
+
+shiprocket(address,addressmodal,i){  
+  var self=this;
+  var UPS_KEY = "0C8479FDBF9C0038";
+	var UPS_USER = "ryanborn";
+	var UPS_PASS = "idworks";
+    var url = "https://api.rocketship.it/v1";
+    var method = "POST";
+    var postData = { "carrier": "UPS",
+                      "action": "AddressValidate","params": {
+                        "username": UPS_USER,
+                        "password": UPS_PASS,
+                        "key": UPS_KEY,
+
+                        "to_name": address.addressname,
+                        "to_addr1": address.streetaddress,
+                        "to_addr2": address.streetaddress2,
+                        "to_state": address.state,
+                        "to_city": address.city,
+                        "to_code": (address.zip).toString(),
+                        "to_country": "US"
+                      } 
+                  };
+    
+    // You REALLY want shouldBeAsync = true.
+    // Otherwise, it'll block ALL execution waiting for server response.
+    var shouldBeAsync = true;    
+    var request = new XMLHttpRequest();
+    request.onload = function () {
+      self.loading=false;
+       var status = request.status; // HTTP response status, e.g., 200 for "200 OK"
+       var data = request.responseText; // Returned data, e.g., an HTML document.
+       console.log(request.responseText);
+       if(!JSON.parse(data).data.city_state_zip_match){
+         if(JSON.parse(data).data.suggestions!=null){
+          self.saddress=JSON.parse(data).data.suggestions;
+          // self.saddress.addr2=self.saddress.addr2==''?self.dynamicForm.value["addressesarray"][i].streetaddress2:self.saddress.addr2;
+          console.log(self.saddress,JSON.parse(data));
+          self.openDialog(addressmodal);
+         }
+       }       
+       
+    }
+    request.open(method, url, shouldBeAsync);
+    request.setRequestHeader("Content-Type", "application/json");
+    request.setRequestHeader("x-api-key", "9TipcqNm5542LB9IoPRJu7Ja3nwGF3Ne2ga71Zdg");    
+    request.send(JSON.stringify(postData));
+
+    
+}
+
+updatesaddress(i,j){
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].streetaddress.patchValue(this.saddress[j].addr1, {onlySelf: true});
+  this.saddress[j].addr2=this.saddress[j].addr2==''?this.dynamicForm.value["addressesarray"][i].streetaddress2:this.saddress[j].addr2;
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].streetaddress2.patchValue(this.saddress[j].addr2, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].city.patchValue(this.saddress[j].city, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].state.patchValue(this.saddress[j].state, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].zip.patchValue(this.saddress[j].zipcode +'-'+ this.saddress[j].zipcode_addon, {onlySelf: true});
+
+
+  this.dynamicForm.value["addressesarray"][i].streetaddress=(this.saddress[j].addr1);
+  this.dynamicForm.value["addressesarray"][i].streetaddress2=(this.saddress[j].addr2);
+  this.dynamicForm.value["addressesarray"][i].city=(this.saddress[j].city);
+  this.dynamicForm.value["addressesarray"][i].state=(this.saddress[j].state);
+  this.dynamicForm.value["addressesarray"][i].zip=(this.saddress[j].zipcode +'-'+ this.saddress[j].zipcode_addon);
+ 
+  console.log(this.dynamicForm.value["addressesarray"][i]);
+  
+}
+
+MakePrimary(i){
+
+  var addressnameholder =this.dynamicForm.value["addressesarray"][i].addressname
+  var shiptonameholder =this.dynamicForm.value["addressesarray"][i].shiptoname
+  var streetaddressholder =this.dynamicForm.value["addressesarray"][i].streetaddress
+  var streetaddress2holder =this.dynamicForm.value["addressesarray"][i].streetaddress2
+  var cityholder =this.dynamicForm.value["addressesarray"][i].city
+  var stateholder =this.dynamicForm.value["addressesarray"][i].state
+  var zipholder =this.dynamicForm.value["addressesarray"][i].zip
+
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].addressname.patchValue(this.dynamicForm.value["addressesarray"][0].addressname, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].shiptoname.patchValue(this.dynamicForm.value["addressesarray"][0].shiptoname, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].streetaddress.patchValue(this.dynamicForm.value["addressesarray"][0].streetaddress, {onlySelf: true});  
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].streetaddress2.patchValue(this.dynamicForm.value["addressesarray"][0].streetaddress2, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].city.patchValue(this.dynamicForm.value["addressesarray"][0].city, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].state.patchValue(this.dynamicForm.value["addressesarray"][0].state, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][i]['controls'].zip.patchValue(this.dynamicForm.value["addressesarray"][0].zip, {onlySelf: true});
+
+
+  this.dynamicForm.value["addressesarray"][i].addressname=this.dynamicForm.value["addressesarray"][0].addressname;
+  this.dynamicForm.value["addressesarray"][i].shiptoname=this.dynamicForm.value["addressesarray"][0].shiptoname;
+  this.dynamicForm.value["addressesarray"][i].streetaddress=this.dynamicForm.value["addressesarray"][0].streetaddress
+  this.dynamicForm.value["addressesarray"][i].streetaddress2=this.dynamicForm.value["addressesarray"][0].streetaddress2;
+  this.dynamicForm.value["addressesarray"][i].city=this.dynamicForm.value["addressesarray"][0].city;
+  this.dynamicForm.value["addressesarray"][i].state=this.dynamicForm.value["addressesarray"][0].state;
+  this.dynamicForm.value["addressesarray"][i].zip=this.dynamicForm.value["addressesarray"][0].zip;
+/////
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].addressname.patchValue(addressnameholder, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].shiptoname.patchValue(shiptonameholder, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].streetaddress.patchValue(streetaddressholder, {onlySelf: true});  
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].streetaddress2.patchValue(streetaddress2holder, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].city.patchValue(cityholder, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].state.patchValue(stateholder, {onlySelf: true});
+  this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].zip.patchValue(zipholder, {onlySelf: true});
+
+
+  this.dynamicForm.value["addressesarray"][0].addressname=(addressnameholder);
+  this.dynamicForm.value["addressesarray"][0].shiptoname=(shiptonameholder);
+  this.dynamicForm.value["addressesarray"][0].streetaddress=(streetaddressholder);
+  this.dynamicForm.value["addressesarray"][0].streetaddress2=(streetaddress2holder);
+  this.dynamicForm.value["addressesarray"][0].city=(cityholder);
+  this.dynamicForm.value["addressesarray"][0].state=(stateholder);
+  this.dynamicForm.value["addressesarray"][0].zip=(zipholder);
+
+  console.log(this.dynamicForm.value["addressesarray"]);
+  
+}
+
+
 //address functions
 //add single address
-addSingleAd(i) {
+addSingleAd(i,addressmodal) {
+  
   // console.log(this.dynamicForm.controls);
   this.addresserrors = true;
   if (this.dynamicForm.controls.addressesarray.invalid) {
     return;
-  }    
+  }  
+  this.loading=true;
+  this.saddressi=i;
+  this.shiprocket(this.dynamicForm.value["addressesarray"][i],addressmodal,i);  
   this.Address[i] = false;
   console.log(this.dynamicForm.value["addressesarray"][i]);
   this.addAnother = true;
@@ -1030,6 +1160,9 @@ addAnotherAd() {
     this.Address[this.t.length] = true;
     this.t.push(
       this.formBuilder.group({
+        type:['C'],
+        cost:[10],
+        main:[0],
         addressname: ["", Validators.required],
         shiptoname: ["", Validators.required],
         streetaddress: ["", [Validators.required]],
@@ -1207,6 +1340,11 @@ checkSection(i) {
               }
               this.dynamicForm.controls.textcolor.patchValue('white');
               this.dynamicForm.controls.theme.patchValue('Default');
+              this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].main.patchValue(1, {onlySelf: true});
+              this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].cost.patchValue(0, {onlySelf: true});  
+              this.dynamicForm.value["addressesarray"][0].main=1;
+              this.dynamicForm.value["addressesarray"][0].cost=0;  
+              console.log(this.dynamicForm.value["addressesarray"]);
             var userdata=({fname:this.dynamicForm.value.fname,lname:this.dynamicForm.value.lname,phone:this.dynamicForm.value.phone,email:this.dynamicForm.value.email,password:this.dynamicForm.value.password});
             var finaldata=({ storedata: this.dynamicForm.value , productdata: this.selection,addressdata:this.dynamicForm.value["addressesarray"],userdata:userdata});
             // console.log(finaldata.storedata,finaldata.productdata,finaldata.addressdata,finaldata.userdata);

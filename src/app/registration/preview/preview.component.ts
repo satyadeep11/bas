@@ -17,7 +17,7 @@ export class PreviewComponent implements OnInit {
   bannerimage=localStorage.getItem("bannerimage");
   reason=localStorage.getItem("reason");
   uniqueprods;
-  baseurl="http://localhost";
+  baseurl= window.location.hostname.includes("localhost")?"http://localhost":"";
   constructor( private apiService: ApiService,private formBuilder: FormBuilder,) { }
 
   ngOnInit() {
