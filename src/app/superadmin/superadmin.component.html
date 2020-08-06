@@ -328,6 +328,45 @@
                 </table>
             </div>
 
+            <div *ngIf="section=='reports'">
+                <button (click)="accountingReport()" class='basbtn'>Accounting Report</button>
+                <button (click)="amReport()" class='basbtn'>AM Report</button>
+            </div>
+
+            <div *ngIf="section=='review'">
+                <button (click)="excel(ordersummary)" class='basbtn'>Download Excel</button>
+                <table class='table  table-borderless table-hover table-responsive'>
+                    <tr class="thead-dark">
+                        <th class="align-middle text-center">Selection</th>
+                        <th class="align-middle ">Product Name</th>
+                        <th class="align-middle ">Count</th>
+                        <th class="align-middle ">Price</th>
+                        <th class="align-middle ">Shipping</th>
+                        <th class="align-middle ">Tax</th>
+                        <th class="align-middle ">Total</th>
+                    </tr>
+
+                    <!-- Use *ngFor directive to loop throught our list of products. -->
+                    <tr *ngFor="let user of ordersummary;let i=index">
+                        <td>
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.ProductID+'_'+user.image" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
+                        </td>
+                        <td class="align-middle">{{user.ProdName}}</td>
+                        <td class="align-middle">{{user.count}}</td>
+                        <td class="align-middle">{{user.price|currency}}</td>
+                        <td class="align-middle">{{user.shipping|currency}}</td>
+                        <td class="align-middle">{{user.tax|currency}}</td>
+                        <td class="align-middle">{{user.grand|currency}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="12" class="text-right">
+                            <p>Estimated Total: <strong>{{finaltotal|currency}}</strong></p>
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
 
             <div class="row" *ngIf="section=='product_detail'">
                 <div *ngFor="let item of productdetail;index as i;" class="col-sm-3 mb-5 text-center">
@@ -354,6 +393,9 @@
 
 
             <div class="row" *ngIf="section=='orders_store'">
+                <button (click)="storeordersummary()" class='basbtn'>Order Summary</button>
+                <button (click)="section='reports';title='Reports'" class='basbtn'>Reports</button>
+
                 <table class='table table-hover table-responsive'>
                     <tr>
                         <th>Product Image</th>
@@ -362,19 +404,19 @@
                         <th>Last Name</th>
                         <th>Email</th>
                         <th>Phone</th>
-                        <th>Actions</th>
+                        <th *ngIf="!customer_confirmed">Actions</th>
                     </tr>
                     <!-- Use *ngFor directive to loop throught our list of products. -->
                     <tr *ngFor="let user of orders;let i=index;">
                         <td>
-                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid" style="max-width: 150px;" alt="">
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.ProductID+'_'+user.image" class="img-fluid" style="max-width: 150px;" alt="">
                         </td>
-                        <td class="align-middle">{{user.ProductName}}</td>
+                        <td class="align-middle">{{user.ProdName}}</td>
                         <td class="align-middle">{{user.Firstname}}</td>
                         <td class="align-middle">{{user.Lastname}}</td>
                         <td class="align-middle">{{user.Email}}</td>
                         <td class="align-middle">{{user.Phone}}</td>
-                        <td class="align-middle text-center" id="actions_td">
+                        <td class="align-middle text-center" id="actions_td" *ngIf="!customer_confirmed">
                             <p *ngIf="user.Pending==0">
                                 <span *ngIf="user.deny==0 && user.Shipping==0">Approved <small>(Ships to Corporate Address)</small></span>
                                 <span *ngIf="user.deny==0 && user.Shipping==1">Approved <small>(Ships to Personal Address)</small></span>
@@ -404,7 +446,7 @@
                         <td>{{store.CName}}</td>
                         <td>{{store.EDate}}</td>
                         <td id="actions_td">
-                            <button *ngIf="store.Payment==1" (click)="section='store_payment';currentstoreid=store.StoreID" class='basbtnsdysmall m-1'>Charge Customer</button>
+                            <button *ngIf="store.Payment==1" (click)="section='store_payment';currentstoreid=store.StoreID" class='basbtnsdysmall m-1'>See Transaction</button>
                             <!-- <button (click)="section='store_invoice';title='Sample Store Invoice';" class='btn btn-primary m-1'>Invoice</button> -->
                             <p *ngIf="store.Payment==0">Payment Method Unavailable.</p>
                         </td>
@@ -439,7 +481,7 @@
                                             {{form_elem.label}} is invalid.</div>
                                     </div>
                                 </div>
-                                <div *ngIf="form_elem.control=='domainname'">
+                                <!-- <div *ngIf="form_elem.control=='domainname'">
                                     <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('Domain')">
                                         <label for="{{form_elem.control}}">{{form_elem.label}}</label>
                                         <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
@@ -463,16 +505,16 @@
                                         </div>
                                     </div>
 
-                                </div>
+                                </div> -->
                                 <div *ngIf="form_elem.control=='accesscode'">
-                                    <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('Code')">
-                                        <label for="{{form_elem.control}}">{{form_elem.label}}</label>
-                                        <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
-                                        <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
-                                            <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
-                                                {{form_elem.label}} is required.</div>
-                                        </div>
+                                    <!-- <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')"> -->
+                                    <label for="{{form_elem.control}}">{{form_elem.label}}</label>
+                                    <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
+                                    <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
+                                        <div [hidden]="!dynamicForm.controls[form_elem.control].errors.required">
+                                            {{form_elem.label}} is required.</div>
                                     </div>
+                                    <!-- </div> -->
                                 </div>
                             </div>
                             <div *ngSwitchCase="'number'" class="form-group">
@@ -508,7 +550,7 @@
                                 <label for="{{form_elem.control}}">{{form_elem.label}}</label>
                                 <div class="input-group mb-3">
                                     <div class="input-group-prepend">
-                                        <span class="input-group-text" id="basic-addon3">https://buildastore.com/stores/</span>
+                                        <span class="input-group-text" id="basic-addon3">https://buildagiftstore.com/stores/</span>
                                     </div>
                                     <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
                                 </div>
@@ -604,10 +646,10 @@
                             </div> -->
 
                             <div *ngIf="showpaddress">
-                                <div class="alert alert-warning" role="alert">
+                                <!-- <div class="alert alert-warning" role="alert">
                                     <p class=""><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> The following need their addressess updated.
                                     </p>
-                                </div>
+                                </div> -->
                                 <div class="container">
                                     <div class="row">
                                         <div class="card-deck">

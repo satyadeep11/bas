@@ -27,7 +27,7 @@
                     <a class="nav-link" [routerLink]="['/contact-us']">Contact Us</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link" [routerLink]="['/stores']">Sign In</a>
+                    <a class="nav-link" [routerLink]="['/sign-in']">Sign In</a>
                 </li>
             </ul>
         </div>
@@ -47,29 +47,67 @@
 
 <div class="container">
     <div class="row py-5">
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <!-- 2 empty sections in the left -->
         </div>
-        <div class="col-sm-4 py-5 text-center">
+        <div class="col-sm-6 py-5 text-center">
 
             <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                 <div class="form-group">
-                    <input type="text" formControlName="storename" placeholder="Enter Store Url" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.storename.errors }" />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon3">http://buildagiftstore.com/stores/</span>
+                        </div>
+                        <input type="text" formControlName="storename" placeholder="Enter Store Name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.storename.errors }" />
+                    </div>
                     <div *ngIf="submitted && f.storename.errors" class="invalid-feedback">
                         <div *ngIf="f.storename.errors.required">Store Url is required</div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button [disabled]="loading" class=" border-light basbtn text-uppercase">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm m-1"></span>
-            SIGN IN
-        </button>
-
+                    <button [disabled]="loading" class=" border-light basbtn text-uppercase" (click)="this.toadmin=0">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm m-1"></span>
+                        Visit Website
+                    </button>
+                    <button [disabled]="loading" class=" border-light basbtn text-uppercase" (click)="this.toadmin=1">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm m-1"></span>
+                        Admin Login
+                    </button>
                 </div>
             </form>
+            <div *ngIf="adminlgn" class="pt-5">
+                <div class="text-left p-1">
+                    <h6><b>Administrative Login</b></h6>
+                </div>
 
+                <form [formGroup]="adminloginForm" (ngSubmit)="onadminSubmit()">
+                    <div class="form-group">
+                        <!-- <label for="email">Email</label> -->
+                        <input type="text" formControlName="email" placeholder="Email" class="form-control" [ngClass]="{ 'is-invalid': asubmitted && af.email.errors }" />
+                        <div *ngIf="asubmitted && af.email.errors" class="invalid-feedback">
+                            <div *ngIf="af.email.errors.required">Email is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <!-- <label for="password">Password</label> -->
+                        <input type="password" formControlName="password" placeholder="Password" class="form-control" [ngClass]="{ 'is-invalid': asubmitted && af.password.errors }" />
+                        <div *ngIf="asubmitted && af.password.errors" class="invalid-feedback">
+                            <div *ngIf="af.password.errors.required">Password is required</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button [disabled]="loading" class="border-light basbtn text-uppercase">
+                    <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                    Login
+                </button>
+                    </div>
+                </form>
+                <a (click)="loadComponent=!loadComponent" [routerLink]=""> Forgot Password </a>
+                <br><br>
+                <app-forgot-password *ngIf="loadComponent"></app-forgot-password>
+            </div>
         </div>
-        <div class="col-sm-4">
+        <div class="col-sm-3">
             <!-- 2 empty sections in the right -->
         </div>
     </div>
@@ -80,7 +118,7 @@
         <div class="row mx-5 pb-3">
             <div class="col">
                 <h5 class="text-uppercase">About Us</h5>
-                <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
+                <p>Build-A-Gift Store is a service of <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
                     <a [routerLink]="['/about-us']" class="text-white">Learn More</a></p>
             </div>
             <hr class="clearfix w-100 d-md-none pb-3">

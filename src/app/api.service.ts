@@ -88,6 +88,14 @@ export class ApiService {
     return this.httpClient.post<any>(baseurl+'/php_api/get-store-orders.php',storeid);
   }
 
+ revieworder(storeid){    
+    return this.httpClient.post<any>(baseurl+'/php_api/review-order.php',storeid);
+  }
+
+  getmgrorders(mgrid){    
+    return this.httpClient.post<any>(baseurl+'/php_api/get-mgr-orders.php',mgrid);
+  }
+
   checkSite(sitename){    
     return this.httpClient.post<any>(baseurl+'/php_api/check-site.php',sitename);
   }
@@ -165,6 +173,14 @@ export class ApiService {
     return this.httpClient.post<any>(baseurl+'/php_api/vault-customer.php',finaldata);
   }
 
+  update_vault(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/update-vault-customer.php',finaldata);
+  }
+
+  delete_vault(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/delete-vault-customer.php',finaldata);
+  }
+
   customer_token(finaldata){    
     return this.httpClient.post<any>(baseurl+'/php_api/customer-token.php',finaldata);
   }
@@ -175,6 +191,10 @@ export class ApiService {
 
   get_customer_id(finaldata){    
     return this.httpClient.post<any>(baseurl+'/php_api/getcustomerID.php',finaldata);
+  }
+
+  amorder(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/get-am-orders.php',finaldata);
   }
 
   save_product_selection(finaldata){    
@@ -202,6 +222,17 @@ export class ApiService {
   }
   savesingleuseraddress(finaldata){    
     return this.httpClient.post<any>(baseurl+'/php_api/save-single-user-address.php',finaldata);
+  }
+  savesingleuserdetails(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/save-single-user-details.php',finaldata);
+  }
+
+  forgot(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/forgot-email.php',finaldata);
+  }
+
+  reset(finaldata){    
+    return this.httpClient.post<any>(baseurl+'/php_api/sbresetpassword.php',finaldata);
   }
 
   uploadFile(data) {

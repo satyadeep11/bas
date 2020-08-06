@@ -72,6 +72,7 @@ allcats;
 loading=false;
 saddress;
 saddressi=0;
+nosuggested=false;
 
 form_template:Settings=[    
   {
@@ -545,7 +546,7 @@ dateChange(control){
     this.deliverdate= this.addDays(this.enddate, 21);
     this.dynamicForm.controls.enddate.patchValue(this.enddate.toISOString().substr(0, 10), {onlySelf: true});
     this.dynamicForm.controls.deliverdate.patchValue(this.deliverdate.toISOString().substr(0, 10), {onlySelf: true});    
-    (<HTMLInputElement>document.getElementById("enddate")).min=launchdate;
+    (<HTMLInputElement>document.getElementById("enddate")).min=this.dynamicForm.controls.launchdate.value;
     (<HTMLInputElement>document.getElementById("deliverdate")).min=this.deliverdate.toISOString().substr(0, 10);
   }
 
@@ -1040,8 +1041,12 @@ shiprocket(address,addressmodal,i){
           self.saddress=JSON.parse(data).data.suggestions;
           // self.saddress.addr2=self.saddress.addr2==''?self.dynamicForm.value["addressesarray"][i].streetaddress2:self.saddress.addr2;
           console.log(self.saddress,JSON.parse(data));
-          self.openDialog(addressmodal);
-         }
+          self.nosuggested=false;
+           self.openDialog(addressmodal);
+          }else{
+            self.nosuggested=true;
+            self.openDialog(addressmodal);
+          }
        }       
        
     }
@@ -1338,12 +1343,15 @@ checkSection(i) {
                   }
                 );
               }
-              this.dynamicForm.controls.textcolor.patchValue('white');
+              this.dynamicForm.controls.textcolor.patchValue('#ffffff');
               this.dynamicForm.controls.theme.patchValue('Default');
-              this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].main.patchValue(1, {onlySelf: true});
-              this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].cost.patchValue(0, {onlySelf: true});  
-              this.dynamicForm.value["addressesarray"][0].main=1;
-              this.dynamicForm.value["addressesarray"][0].cost=0;  
+              if (this.dynamicForm.controls["addressesarray"]['controls'].length > 0){
+                this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].main.patchValue(1, {onlySelf: true});
+                this.dynamicForm.controls["addressesarray"]['controls'][0]['controls'].cost.patchValue(0, {onlySelf: true});  
+                this.dynamicForm.value["addressesarray"][0].main=1;
+                this.dynamicForm.value["addressesarray"][0].cost=0;  
+              }              
+              this.dynamicForm.controls.loginoption.patchValue('Use an access code I give them');
               console.log(this.dynamicForm.value["addressesarray"]);
             var userdata=({fname:this.dynamicForm.value.fname,lname:this.dynamicForm.value.lname,phone:this.dynamicForm.value.phone,email:this.dynamicForm.value.email,password:this.dynamicForm.value.password});
             var finaldata=({ storedata: this.dynamicForm.value , productdata: this.selection,addressdata:this.dynamicForm.value["addressesarray"],userdata:userdata});

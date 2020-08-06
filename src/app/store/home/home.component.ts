@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
   registerurl='';
   sites=["site1","site2","site3"];
   access=false;
-  myData: any;
+  myData: any; 
   seeselection= Array();
   uniqueprods=Array();
   selection = [];
@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
   tempbanner;
   tempbannernamebup;
   transparentbg=true; 
-  textcolor="white";
+  textcolor="#ffffff";
   textcolorbup;
   uploadResponse = { status: '', message: '', filePath: '' };
   error;
@@ -105,6 +105,8 @@ export class HomeComponent implements OnInit {
   contactemail;
   contactphone;
   saddress
+  padd=false;
+  nosuggested=false;
 
   constructor(private data: DataService,private modalService: NgbModal,private route: ActivatedRoute,private formBuilder: FormBuilder,private router: Router,private apiService: ApiService,) {
     this.loading=true;
@@ -156,12 +158,16 @@ export class HomeComponent implements OnInit {
 
     
 
-    if(sessionStorage.getItem("adminlgn")=="true"){
+    if(localStorage.getItem("adminlgn")=="true"){
+      console.log("admin")
       this.mgrlogin=true;
         this.toggled="toggled";
         this.welcome=false;
         this.home=true;
         this.admin=true;
+    }
+    else{
+      console.log("not admin")
     }
 
     // var logcheck;
@@ -208,16 +214,18 @@ export class HomeComponent implements OnInit {
                 this.loading=false;
                 this.logoimage=this.storedata.sitedata.find(o => o.Settingcontrol === 'logoimage').SettingValue;
                 if(this.logoimage){
+                  this.logoimage=this.logoimage.replace(/ /g,"_");
                   this.templogoname=this.logoimage;
                   this.logoimage =this.baseurl+"/php_api/uploads/"+this.site +"-logoimage-"+this.logoimage.replace(/^.*[\\\/]/, '');
                 }
                 else{
                   this.templogoname="";
                   this.logoimage ="";
+                  this.nologo=true;
                 }        
                 this.primarycolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'primarycolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'primarycolor').SettingValue:"");       
                 this.buttoncolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'buttoncolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'buttoncolor').SettingValue:"");       
-                this.textcolorbup=this.textcolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor').SettingValue:"white");       
+                this.textcolorbup=this.textcolor=(this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor')?this.storedata.sitedata.find(o => o.Settingcontrol === 'textcolor').SettingValue:"#ffffff");       
                 this.transparentbgbup=this.transparentbg=this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg')?((this.storedata.sitedata.find(o => o.Settingcontrol === 'transparentbg').SettingValue)==1?true:false):false;    
                 this.nobanner=this.storedata.sitedata.find(o => o.Settingcontrol === 'nobanner')?((this.storedata.sitedata.find(o => o.Settingcontrol === 'nobanner').SettingValue)==0?true:false):false;  
                 this.reason=this.storedata.sitedata.find(o => o.Settingcontrol === 'reason').SettingValue;
@@ -225,8 +233,13 @@ export class HomeComponent implements OnInit {
                 this.companyname=this.storedata.sitedata.find(o => o.Settingcontrol === 'cname').SettingValue;
                 this.contactemail=this.storedata.sitedata.find(o => o.Settingcontrol === 'contactemail').SettingValue;
                 this.contactphone=this.storedata.sitedata.find(o => o.Settingcontrol === 'contactphone').SettingValue;
+                console.log(this.contactphone)
+                this.contactphone=this.formatPhoneNumber(this.contactphone);
+                console.log(this.contactphone)
                this.bannerimage=this.storedata.sitedata.find(o => o.Settingcontrol === 'bannerimage').SettingValue;
                if(this.bannerimage){
+                this.nobanner=false;
+                this.bannerimage=this.bannerimage.replace(/ /g,"_");
                 this.tempbannername=this.bannerimage;
                 this.bannerimage =this.baseurl+"/php_api/uploads/"+this.site +"-bannerimage-"+this.bannerimage.replace(/^.*[\\\/]/, '');
                }
@@ -246,7 +259,7 @@ export class HomeComponent implements OnInit {
                 this.accesscode=this.storedata.sitedata.find(o => o.Settingcontrol === 'accesscode').SettingValue;
                 this.storeclose=this.storedata.sitedata.find(o => o.Settingcontrol === 'enddate').SettingValue;
                 this.theme=this.storedata.sitedata.find(o => o.Settingcontrol === 'theme').SettingValue||'Default';   
-                this.themechange(this.theme);            
+                this.themechange(this.theme);             
                 // this.storeclose= new Date(this.storeclose).toDateString();
                 var options = {year: 'numeric', month: 'long', day: 'numeric' };
                 // this.storeclose=new Date(this.storeclose).toLocaleDateString("en-US", options);
@@ -295,7 +308,14 @@ export class HomeComponent implements OnInit {
                 user => {
                   console.log(user); 
                   (user.shipping.empshipsetting=="Recipients can choose from a corporate address or enter their home address"||user.shipping.empshipsetting=="To the recipient's home address")?this.empaddress=true:this.empaddress=false; 
-                  this.addresses=user.shipping.addressess;
+                  if(user.shipping.empshipsetting=="To a corporate address"||user.shipping.empshipsetting=="Recipients can choose from a corporate address or enter their home address"){
+                    this.addresses=user.shipping.addressess;
+                  } 
+                  else{
+                    this.addresses=Array();
+                    this.showshipping=true;
+                    this.padd=true;
+                  }                 
                   console.log(this.empaddress,this.addresses);    
                   if(this.empaddress){
                     this.address = this.formBuilder.group({
@@ -364,7 +384,14 @@ export class HomeComponent implements OnInit {
     
   }
 
-
+formatPhoneNumber(phoneNumberString) {
+    var cleaned = ('' + phoneNumberString).replace(/\D/g, '')
+    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/)
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3]
+    }
+    return null
+  }
 
 hexToLuma() {
     const hex   = this.buttoncolor.replace(/#/, '');
@@ -451,17 +478,25 @@ validateEmail(c: FormControl) {
   }
 
   productdetails(modal,product){
+    console.log(product);
     this.products=this.seeselection.filter(item => item.ProductID == product.ProductID); 
+    console.log(product);
     this.productdata=this.selection.filter(item => item.productid == product.ProductID);    
     this.modalReference=this.modalService.open(modal, { centered: true,size:"lg" });
   }
 
+  reset(){
+    this.address.reset();
+  }
+
   checkouts(pselect){
-    
+   
     this.home=false;
     this.checkout=true;
     this.closeModal();
     this.pselect=pselect;
+    this.productdata=this.selection.filter(item => item.colorattr == pselect.Attr2);    
+    console.log(this.productdata)
     window.scroll(0,0);
   }
 
@@ -510,21 +545,32 @@ else{
   createproductlist(){
     this.seeselection=[];
     var copyData=this.myData;
-    copyData.forEach(element => {
+  console.log(this.selection,this.myData)
+    copyData.forEach((element,x) => {
       if (Array.isArray(element.ImageFile)) {        
-        element.Attr2.forEach((a2id, i) => {          
-          if(this.selection.some(function(o) {return o["colorattr"] == a2id;})){           
+        element.Attr2.forEach((a2id, i) => {    
+          var z;      
+          if(this.selection.some(function(o,f) {z=f;return o["colorattr"] == a2id;})){           
             var copyelement=JSON.parse(JSON.stringify(element));                      
             copyelement.ImageFile=element.ImageFile[i];
             copyelement.Attr2=element.Attr2[i];
             copyelement.A2_Label=element.A2_Label[i];//
             copyelement.Color=element.Color[i];//
-            this.seeselection.push(copyelement);//            
+            copyelement.custom_image=this.selection[z]["custom_image"];
+            copyelement.custom_image_url=this.selection[z]["custom_image_url"];///check this************************
+            this.seeselection.push(copyelement);//        
+             
           }
         });
       }
       else{
-        if(this.selection.some(function(o) {return o["colorattr"] == element.Attr2;})){          
+        if(this.selection.some(function(o) {return o["colorattr"] == element.Attr2;})){   
+          this.selection.forEach((prod,x) => {
+            if(prod.productid==element.ProductID){
+              element.custom_image=prod["custom_image"];
+              element.custom_image_url=prod["custom_image_url"];  
+            }            
+          });             
           this.seeselection.push(element);
         }
       }      
@@ -536,7 +582,7 @@ else{
     ))
   )
     
-    console.log("here",this.seeselection,this.uniqueprods);
+    console.log("here",this.selection,this.seeselection,this.uniqueprods);
     // this.apiService.changeMessage(this.seeselection);
     localStorage.setItem("selections", JSON.stringify(this.seeselection));
   }
@@ -545,7 +591,7 @@ else{
     console.log(i,address)
     this.successclass=[];
     this.addressdata=[];
-this.successclass[i]="text-black bg-success";
+this.successclass[i]="text-black bg-secondary overridecolor";
 this.finalcheckout=true;
 this.addressdata.push(address);
 !("AddressID" in address)?this.pending=1:this.pending=0;
@@ -555,11 +601,11 @@ console.log(this.pending);
   onSubmit(addressmodal) {
     this.addresserrors = true;
     if (this.address.invalid) {
-      return;
+      return; 
   }
   else{
     this.loadingspinner=true;
-    console.log(this.address.controls)
+    console.log(this.address)
     this.shiprocket(this.address.value,addressmodal);  
   }
   }
@@ -601,7 +647,11 @@ console.log(this.pending);
            self.saddress=JSON.parse(data).data.suggestions;
            // self.saddress.addr2=self.saddress.addr2==''?self.dynamicForm.value["addressesarray"][i].streetaddress2:self.saddress.addr2;
            console.log(self.saddress,JSON.parse(data));
+           self.nosuggested=false;
            self.openDialog(addressmodal);
+          }else{
+            self.nosuggested=true;
+            self.openDialog(addressmodal);
           }
         }
         else{
@@ -650,6 +700,10 @@ addresspush(){
     this.hideaddaddress=true;
     this.addresserrors = false;
   //
+  if(this.addresses.length==1){
+    this.adselect(0,this.address.value)    
+  }
+  
   console.log(this.addressdata)
 }
 
@@ -870,10 +924,10 @@ submit(){
         user => {
           console.log(user);
           if(user["error"]){
-            alert("Error During Update");
+            alert("Something went Wrong. Contact Admin");
           }
           if(!user["error"]){
-            alert("Settings updated")
+            alert("Hooray! Your changes have been saved.")
           }
         },
         error => console.log(error)

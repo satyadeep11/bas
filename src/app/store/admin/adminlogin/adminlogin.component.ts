@@ -21,6 +21,7 @@ export class AdminloginComponent implements OnInit {
   access=false;
   home;
   storeid;
+  loadComponent=false;
   
 
   constructor(private route: ActivatedRoute, private apiService: ApiService,private formBuilder: FormBuilder,private router: Router, private data: DataService) { 
@@ -83,7 +84,8 @@ export class AdminloginComponent implements OnInit {
             this.data.changeMessage(sk);   
             console.log(user.ud)            
             this.data.changeUserdata(user.ud);  
-            alert("Login Successful, you will be redirected.");
+            sessionStorage.setItem("md", JSON.stringify(user["md"]));
+            // alert("Login Successful, you will be redirected.");
             this.router.navigate(['/stores/'+this.site+'/admin']);
           } 
         },

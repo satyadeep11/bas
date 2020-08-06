@@ -12,7 +12,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./superadmin.component.scss']
 })
 export class SuperadminComponent implements OnInit {
-
+ 
+  ordersummary;
+  finaltotal=0;
   lgn;
   sidebar=true;
   menuItems: any[];
@@ -62,7 +64,7 @@ export class SuperadminComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private excelService:ExcelService,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
   this.data.currentAdmin.subscribe(message => this.lgn=message);
-    if(sessionStorage.getItem("adminlgn")=="true"){ 
+    if(localStorage.getItem("adminlgn")=="true"){ 
       // if(this.lgn){ 
       // return;
       // }
@@ -72,7 +74,7 @@ export class SuperadminComponent implements OnInit {
       // }
     }
     else if(this.lgn){
-      sessionStorage.setItem("adminlgn",JSON.stringify(this.lgn));
+      localStorage.setItem("adminlgn",JSON.stringify(this.lgn));
       return;
     }
     else{
@@ -93,7 +95,7 @@ export class SuperadminComponent implements OnInit {
 
   logout(){
     this.data.changeAdmin(false);
-    sessionStorage.removeItem("adminlgn");
+    localStorage.removeItem("adminlgn");
     var url="/superadmin/login";
     this.router.navigate([url]);  
   }
@@ -102,19 +104,60 @@ export class SuperadminComponent implements OnInit {
     this.excelService.exportAsExcelFile(data, 'sample');
  }
 
+ excel(ordersummary){
+  this.exportexcel(ordersummary);
+ }
+
   openStore(site){
     var url="stores/"+site+"/home";
     window.open(url, '_blank');
     // this.router.navigate([url]);
   }
+
+  storeordersummary(){
+    this.finaltotal=0;
+    this.apiService.revieworder(this.currentstoreid).subscribe(
+      user => {
+        console.log(user,"review") ;        
+        this.ordersummary=user;
+        this.ordersummary.forEach((item)=> {            
+          this.finaltotal =this.finaltotal+parseFloat(item.grand);             
+    });  
+    this.section='review';
+    this.title='Order Summary';  
+      },
+      error => console.log(error)
+    );
+  }
+
+  amReport(){
+    this.apiService.amorder(this.currentstoreid).subscribe(
+      user => {
+        console.log(user,"amorder") ;        
+        this.exportexcel(user["orders"]);
+      },
+      error => console.log(error)
+    );
+  }
+
+  accountingReport(){
+    this.apiService.amorder(this.currentstoreid).subscribe(
+      user => {
+        console.log(user,"amorder") ;        
+        this.exportexcel(user["orders"]);
+      },
+      error => console.log(error)
+    );
+  }
   
   getstoreorders(storeid,storename){
+    this.currentstoreid=storeid;
     this.apiService.getstoreorders(storeid).subscribe(
       user => {
         if(!user["error"]){
           this.orders = user["orders"];
           console.log(this.orders);
-          this.exportexcel(this.orders);
+          // this.exportexcel(this.orders);
           this.customer_confirmed=this.orders[0].customer_confirmed==1?true:false;   
           this.pending=this.orders.some(function(o){return o['Pending'] == '1'});     
           this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
@@ -251,7 +294,7 @@ updateimage(storeid,productid,attrid,i){
       user => {
       console.log(user,"datas")
        this.storesettings=user;       
-       this.storesettings= this.storesettings.filter(val => !(["nobanner","buttoncolor","primarycolor","transparentbg","textcolor","theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));       
+       this.storesettings= this.storesettings.filter(val => !(["nobanner","buttoncolor","primarycolor","transparentbg","loginoption","textcolor","theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));       
        this.loadupFormGroup();
        this.section="store_storesettings";
        this.title=storename+" Store Settings";

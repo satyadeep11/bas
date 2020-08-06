@@ -31,6 +31,8 @@ import { PaymentComponent } from './store/admin/payment/payment.component';
 import { SaPaymentComponent } from './superadmin/sa-payment/sa-payment.component';
 import { NgxCurrencyModule } from "ngx-currency";
 import { TestComponent } from './test/test.component';
+import { ForgotPasswordComponent } from './store/admin/adminlogin/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +52,7 @@ import { TestComponent } from './test/test.component';
     PrivacyPolicyComponent,
     TosComponent,
     SuperadminComponent,  
-    AccessComponent, ContactUsComponent, FaqComponent, PaymentComponent, SaPaymentComponent, TestComponent
+    AccessComponent, ContactUsComponent, FaqComponent, PaymentComponent, SaPaymentComponent, TestComponent, ForgotPasswordComponent, ResetPasswordComponent
   ],
   imports: [
     NgxCurrencyModule,

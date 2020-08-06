@@ -18,6 +18,7 @@ import { AccessComponent } from './superadmin/access/access.component';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { FaqComponent } from './faq/faq.component';
 import { TestComponent } from './test/test.component';
+import { ResetPasswordComponent } from './reset-password/reset-password.component';
 
 
 
@@ -25,7 +26,7 @@ const routes: Routes = [
   { path: 'stores/:id', component: HomeComponent },
   { path: 'stores/:id/admin', component: AdminComponent },
   { path: 'stores/:id/admin/login', component: AdminloginComponent },
-  { path: 'stores', component: StoreComponent  },
+  { path: 'sign-in', component: StoreComponent  },
   { path: 'stores/:id/register', component: RegisterComponent  },
   { path: 'stores/:id/login', component: LoginComponent  },
   { path: 'stores/:id/home', component: HomeComponent },
@@ -42,6 +43,7 @@ const routes: Routes = [
   { path: 'superadmin', component:SuperadminComponent},
   { path: 'superadmin/login', component:AccessComponent},
   { path: 'test', component:TestComponent},
+  { path: 'reset-password', component:ResetPasswordComponent},
   { path: '**', redirectTo: '' },
  
   

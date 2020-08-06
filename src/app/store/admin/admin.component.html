@@ -152,7 +152,12 @@
                         <a style="cursor: pointer" (click)="section=menuItem.path;title=menuItem.title;">
                             <i class="{{ menuItem.icon }}"></i>
                             <span>{{ menuItem.title }}</span>
-                            <!-- <span class="badge badge-pill badge-primary">Beta</span> -->
+                        </a>
+                    </li>
+                    <li *ngIf="customer_confirmed && this.mgr!='0'">
+                        <a style="cursor: pointer" (click)="section='orderhistory';title='Order History';getmgrorders();">
+                            <i class="fa fa-history"></i>
+                            <span>Order History</span>
                         </a>
                     </li>
                     <li>
@@ -218,7 +223,18 @@
         <div class="container-fluid">
             <h2>{{title||"Dashboard"}}</h2>
             <hr>
-
+            <div *ngIf="!payment && section!='payments'" class="alert alert-danger text-center" role="alert">
+                <b>Action Needed:</b> Please add your payment method to your account. <button class="basbtn" (click)="section='payments';title='Payment Settings'">Click Here.</button>
+            </div>
+            <div *ngIf="pending && section!='orders'" class="alert alert-info text-center" role="alert">
+                New orders were placed. Please review them. <button class="basbtn" (click)="section='orders';title='Orders'">Click Here.</button>
+            </div>
+            <div *ngIf="!customer_confirmed && !all_denied && payment && !pending && section!='review' && end && !noorders" class="alert alert-info text-center" role="info">
+                <button [disabled]="pending ? true : null" class='basbtn m-1' (click)="processOrders();section='review';title='Order Summary';">Finalize My Order</button>
+            </div>
+            <div *ngIf="customer_confirmed" class="alert alert-success text-center" role="success">
+                <span>Your orders are being processed.</span>
+            </div>
             <div class="row" *ngIf="section=='dashboard'">
                 <div *ngFor="let menuItem of menuItems| slice:1" class="col-xl-3 col-lg-6">
                     <div class="card text-white bg-{{menuItem.bgclass}}">
@@ -278,6 +294,40 @@
                 </table>
             </div>
 
+            <div class="row" *ngIf="section=='orderhistory'">
+                <table class='table table-borderless table-hover table-responsive'>
+                    <tr>
+                        <th>Store Name</th>
+                        <th>Store URL</th>
+                        <th>Order Total</th>
+                        <th>Order Placed on</th>
+                        <th>Actions</th>
+                    </tr>
+
+                    <!-- Use *ngFor directive to loop throught our list of products. -->
+                    <tr *ngFor="let user of mgrorders">
+                        <td>{{user.StoreName}}</td>
+                        <td>{{user.StoreUrl}}</td>
+                        <td>{{user.Amount}}</td>
+                        <td>{{user.Date| date }}</td>
+                        <td id="actions_td">
+                            <!-- edit customer button -->
+
+                            <button (click)="getorderdetails(user.StoreID);" class='basbtnsdysmall'>
+                                         View
+                                    </button>&nbsp;
+
+
+
+                            <!-- <button (click)="suspendFunction(user.StoreUserID)" class='basbtnsdysmall '>
+                                        Suspend
+                                    </button> -->
+                        </td>
+                    </tr>
+
+                </table>
+            </div>
+
             <div class="row" *ngIf="section=='editsingleuser'">
                 <div class="container-fluid">
                     <div class="row">
@@ -319,7 +369,7 @@
                             </div>
                             <div class="form-group col-6">
                                 <label>Email</label>
-                                <input type="text" autocomplete="shipping postal-code" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': singledetailserrors && singledetailsForm.controls.email.errors }" />
+                                <input type="text" autocomplete="shipping postal-code" formControlName="email" readonly class="form-control" [ngClass]="{ 'is-invalid': singledetailserrors && singledetailsForm.controls.email.errors }" />
                                 <div *ngIf="singledetailserrors && singledetailsForm.controls.email.errors" class="invalid-feedback">
                                     <div *ngIf="singledetailsForm.controls.email.errors.required">Email is required</div>
                                 </div>
@@ -432,7 +482,7 @@
                             </div>
                             <div class="form-group col-6">
                                 <label>Zip Code</label>
-                                <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.zip.errors }" />
+                                <input type="text" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': singleaddresserrors && singleaddressForm.controls.zip.errors }" />
                                 <div *ngIf="singleaddresserrors && singleaddressForm.controls.zip.errors" class="invalid-feedback">
                                     <div *ngIf="singleaddressForm.controls.zip.errors.required">Zip Code is required</div>
                                     <div *ngIf="singleaddressForm.controls.zip.errors.pattern">Invalid Zip</div>
@@ -451,28 +501,31 @@
             <div class="row" *ngIf="section=='orders'">
                 <div *ngIf="end" class="text-center col-lg-12">
                     <div class="alert bg-dark" role="info">
-                        <span class="text-white">The Store is closed. </span>
+                        <span class="text-white">This store is closed. </span>
                     </div>
                     <div *ngIf="!customer_confirmed && !all_denied" class="alert alert-warning" role="alert">
                         <span><strong>Action Needed:</strong> Please review the orders below. Select <i>Finalize My Order</i> to continue. 
-                            Once the order is finalized, your account manager will send you an order confirmation                            
-                            with a total cost estimate to approve before your gifts are sent to production.</span>
+                            Once the order is finalized, you will be asked to pay with your credit card, and your gifts will be sent to production. 
+                            Your Identity Works Account Manager will email you to confirm the production and shipping timeline for your project.</span>
                     </div>
-                    <div *ngIf="customer_confirmed" class="alert alert-success" role="success">
+                    <!-- <div *ngIf="customer_confirmed" class="alert alert-success" role="success">
                         <span>Your orders are being processed.</span>
-                    </div>
+                    </div> -->
                     <div *ngIf="pending && !all_denied" class="alert alert-danger" role="alert">
                         Please Approve all orders before you can confirm order processing.
                     </div>
-                    <div *ngIf="!payment" class="alert alert-danger" role="alert">
+                    <!-- <div *ngIf="!payment" class="alert alert-danger" role="alert">
                         Please add a payment method using Settings>Payment>Manage Payment Settings or <button class="basbtn" (click)="section='payments';title='Payment Settings'">Click Here.</button>
-                    </div>
+                    </div> -->
                     <div *ngIf="all_denied" class="alert alert-danger" role="alert">
                         No Orders. All Orders Denied.
                     </div>
-                    <button *ngIf="!customer_confirmed && !all_denied && payment" [disabled]="pending ? true : null" class='basbtn m-1' (click)="confirmorders()">Finalize My Order</button>
+                    <div *ngIf="noorders" class="alert alert-info" role="alert">
+                        No Orders placed yet.
+                    </div>
+                    <!-- <button *ngIf="!customer_confirmed && !all_denied && payment" [disabled]="pending ? true : null" class='basbtn m-1' (click)="confirmorders()">Finalize My Order</button> -->
                 </div>
-                <table class='table  table-borderless table-hover table-responsive'>
+                <table *ngIf="!noorders" class='table  table-borderless table-hover table-responsive'>
                     <tr>
                         <th class="align-middle text-center">Selection</th>
                         <th></th>
@@ -482,59 +535,181 @@
                         <th class="align-middle ">Phone Number</th>
                         <th class="align-middle ">Price</th>
                         <th class="align-middle ">Shipping</th>
+                        <th class="align-middle ">Tax</th>
+                        <th class="align-middle ">Total</th>
                         <th class="align-middle ">Ships To</th>
                         <th class="align-middle ">Current Status</th>
-                        <th class="align-middle ">Change Status
-                            <button *ngIf="pending" class='btn btn-success m-1' (click)="approveallorders()"> Approve All </button>
+                        <th class="align-middle " *ngIf="!customer_confirmed">Change Status
+                            <button *ngIf="pending" class='btn btn-success m-1' (click)="approveallorders()"> Approve All Pending</button>
                         </th>
                     </tr>
 
                     <!-- Use *ngFor directive to loop throught our list of products. -->
                     <tr *ngFor="let user of orders;let i=index">
                         <td>
-                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.Productid+'_'+user.ImageFile" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.ProductID+'_'+user.image" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
                         </td>
-                        <td class="align-middle">{{user.ProductName}} ({{user.ImageFile.split('.').slice(0, -1).join('.')}})</td>
-                        <td class="align-middle">{{user.Firstname}}</td>
-                        <td class="align-middle">{{user.Lastname}}</td>
+                        <td class="align-middle">{{user.ProdName}} ({{user.Attr1_label}})</td>
+                        <td class="align-middle">{{user.Firstname|titlecase}}</td>
+                        <td class="align-middle">{{user.Lastname|titlecase}}</td>
                         <td class="align-middle">{{user.Email}}</td>
                         <td class="align-middle">{{user.Phone}}</td>
-                        <td class="align-middle">{{user.price|currency}}</td>
-                        <td class="align-middle">{{(user.Shipping?10:0)|currency}}</td>
+                        <td class="align-middle">{{user.T_Prod|currency}}</td>
+                        <td class="align-middle">{{user.T_Ship|currency}}</td>
+                        <td class="align-middle">{{user.T_Tax|currency}}</td>
+                        <td class="align-middle">{{user.T_Grand|currency}}</td>
                         <td class="align-middle ">
-                            <span *ngIf="user.Shipping==0"> <small>Corporate Address</small></span>
-                            <span *ngIf="user.Shipping==1"> <small>Personal Address</small></span>
+                            <span *ngIf="user.type=='C'"> <small>Corporate Address</small></span>
+                            <span *ngIf="user.type=='P'"> <small>Personal Address</small></span>
                         </td>
-                        <td class="align-middle " id="actions_td">
-                            <p *ngIf="user.Pending==0">
-                                <span *ngIf="user.deny==0 ">Approved</span>
-                                <span *ngIf="user.deny==1 ">Denied</span>
-                            </p>
-                            <p *ngIf="user.Pending==1">
-                                <span>Pending</span>
-                            </p>
+                        <td class="align-middle" id="actions_td">
+                            <span *ngIf="user.Pending==0">
+                                <span *ngIf="user.deny==0 ">
+                                    <strong class="text-success">APPROVED</strong>
+                                </span>
+                            <span *ngIf="user.deny==1 ">
+                                <strong class="text-danger">DENIED</strong>
+                            </span>
+                            </span>
+                            <span *ngIf="user.Pending==1">
+                                <strong class="text-info">PENDING</strong>
+                            </span>
                         </td>
-                        <td class="align-middle">
-                            <button *ngIf="(user.Pending==1 && user.deny==0||(user.Pending==0 && user.deny==1)) && !customer_confirmed" class='btn btn-success m-1' (click)="approvesingleorder(user.ProductSelectionID,i)"> Approve </button>
-                            <button *ngIf="((user.Pending==1 && user.deny==0)||(user.Pending==0 && user.deny==0)) && !customer_confirmed" (click)="denysingleorder(user.ProductSelectionID,i)" class='btn btn-danger m-1'>Deny</button>
+                        <td class="align-middle" *ngIf="!customer_confirmed">
+                            <button *ngIf="(user.Pending==1 && user.deny==0||(user.Pending==0 && user.deny==1)) && !customer_confirmed" class='btn btn-outline-success m-1' (click)="approvesingleorder(user.OrderID,i)"> Approve </button>
+                            <button *ngIf="((user.Pending==1 && user.deny==0)||(user.Pending==0 && user.deny==0)) && !customer_confirmed" (click)="denysingleorder(user.OrderID,i)" class='btn btn-outline-secondary m-1'>Deny</button>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="12" class="text-right">
-                            <p>Estimated Total: <strong>{{total|currency}}</strong> (Excludes taxes)</p>
+                            <p *ngIf="!end">Estimated Total: <strong>{{total|currency}}</strong></p>
+                            <p *ngIf="end">Total: <strong>{{total|currency}}</strong></p>
                         </td>
                     </tr>
 
                 </table>
+
             </div>
+
+
+            <div class="row" *ngIf="section=='orderdetails'">
+                <div class="col-sm-12">
+                    <button class="btn btn-secondary float-right" (click)="section='orderhistory';title='Order History';getmgrorders();">Back</button>
+                </div>
+
+                <table class='table table-borderless table-hover table-responsive'>
+                    <tr>
+                        <th class="align-middle text-center">Selection</th>
+                        <th></th>
+                        <th class="align-middle ">First Name</th>
+                        <th class="align-middle ">Last Name</th>
+                        <th class="align-middle ">Email</th>
+                        <th class="align-middle ">Phone Number</th>
+                        <th class="align-middle ">Price</th>
+                        <th class="align-middle ">Shipping</th>
+                        <th class="align-middle ">Tax</th>
+                        <th class="align-middle ">Total</th>
+                        <th class="align-middle ">Ships To</th>
+                        <th class="align-middle ">Current Status</th>
+                    </tr>
+
+                    <!-- Use *ngFor directive to loop throught our list of products. -->
+                    <tr *ngFor="let user of orders;let i=index">
+                        <td>
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.ProductID+'_'+user.image" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
+                        </td>
+                        <td class="align-middle">{{user.ProdName}} ({{user.Attr1_label}})</td>
+                        <td class="align-middle">{{user.Firstname|titlecase}}</td>
+                        <td class="align-middle">{{user.Lastname|titlecase}}</td>
+                        <td class="align-middle">{{user.Email}}</td>
+                        <td class="align-middle">{{user.Phone}}</td>
+                        <td class="align-middle">{{user.T_Prod|currency}}</td>
+                        <td class="align-middle">{{user.T_Ship|currency}}</td>
+                        <td class="align-middle">{{user.T_Tax|currency}}</td>
+                        <td class="align-middle">{{user.T_Grand|currency}}</td>
+                        <td class="align-middle ">
+                            <span *ngIf="user.type=='C'"> <small>Corporate Address</small></span>
+                            <span *ngIf="user.type=='P'"> <small>Personal Address</small></span>
+                        </td>
+                        <td class="align-middle" id="actions_td">
+                            <span *ngIf="user.Pending==0">
+                                <span *ngIf="user.deny==0 ">
+                                    <strong class="text-success">APPROVED</strong>
+                                </span>
+                            <span *ngIf="user.deny==1 ">
+                                <strong class="text-danger">DENIED</strong>
+                            </span>
+                            </span>
+                            <span *ngIf="user.Pending==1">
+                                <strong class="text-info">PENDING</strong>
+                            </span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="12" class="text-right">
+                            <p>Total: <strong>{{total|currency}}</strong></p>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </div>
+
+
 
             <div *ngIf="section=='payments'">
                 <div>
-                    <app-payment [storeid]="storeid"></app-payment>
+                    <app-payment [storeid]="storeid" (paymentchange)="onPayment($event)"></app-payment>
                 </div>
                 <div>
                     <button class="basbtnsdysmall" (click)="section='storesettings';title='Settings'">Back</button>
                 </div>
+            </div>
+
+            <div *ngIf="section=='review'">
+
+                <table class='table  table-borderless table-hover table-responsive'>
+                    <tr class="thead-dark">
+                        <th class="align-middle text-center">Selection</th>
+                        <th class="align-middle ">Product Name</th>
+                        <th class="align-middle ">Count</th>
+                        <th class="align-middle ">Price</th>
+                        <th class="align-middle ">Shipping</th>
+                        <th class="align-middle ">Tax</th>
+                        <th class="align-middle ">Total</th>
+                    </tr>
+
+                    <!-- Use *ngFor directive to loop throught our list of products. -->
+                    <tr *ngFor="let user of ordersummary;let i=index">
+                        <td>
+                            <img [src]="'https://securedgear.com/sites/997/products/997_' +user.ProductID+'_'+user.image" class="img-fluid img-thumbnail" style="max-width: 150px;" alt="Sheep">
+                        </td>
+                        <td class="align-middle">{{user.ProdName}}</td>
+                        <td class="align-middle">{{user.count}}</td>
+                        <td class="align-middle">{{user.price|currency}}</td>
+                        <td class="align-middle">{{user.shipping|currency}}</td>
+                        <td class="align-middle">{{user.tax|currency}}</td>
+                        <td class="align-middle">{{user.grand|currency}}</td>
+                    </tr>
+                    <tr>
+                        <td colspan="12" class="text-right">
+                            <p *ngIf="!end">Estimated Total: <strong>{{finaltotal|currency}}</strong></p>
+                            <p *ngIf="end">Total: <strong>{{finaltotal|currency}}</strong></p>
+                        </td>
+                    </tr>
+
+                </table>
+                <div id="dropin-container"></div>
+                <button class="basbtn" id="submit-button">Make Payment</button>
+            </div>
+
+            <div *ngIf="section=='orderplaced'">
+                <div class="jumbotron text-center">
+                    <h1 class="display-3">Thank You!</h1>
+                    <p class="lead">Thanks for finalizing your order! Your account manager will email you shortly with an update on the production and shipping timelines for your gifts. If you have questions in the mean time, feel free to email your account manager directly
+                        or contact us at helpmybrand@idworks.com.</p>
+                </div>
+
             </div>
 
             <div *ngIf="section=='storesettings'">
@@ -554,7 +729,11 @@
                             <div id="collapseOne1" class="collapse" role="tabpanel" aria-labelledby="headingOne1" data-parent="#accordionEx">
                                 <div class="card-body ">
                                     <div *ngFor="let form_elem of storesettings">
+                                        <div *ngIf="form_elem.control=='cname'">
+                                            <strong>Account Owner Details</strong>
+                                        </div>
                                         <div *ngIf="form_elem.control=='cname'" class="form-group row">
+
                                             <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='cname'">Company Name</p></label>
                                             <div class="col-sm-10">
                                                 <input *ngIf="form_elem.control=='cname'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
@@ -582,6 +761,22 @@
                                             <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='email'">Email</p></label>
                                             <div class="col-sm-10">
                                                 <input *ngIf="form_elem.control=='email'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='contactphone'">
+                                            <strong>Support Contact Details</strong>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='contactphone'" class="form-group row">
+
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='contactphone'">Phone</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='contactphone'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                            </div>
+                                        </div>
+                                        <div *ngIf="form_elem.control=='contactemail'" class="form-group row">
+                                            <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='contactemail'">Email</p></label>
+                                            <div class="col-sm-10">
+                                                <input *ngIf="form_elem.control=='contactemail'" class="form-control" type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
                                             </div>
                                         </div>
                                     </div>
@@ -630,7 +825,8 @@
                                         <div *ngIf="form_elem.control=='launchdate'" class="form-group row">
                                             <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='launchdate'">Go Live Date</p></label>
                                             <div class="col-sm-10">
-                                                <input *ngIf="form_elem.control=='launchdate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                                <input *ngIf="form_elem.control=='launchdate'" (focus)="dateChange(form_elem.control)" (change)="dateChange(form_elem.control)" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}"
+                                                />
                                             </div>
                                             <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
                                                 Start date cannot be less than 1 day from today
@@ -639,7 +835,7 @@
                                         <div *ngIf="form_elem.control=='enddate'" class="form-group row">
                                             <label class="col-sm-2 col-form-label"><p *ngIf="form_elem.control=='enddate'">Close Date</p></label>
                                             <div class="col-sm-10">
-                                                <input *ngIf="form_elem.control=='enddate'" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
+                                                <input *ngIf="form_elem.control=='enddate'" (focus)="dateChange(form_elem.control)" class="form-control" type="date" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" />
                                             </div>
                                             <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.enddate && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
                                                 End date cannot be less than Reward program length from Start date
@@ -689,9 +885,9 @@
                                             </div>
                                         </div> -->
                                         <div *ngIf="form_elem.control=='accesscode'">
-                                            <div *ngIf="this.dynamicForm.controls.loginoption.value.includes('code')">
+                                            <div>
                                                 <div class="form-group row">
-                                                    <label class="col-sm-2 col-form-label" for="{{form_elem.control}}">Add Code</label>
+                                                    <label class="col-sm-2 col-form-label" for="{{form_elem.control}}">Store Access Code</label>
                                                     <div class="col-sm-10">
                                                         <input type="text" id="{{form_elem.control}}" [value]="form_elem.value" formControlName="{{form_elem.control}}" class="form-control" />
                                                         <div *ngIf="(dynamicForm.controls[form_elem.control].errors )" class="error-msg">
@@ -802,7 +998,7 @@
                                 </div>
                             </div> -->
 
-                            <div *ngIf="showpaddress">
+                            <!-- <div *ngIf="showpaddress">
                                 <div class="alert alert-warning" role="alert">
                                     <p class=""><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> The following need their addressess updated.
                                     </p>
@@ -829,7 +1025,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="py-5" *ngIf="addsetting=='To a corporate address' || addsetting=='Recipients can choose from a corporate address or enter their home address'">
                                 <label>Corporate Address</label>
@@ -848,6 +1044,9 @@
                                                     <p>{{address.addressname|titlecase}}</p>
                                                 </div>
                                                 <div class="card-text">
+                                                    <p>Attn: {{address.shiptoname}}</p>
+                                                </div>
+                                                <div class="card-text">
                                                     <p>{{address.streetaddress}} {{address.streetaddress2}}</p>
                                                 </div>
                                                 <div class="card-text">
@@ -856,6 +1055,7 @@
                                             </div>
                                             <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button>
                                         </div>
+                                        <button mat-raised-button *ngIf="!this.Address[i] && address.main==0" (click)="MakePrimary(i)" type="button">Make Primary</button>
                                     </div>
                                 </div>
                                 <div *ngFor="let address of addressesarray.controls; let i = index" class="list-group list-group-flush">
@@ -867,6 +1067,14 @@
                                                 <input type="text" autocomplete="name" formControlName="addressname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.addressname.errors }" />
                                                 <div *ngIf="addresserrors && address.controls.addressname.errors" class="invalid-feedback">
                                                     <div *ngIf="address.controls.addressname.errors.required">Address Name is required
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-6">
+                                                <label>Ship To Attention</label>
+                                                <input type="text" autocomplete="shiptoname" formControlName="shiptoname" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.shiptoname.errors }" />
+                                                <div *ngIf="addresserrors && address.controls.shiptoname.errors" class="invalid-feedback">
+                                                    <div *ngIf="address.controls.shiptoname.errors.required">Ship to Name is required
                                                     </div>
                                                 </div>
                                             </div>
@@ -883,7 +1091,7 @@
                                                 <label>Street Address 2</label>
                                                 <input type="text" autocomplete="shipping address-line2" formControlName="streetaddress2" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.streetaddress2.errors }" />
                                             </div>
-                                            <div class="form-group col-6">
+                                            <div class="form-group col-4">
                                                 <label>City</label>
                                                 <input type="text" autocomplete="shipping locality" formControlName="city" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.city.errors }" />
                                                 <div *ngIf="addresserrors && address.controls.city.errors" class="invalid-feedback">
@@ -891,7 +1099,7 @@
                                                     <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
                                                 </div>
                                             </div>
-                                            <div class="form-group col-6">
+                                            <div class="form-group col-4">
                                                 <label>State</label>
                                                 <select autocomplete="shipping region" formControlName="state" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.state.errors }">
                                                                 <option value="AL">Alabama</option>
@@ -961,7 +1169,7 @@
                                                     <!-- <div *ngIf="address.controls.email.errors.email">Email must be a valid email address</div> -->
                                                 </div>
                                             </div>
-                                            <div class="form-group col-6">
+                                            <div class="form-group col-4">
                                                 <label>Zip Code</label>
                                                 <input type="number" autocomplete="shipping postal-code" formControlName="zip" class="form-control" [ngClass]="{ 'is-invalid': addresserrors && address.controls.zip.errors }" />
                                                 <div *ngIf="addresserrors && address.controls.zip.errors" class="invalid-feedback">
@@ -1179,3 +1387,4 @@
         </div>
     </div>
 </ng-template>
+<div *ngIf="loadingspinner" class="loading"></div>

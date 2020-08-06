@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup,FormArray, Validators, FormControl } from '@angu
 import { ActivatedRoute,Router } from '@angular/router';
 import { DataService } from "../../data.service";
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import * as dropin from 'braintree-web-drop-in';
 
 @Component({
   selector: 'app-admin',
@@ -23,7 +24,8 @@ storesettings;
 dynamicForm: FormGroup;
 singleaddressForm: FormGroup;
 singledetailsForm: FormGroup;
-cname
+cname;
+loadingspinner= false;
 launchdate=new Date();
 enddate=new Date();
 deliverdate=new Date();
@@ -36,12 +38,14 @@ site;
 pending=false;
 end=false;
 total=0;
+finaltotal=0;
 diffDays=0;
 customer_confirmed=false;
 all_denied=false;
 myData: any;
 payment;
 home;
+noorders=true;
   seeselection= Array();
   uniqueprods=Array();
   selection = [];
@@ -66,8 +70,20 @@ home;
   singleaddresserrors;
   singleuserdetails;
   singledetailserrors;
-  savesingledetails;
-  
+  ordersummary;
+mgr="0";
+mgrorders;
+orderdetails;
+phone;
+email;
+company;
+
+  token;
+  customerid;
+  paymentid;
+  submitted =false;
+  transactiondetails;
+
 
   constructor(private formBuilder: FormBuilder,private modalService: NgbModal,private route: ActivatedRoute,private apiService: ApiService,private router: Router, private data: DataService) {
     
@@ -118,6 +134,9 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
   var url="/stores/"+this.site+"/admin/login";
             this.router.navigate([url]);
 }
+
+        this.mgr=sessionStorage.getItem("md")?sessionStorage.getItem("md"):"0";
+        console.log()
          this.customer_confirmed=user.sitedata[0].customer_confirmed==1?true:false;
          this.apiService.getstoreusers(this.storeid).subscribe(
           user => {
@@ -129,43 +148,48 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
           user => {
             if(!user.error){
             this.orders = user["orders"];
+            this.noorders=this.orders.length>0?false:true;
             console.log(this.orders,"xherex");
             this.pending=this.orders.some(function(o){return o['Pending'] == '1'});
             this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
             
-            //
-            var uniqpids= [...new Set(this.orders.map(item => item.Productid))];
-            console.log(uniqpids)
-            uniqpids.forEach((pid)=> {
-              var count=0;
-              this.orders.forEach((v) => (v['Productid'] == pid && count++));
-              var data=({ productid: pid , qty: count});
-              this.apiService.getsinglepricingbreak(data).subscribe(
-                user => {
-                  console.log(pid,user.pricingbreaks[0].Price,"price");
-                  this.orders.forEach((item)=> {
-                    if (item.Productid==pid) {
-                      item.price = user.pricingbreaks[0].Price;  
-                      if(item.deny!=1){
-                        this.total=this.total+parseInt(item.price);   
-                      }
+            // calculating pricing breaks
+            // var uniqpids= [...new Set(this.orders.map(item => item.Productid))];
+            // console.log(uniqpids)
+            // uniqpids.forEach((pid)=> {
+            //   var count=0;
+            //   this.orders.forEach((v) => (v['Productid'] == pid && count++));
+            //   var data=({ productid: pid , qty: count});
+            //   this.apiService.getsinglepricingbreak(data).subscribe(
+            //     user => {
+            //       console.log(pid,user.pricingbreaks[0].Price,"price");
+            //       this.orders.forEach((item)=> {
+            //         if (item.Productid==pid) {
+            //           item.price = user.pricingbreaks[0].Price;  
+            //           if(item.deny!=1){
+            //             this.total=this.total+parseInt(item.price);   
+            //           }
                                        
-                  }
-                  });
-                },
-                error => console.log(error)
-              );
-            });  
+            //       }
+            //       });
+            //     },
+            //     error => console.log(error)
+            //   );
+            // });  
             //
+
+            //calculating total
             this.orders.forEach((item)=> {  
-              if (item.Shipping) {
-                if(item.deny!=1){
-                  this.total =this.total+10; 
-                }                                 
-            }
+                  if(item.deny==0 && item.Pending==0)
+                  this.total =this.total+parseFloat(item.T_Grand)
+               
             });
             console.log(user,this.orders,this.total,"ho")
+            //  //calculating total
           }
+          // else{
+          //   this.orders=false;
+          // }
           },
           error => console.log(error)
         );
@@ -176,7 +200,12 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
            this.storesettings=user;
            var name= this.storesettings.filter(val => (["fname","lname"].includes(val.control)));
            this.cname= name[0].value + " " +name[1].value;
-           this.storesettings= this.storesettings.filter(val => !(["theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));
+           var names= this.storesettings.filter(val => (["phone","email","cname"].includes(val.control)));
+           this.phone=names[1].value;
+           this.email=names[2].value;
+           this.cname=names[0].value;
+          //  console.log(this.phone+this.email+this.cname);
+           this.storesettings= this.storesettings.filter(val => !(["loginoption","theme","logoimage","bannerimage","bannerheading","bannerdesc","reason","giftlogo"].includes(val.control)));
            console.log(this.storesettings)           
            this.loadupFormGroup();
           },
@@ -263,6 +292,10 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
    return count;
  }
 
+ onPayment(payment:boolean){
+    this.payment=payment;
+ }
+
 
 
    submit(){
@@ -307,13 +340,13 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
     return;
 }
 
-    if(this.dynamicForm.controls.loginoption.value.includes('email')){
-      if(this.domaindata.length==0){
-        alert("please enter atleast one domain");
-        window.scroll(0,0);
-        return;
-      }
-    }
+    // if(this.dynamicForm.controls.loginoption.value.includes('email')){
+    //   if(this.domaindata.length==0){
+    //     alert("please enter atleast one domain");
+    //     window.scroll(0,0);
+    //     return;
+    //   }
+    // }
 
     this.dynamicForm.controls.domainname.patchValue(this.domaindata.join());
     console.log(this.dynamicForm.value);
@@ -323,7 +356,8 @@ if(parseInt(sessionStorage.getItem("mgrlgn"))!=sk){
     this.apiService.update_store_setting(finaldata).subscribe(
       user => {
         console.log(user,"here"); 
-        alert("Settings updated");        
+        alert("Settings updated");  
+        this.dynamicForm.markAsPristine();      
       },
       error => {
         console.log(error);       
@@ -409,8 +443,50 @@ approvesingleorder(psid,i){
         this.orders[i].deny=0;
         this.pending=this.orders.some(function(o){return o['Pending'] == '1'});
         this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
-        console.log(this.all_denied)
+        console.log(this.all_denied);
+        this.total=0;
+        this.orders.forEach((item)=> {  
+          if(item.deny==0 && item.Pending==0)
+          this.total =this.total+parseFloat(item.T_Grand)
+       
+    });
       }     
+    },
+    error => console.log(error)
+  );
+}
+
+
+getmgrorders(){  
+  this.apiService.getmgrorders(JSON.parse(sessionStorage.getItem("ud"))["UserID"]).subscribe(
+    user => {
+      console.log(user);     
+      this.mgrorders=user['orders'];
+    },
+    error => console.log(error)
+  );
+}
+
+getorderdetails(storeid){
+  this.apiService.getstoreorders(storeid).subscribe(
+    user => {
+      if(!user.error){
+      this.orderdetails = user["orders"];
+      //calculating total
+      this.total=0;
+      this.orderdetails.forEach((item)=> {  
+            if(item.deny==0 && item.Pending==0)
+            this.total =this.total+parseFloat(item.T_Grand)         
+      });
+
+      this.section='orderdetails';
+      this.title='Order Details'
+      // console.log(user,this.orders,this.total,"ho")
+      //  //calculating total
+    }
+    else{
+      alert("No Orders to show");
+    }
     },
     error => console.log(error)
   );
@@ -427,7 +503,13 @@ denysingleorder(psid,i){
         this.orders[i].deny=1;
         this.pending=this.orders.some(function(o){return o['Pending'] == '1'});
         this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
-        console.log(this.all_denied)
+        console.log(this.all_denied);
+        this.total=0;
+        this.orders.forEach((item)=> {  
+          if(item.deny==0 && item.Pending==0)
+          this.total =this.total+parseFloat(item.T_Grand)
+       
+    });
       }     
     },
     error => console.log(error)
@@ -445,6 +527,12 @@ approveallorders(){
           this.pending=this.orders.some(function(o){return o['Pending'] == '1'});
           this.all_denied=!this.orders.some(function(o){return o['deny'] == '0'});
         });
+        this.total=0;
+        this.orders.forEach((item)=> {  
+          if(item.deny==0 && item.Pending==0)
+          this.total =this.total+parseFloat(item.T_Grand)
+       
+    });
       }     
     },
     error => console.log(error)
@@ -456,7 +544,7 @@ confirmorders(){
     alert("Stop Cheating");
   }
   else{
-    var data=({ storeid: this.storeid });
+    var data=({ storeid: this.storeid, custname:this.cname,cname:this.company,email:this.email,phone:this.phone,storeurl:this.site,storename:this.storename });
     this.apiService.confirmorders(data).subscribe(
       user => {
         console.log(user); 
@@ -469,35 +557,165 @@ confirmorders(){
   }
   }
 
+  processOrders(){    
+    this.loadingspinner=true;
+    // if(this.orders.some(function(o){return o['Pending'] == '1'})){
+    //   alert("Stop Cheating");
+    // }
+    // else{
+    //   var data=({ storeid: this.storeid });
+    //   this.apiService.confirmorders(data).subscribe(
+    //     user => {
+    //       console.log(user); 
+    //       if(!user["error"]){
+    //         this.customer_confirmed=!this.customer_confirmed;
+    //       }     
+    //     },
+    //     error => console.log(error)
+    //   );
+    // }
+    // alert("hello");
+    this.apiService.revieworder(this.storeid).subscribe(
+      user => {
+        console.log(user,"review") ;        
+        this.ordersummary=user;
+        this.loadingspinner=false;
+        this.ordersummary.forEach((item)=> {            
+          this.finaltotal =this.finaltotal+parseFloat(item.grand);
+             
+    });
+    this.braintreewidget();   
+      },
+      error => console.log(error)
+    );
+    }
+
+//
+braintreewidget(){
+  this.apiService.get_customer_id(this.storeid).subscribe(
+    user => {
+      console.log(user);  
+      if(user["error"]){         
+        alert("No payment method available");          
+      }
+      else if(user["transaction"]==1){
+        this.transactiondetails=Array(user["transactiondetails"]);
+        console.log(this.transactiondetails);
+        document.querySelector('#submit-button').setAttribute("hidden","true");  
+      }
+      else{
+        // var dropin = require('braintree-web-drop-in');
+        var button = document.querySelector('#submit-button');
+        this.customerid=user["customerid"];
+        this.paymentid=user["paymentid"];
+        this.apiService.customer_token(this.customerid).subscribe(
+          token => {
+            this.token=token;
+            dropin.create({      
+              authorization: this.token,
+              container: '#dropin-container',
+              // vaultManager: true,
+              card: {
+                cardholderName: {
+                  required: false
+                  // to make cardholder name required
+                  // required: true
+                }
+              }
+            },(createErr, instance)=> {
+              if (createErr) {
+                // An error in the create call is likely due to
+                // incorrect configuration values or network issues.
+                // An appropriate error will be shown in the UI.
+                console.error(createErr);
+                return;
+              }
+              button.addEventListener('click',  ()=> {
+                instance.requestPaymentMethod((requestPaymentMethodErr, payload)=>{
+                  console.log(payload);
+                  this.submitted = true;
+
+                  // stop here if form is invalid
+                  
+                  var finaldata=({nonce:payload.nonce,paymentid:this.paymentid,storeid:this.storeid,amount:this.finaltotal,userdata:{fname:JSON.parse(sessionStorage.getItem("ud"))["Firstname"],lname:JSON.parse(sessionStorage.getItem("ud"))["Lastname"],email:JSON.parse(sessionStorage.getItem("ud"))["Username"],phone:JSON.parse(sessionStorage.getItem("ud"))["Phone"]}});
+                        
+                  this.apiService.payment(finaldata).subscribe(
+                    user => {
+                      console.log(user);    
+                      var data=({ storeid: this.storeid, custname:this.cname,cname:this.company,email:this.email,phone:this.phone,storeurl:this.site,storename:this.storename });
+                      this.apiService.confirmorders(data).subscribe(
+                        user => {
+                          console.log(user); 
+                          if(!user["error"]){
+                            this.customer_confirmed=!this.customer_confirmed;
+                            this.section='orderplaced';
+                          }     
+                        },
+                        error => console.log(error)
+                      );
+                      // this.braintreewidget();          
+                      },
+                      error => console.log(error)
+                    );
+                  // Submit payload.nonce to your server
+                  if (requestPaymentMethodErr) {
+                    // No payment method is available.
+                    // An appropriate error will be shown in the UI.
+                    console.error(requestPaymentMethodErr);
+                    return;
+                  }          
+                });
+              });
+            });
+            },
+            error => console.log(error)
+          );
+      }            
+      },
+      error => console.log(error)
+    );
+}
+//
+
 dateChange(control){
   if(control=="launchdate"){
     // if(this.dynamicForm.controls.launchdate.value<this.launchdate.toISOString().substr(0, 10)){
     //   alert("Error");
     // }
+    // console.log(new Date().toISOString().substr(0, 10));
+    (<HTMLInputElement>document.getElementById("launchdate")).min=new Date().toISOString().substr(0, 10);    
    var launchdate=this.dynamicForm.controls.launchdate.value;
-    // this.enddate= this.addDays(launchdate, this.promolength);
+
+  this.enddate= this.addDays(launchdate, 14);
     this.deliverdate= this.addDays(this.enddate, 21);
-    this.dynamicForm.controls.enddate.patchValue(this.enddate.toISOString().substr(0, 10), {onlySelf: true});
+    if(this.enddate.toISOString().substr(0, 10)>this.dynamicForm.controls.enddate.value){
+      this.dynamicForm.controls.enddate.patchValue(this.enddate.toISOString().substr(0, 10), {onlySelf: true});
+    }
+   
     this.dynamicForm.controls.deliverdate.patchValue(this.deliverdate.toISOString().substr(0, 10), {onlySelf: true});    
     (<HTMLInputElement>document.getElementById("enddate")).min=this.enddate.toISOString().substr(0, 10);
     (<HTMLInputElement>document.getElementById("deliverdate")).min=this.deliverdate.toISOString().substr(0, 10);
   }
 
-  if(control=="enddate"){      
+  if(control=="enddate"){  
+    var launchdate=this.dynamicForm.controls.launchdate.value;
+    this.enddate= this.addDays(launchdate, 14);
+    console.log(this.enddate);
+    (<HTMLInputElement>document.getElementById("enddate")).min=this.enddate.toISOString().substr(0, 10);    
     var enddate= this.dynamicForm.controls.enddate.value;
     this.deliverdate= this.addDays(enddate, 21);     
     this.dynamicForm.controls.deliverdate.patchValue(this.deliverdate.toISOString().substr(0, 10), {onlySelf: true});
     (<HTMLInputElement>document.getElementById("deliverdate")).min=this.deliverdate.toISOString().substr(0, 10);
   }
   
-  if(control=="loginoption"){
-    if(this.dynamicForm.controls.loginoption.value.includes("Domain")){
+  // if(control=="loginoption"){
+  //   if(this.dynamicForm.controls.loginoption.value.includes("Domain")){
 
-    }
-    else{
+  //   }
+  //   else{
       
-    }
-  }
+  //   }
+  // }
 }
 
   ngOnInit() {
@@ -549,7 +767,7 @@ dateChange(control){
 
   editsingleuseraddress(){
     this.singleuserdetails=""; 
-    this.apiService.getsingleuseraddress(this.singleuser.StoreUserID).subscribe(
+    this.apiService.getsingleuseraddress(this.singleuser.UserID).subscribe(
       user => {
         console.log(user,"datas")  
          
@@ -559,7 +777,7 @@ dateChange(control){
         this.singleaddressForm.controls.city.patchValue(user.useraddress[0].CityID);   
         this.singleaddressForm.controls.state.patchValue(user.useraddress[0].StateID);   
         this.singleaddressForm.controls.zip.patchValue(user.useraddress[0].PostalCode);
-        if(this.singleuser.Shipping==1){
+        if(this.singleuser.type=='P'){
           this.singleuseraddress='personal';  
         }        
         else {
@@ -579,11 +797,31 @@ dateChange(control){
     this.singleuseraddress="";
   }
 
+  savesingledetails(){
+    var finaldata=({userid:this.singleuser.UserID ,detailsdata: this.singledetailsForm.value});
+    this.apiService.savesingleuserdetails(finaldata).subscribe(
+      user => {
+        console.log(user,"datas") 
+        if(!user["error"]){
+          this.singleuser.Firstname=this.singledetailsForm.controls.firstname.value;
+          this.singleuser.Lastname=this.singledetailsForm.controls.lastname.value;
+          this.singleuser.Phone=this.singledetailsForm.controls.phone.value;
+          alert("Details updated")
+          this.editsingleuserdetails();
+        } 
+        else{
+          alert("Something went wrong.")
+        }
+      },
+      error => console.log(error)
+    );
+  }
+
   savesingleaddress(){
     console.log(this.singleaddressForm.value)
     var addressdata=Array();
     addressdata.push(this.singleaddressForm.value);
-    var finaldata=({storeuserid:this.singleuser.StoreUserID ,addressdata: addressdata});
+    var finaldata=({addressid:this.singleuser.AddressID ,addressdata: addressdata});
     this.apiService.savesingleuseraddress(finaldata).subscribe(
       user => {
         console.log(user,"datas") 
@@ -882,6 +1120,7 @@ addAnotherAd() {
         type:'C',
         cost:'10',
         main:'0',
+        shiptoname: ["", Validators.required],
         addressname: ["", Validators.required],
         streetaddress: ["", [Validators.required]],
         streetaddress2: [""],
@@ -936,6 +1175,7 @@ update2caddress(suid){
                   type:element.type,
                   cost:element.cost,
                   main:element.main,
+                  shiptoname: [element.shiptoname, Validators.required],
                   addressname: [element.addressname, Validators.required],
                   streetaddress: [element.streetaddress, [Validators.required]],
                   streetaddress2: [element.streetaddress2],
@@ -1097,6 +1337,55 @@ update2caddress(suid){
     );
   }
 
+
+  MakePrimary(i){
+
+    var addressnameholder =this.addressesarray.value[i].addressname
+    var shiptonameholder =this.addressesarray.value[i].shiptoname
+    var streetaddressholder =this.addressesarray.value[i].streetaddress
+    var streetaddress2holder =this.addressesarray.value[i].streetaddress2
+    var cityholder =this.addressesarray.value[i].city
+    var stateholder =this.addressesarray.value[i].state
+    var zipholder =this.addressesarray.value[i].zip
+  
+    this.addressesarray.controls[i]['controls'].addressname.patchValue(this.addressesarray.value[0].addressname, {onlySelf: true});
+    this.addressesarray.controls[i]['controls'].shiptoname.patchValue(this.addressesarray.value[0].shiptoname, {onlySelf: true});
+    this.addressesarray.controls[i]['controls'].streetaddress.patchValue(this.addressesarray.value[0].streetaddress, {onlySelf: true});  
+    this.addressesarray.controls[i]['controls'].streetaddress2.patchValue(this.addressesarray.value[0].streetaddress2, {onlySelf: true});
+    this.addressesarray.controls[i]['controls'].city.patchValue(this.addressesarray.value[0].city, {onlySelf: true});
+    this.addressesarray.controls[i]['controls'].state.patchValue(this.addressesarray.value[0].state, {onlySelf: true});
+    this.addressesarray.controls[i]['controls'].zip.patchValue(this.addressesarray.value[0].zip, {onlySelf: true});
+  
+  
+    this.addressesarray.value[i].addressname=this.addressesarray.value[0].addressname;
+    this.addressesarray.value[i].shiptoname=this.addressesarray.value[0].shiptoname;
+    this.addressesarray.value[i].streetaddress=this.addressesarray.value[0].streetaddress
+    this.addressesarray.value[i].streetaddress2=this.addressesarray.value[0].streetaddress2;
+    this.addressesarray.value[i].city=this.addressesarray.value[0].city;
+    this.addressesarray.value[i].state=this.addressesarray.value[0].state;
+    this.addressesarray.value[i].zip=this.addressesarray.value[0].zip;
+  /////
+    this.addressesarray.controls[0]['controls'].addressname.patchValue(addressnameholder, {onlySelf: true});
+    this.addressesarray.controls[0]['controls'].shiptoname.patchValue(shiptonameholder, {onlySelf: true});
+    this.addressesarray.controls[0]['controls'].streetaddress.patchValue(streetaddressholder, {onlySelf: true});  
+    this.addressesarray.controls[0]['controls'].streetaddress2.patchValue(streetaddress2holder, {onlySelf: true});
+    this.addressesarray.controls[0]['controls'].city.patchValue(cityholder, {onlySelf: true});
+    this.addressesarray.controls[0]['controls'].state.patchValue(stateholder, {onlySelf: true});
+    this.addressesarray.controls[0]['controls'].zip.patchValue(zipholder, {onlySelf: true});
+  
+  
+    this.addressesarray.value[0].addressname=(addressnameholder);
+    this.addressesarray.value[0].shiptoname=(shiptonameholder);
+    this.addressesarray.value[0].streetaddress=(streetaddressholder);
+    this.addressesarray.value[0].streetaddress2=(streetaddress2holder);
+    this.addressesarray.value[0].city=(cityholder);
+    this.addressesarray.value[0].state=(stateholder);
+    this.addressesarray.value[0].zip=(zipholder);
+  
+    console.log(this.addressesarray.value);
+    
+  }
+
   saveaddress(){
     if(this.pcheck){
       alert("Please confirm Shipping Setting");
@@ -1134,13 +1423,7 @@ export const ROUTES: RouteInfo[] = [
     title: "Dashboard",
     icon: "fa fa-dashboard",
     bgclass:"",
-  },
-  {
-    path: "orders",
-    title: "Orders",
-    icon: "fa fa-shopping-cart",
-    bgclass:"primary",
-  },
+  }, 
   {
     path: "employees",
     title: "Registered Recipients",
@@ -1158,6 +1441,12 @@ export const ROUTES: RouteInfo[] = [
     title: "Settings",
     icon: "fa fa-cog",
     bgclass:"danger",
+  },
+  {
+    path: "orders",
+    title: "Orders",
+    icon: "fa fa-shopping-cart",
+    bgclass:"primary",
   }
 ];
 

@@ -345,7 +345,7 @@
                         <div class="col" style="max-width: max-content;">
                             <div class="text-center p-5">
                                 <h4 class="lead mb-5">Please enter your {{domain?'email address':'access code'|lowercase}} below to view the gift options {{companyname||'Store Name'|titlecase}} has chosen for you.
-                                    <br> This site will accept orders until 11:00 PM CST on {{storeclose||'Store Close Date'|date}}.
+                                    <br> This site will accept orders until 11:59 PM EST on {{storeclose||'Store Close Date'|date}}.
                                     <br> Don't miss out! Be sure to place your order before that day.</h4>
                                 <form [formGroup]="loginForm">
                                     <!-- <div *ngIf="domain" class="input-group input-group-lg">                                        
@@ -420,7 +420,8 @@
                         <div class="col-md-2"></div>
                         <div class="col-md-8 col-lg-8 ">
                             <span *ngIf="reason">
-                                <p>{{reason}}</p>
+                                <!-- <p>{{reason}}</p> -->
+                                <div style="white-space:pre-wrap;" [innerHTML]="reason"></div>
                                 <br>
                             </span>
 
@@ -454,11 +455,18 @@
                             </div> -->
                             <div *ngFor="let item of uniqueprods" class="col-sm-4 mb-5 text-center">
                                 <div class="card h-100" [ngStyle]="{'border': '3px solid'+primarycolor }">
-                                    <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
+                                    <!-- <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt=""> -->
+                                    <span *ngIf="item.custom_image==0">
+                                        <!-- <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.Productid+ '_'+item.ImageFile" alt=""> -->
+                                        <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +item.ProductID+ '_'+item.ImageFile" alt="">
+                                    </span>
+                                    <span *ngIf="item.custom_image==1">
+                                        <img class="card-img-top" [src]="item.custom_image_url" alt="">
+                                    </span>
                                     <div class="card-body">
                                         <p class="card-title"><b>{{item.ProductName|titlecase}}</b></p>
                                         <!-- <p class="card-text">{{item.ProductDesc1}}</p> -->
-                                        <button class="btn btn-secondary basbtnhomesecondary mb-2" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="productdetails(content,item)">View Details</button>
+                                        <button class="btn btn-secondary basbtnhomesecondary mb-2 overridefont" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" (click)="productdetails(content,item)">View Details</button>
                                     </div>
                                     <!-- <div class="card-footer">
 
@@ -540,7 +548,19 @@
                                 <div class="col-sm-12">
                                     <div class="card border-0 text-center mb-2 ">
                                         <div class="card-body">
-                                            <img class="card-img-top" style="max-width: 14rem;" [src]=" 'https://securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap">
+
+
+                                            <span *ngIf="productdata[0].custom_image==0">
+                                                <!-- <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.Productid+ '_'+item.ImageFile" alt=""> -->
+                                                 <img class="card-img-top" style="max-width: 14rem;" [src]=" 'https://securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="">
+                                            </span>
+                                            <span *ngIf="productdata[0].custom_image==1">
+                                                <img class="card-img-top" style="max-width: 14rem;" [src]="productdata[0].custom_image_url" alt="">
+                                            </span>
+
+
+
+                                            <!-- <img class="card-img-top" style="max-width: 14rem;" [src]=" 'https://securedgear.com/sites/997/products/997_' +pselect.ProductID+ '_'+pselect.ImageFile" alt="Card image cap"> -->
                                             <h6 class="card-title"><strong>{{pselect.ProductName|titlecase}} </strong>({{pselect.A2_Label}})</h6>
                                             <p class="card-text px-lg-5">{{pselect.ProductDesc1}}</p>
                                             <div>
@@ -565,8 +585,9 @@
                                         <h5 class="card-title">{{address.addressname|titlecase}}</h5>
                                         <h6 class="card-text">{{address.streetaddress|titlecase}}, {{address.streetaddress2|titlecase}}{{address.streetaddress2?',':''}} {{address.city|titlecase}}, {{address.state|titlecase}}, {{address.zip}}</h6>
                                         <div>
-                                            <button [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" class="btn btn-secondary basbtnhomesecondary mr-2" (click)="adselect(i,address)">Select</button>
-                                            <button *ngIf="!address.AddressID" (click)="this.successclass[i]=[];this.addresses.splice(i, 1); hideaddaddress=false;finalcheckout=!finalcheckout" class="btn btn-secondary basbtnhomesecondary">Delete</button>
+                                            <button *ngIf="!padd" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" class="btn btn-secondary basbtnhomesecondary mr-2" (click)="adselect(i,address)">Select</button>
+                                            <button *ngIf="!address.AddressID && !padd" (click)="this.successclass[i]=[];this.addresses.splice(i, 1); hideaddaddress=false;finalcheckout=false;reset();" class="btn btn-secondary basbtnhomesecondary">Delete</button>
+                                            <button *ngIf="!address.AddressID && padd" (click)="this.successclass[i]=[];this.addresses.splice(i, 1);showshipping=true;finalcheckout=false;reset();" class="btn btn-secondary basbtnhomesecondary">Edit</button>
                                         </div>
                                     </div>
                                 </div>
@@ -696,8 +717,9 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-center">
-                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)=" onSubmit(addressmodal)" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Add</button>
-                                        <button class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=false" type="button">Cancel</button>
+                                        <button class="btn btn-secondary basbtnhomesecondary mr-2" (click)="onSubmit(addressmodal)" [ngStyle]="{'background-color': buttoncolor,'color':btntextcolor}" type="button">Add</button>
+                                        <button *ngIf="!padd" class="btn btn-secondary basbtnhomesecondary" (click)="showshipping=false" type="button">Cancel</button>
+
                                     </div>
                                 </div>
                                 <div class="col-sm-2"></div>
@@ -917,7 +939,17 @@
                             <div class="col-lg-12">
                                 <div class="d-flex justify-content-center">
                                     <div *ngFor="let product of products">
-                                        <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +product.ProductID+ '_'+product.ImageFile" alt="" style="max-width: 350px;">
+                                        <!-- <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +product.ProductID+ '_'+product.ImageFile" alt="" style="max-width: 350px;"> -->
+
+                                        <span *ngIf="product.custom_image==0">
+                                            <!-- <img class="card-img-top" [src]="'https://securedgear.com/sites/997/products/997_' +item.Productid+ '_'+item.ImageFile" alt=""> -->
+                                            <img class="card-img-top" [src]=" 'https://securedgear.com/sites/997/products/997_' +product.ProductID+ '_'+product.ImageFile" alt="">
+                                        </span>
+                                        <span *ngIf="product.custom_image==1">
+                                            <img class="card-img-top" [src]="product.custom_image_url" alt="">
+                                        </span>
+
+
                                         <div class="card-body">
                                             <p class="card-text">{{product.A2_Label}}</p>
                                         </div>
@@ -954,26 +986,29 @@
         <div class="container">
             <div class="row">
                 <div class="card-group mx-auto">
-                    <div *ngFor=" let saddress of saddress;let i = index;">
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="card-title">
-                                    <p>{{saddress.name|titlecase}}</p>
+                    <div *ngIf="!nosuggested">
+                        <div *ngFor=" let saddress of saddress;let i = index;">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        <p>{{saddress.name|titlecase}}</p>
+                                    </div>
+                                    <!-- <div class="card-text">
+                                        <p>Attn: </p>
+                                    </div> -->
+                                    <div class="card-text">
+                                        <p>{{saddress.addr1}} , {{saddress.addr2}}</p>
+                                    </div>
+                                    <div class="card-text">
+                                        <p>{{saddress.city}} , {{saddress.state}}, {{saddress.zipcode}} - {{saddress.zipcode_addon}} </p>
+                                    </div>
                                 </div>
-                                <!-- <div class="card-text">
-                                    <p>Attn: </p>
-                                </div> -->
-                                <div class="card-text">
-                                    <p>{{saddress.addr1}} , {{saddress.addr2}}</p>
-                                </div>
-                                <div class="card-text">
-                                    <p>{{saddress.city}} , {{saddress.state}}, {{saddress.zipcode}} - {{saddress.zipcode_addon}} </p>
-                                </div>
+                                <!-- <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button> -->
+                                <button ngbAutofocus (click)="closeModal();updatesaddress(i)" class=" border-light basbtn">Accept</button>
                             </div>
-                            <!-- <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button> -->
-                            <button ngbAutofocus (click)="closeModal();updatesaddress(i)" class=" border-light basbtn">Accept</button>
                         </div>
                     </div>
+                    <p *ngIf="nosuggested">No Suggested Address Found.</p>
                 </div>
             </div>
         </div>

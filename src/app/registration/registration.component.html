@@ -28,7 +28,7 @@
                         <a class="nav-link" [routerLink]="['/contact-us']">Contact Us</a>
                     </li>
                     <li class="nav-item mx-2">
-                        <a class="nav-link" [routerLink]="['/stores']">Sign In</a>
+                        <a class="nav-link" [routerLink]="['/sign-in']">Sign In</a>
                     </li>
                 </ul>
             </div>
@@ -149,8 +149,8 @@
                                                         <div *ngIf="form_elem.control=='launchdate' && this.dynamicForm.controls.launchdate.value<this.launchdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
                                                             Start date cannot be less than today
                                                         </div>
-                                                        <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.launchdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
-                                                            End date cannot be less less than today
+                                                        <div *ngIf="form_elem.control=='enddate' && this.dynamicForm.controls.enddate.value<this.dynamicForm.controls.launchdate.value && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
+                                                            End date cannot be less less than Go Live date
                                                         </div>
                                                         <div *ngIf="form_elem.control=='deliverdate' && this.dynamicForm.controls.deliverdate.value<this.deliverdate.toISOString().substr(0, 10) && !dynamicForm.controls[form_elem.control].pristine" class="error-msg">
                                                             Deliver date cannot be less than 2 weeks from End date.
@@ -304,7 +304,7 @@
                                                         <label for="{{form_elem.control}}"><span *ngIf="form_elem.validator=='required'" class="text-danger">*</span>{{form_elem.label}}</label>
                                                         <div class="input-group mb-3">
                                                             <div class="input-group-prepend">
-                                                                <span class="input-group-text" id="basic-addon3">https://buildastore.com/stores/</span>
+                                                                <span class="input-group-text" id="basic-addon3">https://buildagiftstore.com/stores/</span>
                                                             </div>
                                                             <input type="text" id="{{form_elem.control}}" formControlName="{{form_elem.control}}" class="form-control" />
                                                         </div>
@@ -372,6 +372,7 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <img class="img-fluid" src="../../assets/Page-Sections.png">
                                         <div class="justify-content-center text-center">
                                             <button matStepperPrevious class="basbtnsdysmall mx-5">Back</button>
                                             <button (click)="checkSection(2)" class="basbtn">NEXT: Create My Account </button>
@@ -459,7 +460,7 @@
                                                     <div class="card">
                                                         <div *ngIf="!this.Address[i]" id="AddressResp{{i}}">
                                                             <div *ngIf="i==0" class="card-header">
-                                                                Free Shipping (Primary)
+                                                                Free Shipping <b> (Primary)</b>
                                                             </div>
                                                             <div *ngIf="i!=0" class="card-header">
                                                                 $10 for each Shipment
@@ -633,8 +634,8 @@
                                             <!-- <button mat-raised-button matStepperPrevious>Back</button>
                                             <button mat-raised-button (click)="onSubmit(formdone)">Submit</button> -->
                                             <div class="text-left">
-                                                <p><b>Check your email</b> for a confirmation from support@buildastore.com that includes important information related to how you'll access your site, share it, and a few things we need to finish up to ensure
-                                                    your gifts get in your recipients hands on time.</p>
+                                                <p><b>Check your email</b> for a confirmation from helpmybrand@identityworks.com that includes important information related to how you'll access your site, share it, and a few things we need to finish up to
+                                                    ensure your gifts get in your recipients hands on time.</p>
                                                 <p> If you don't see the email in your inbox, be sure to check your spam/junk folder. If you're still not able to find it, please let us know at helpmybrand@idworks.com. </p>
                                                 <p><b>On the next page</b> you'll be able preview and edit your site. If you choose to make changes to your site right away, don't forget to hit <i>Save</i> before exiting!</p>
                                             </div>
@@ -710,26 +711,29 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="card-group mx-auto">
-                                            <div *ngFor=" let saddress of saddress;let i = index;">
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        <div class="card-title">
-                                                            <p>{{saddress.name|titlecase}}</p>
-                                                        </div>
-                                                        <!-- <div class="card-text">
+                                            <div *ngIf="!nosuggested">
+                                                <div *ngFor=" let saddress of saddress;let i = index;">
+                                                    <div class="card">
+                                                        <div class="card-body">
+                                                            <div class="card-title">
+                                                                <p>{{saddress.name|titlecase}}</p>
+                                                            </div>
+                                                            <!-- <div class="card-text">
                                                             <p>Attn: </p>
                                                         </div> -->
-                                                        <div class="card-text">
-                                                            <p>{{saddress.addr1}} , {{saddress.addr2}}</p>
+                                                            <div class="card-text">
+                                                                <p>{{saddress.addr1}} , {{saddress.addr2}}</p>
+                                                            </div>
+                                                            <div class="card-text">
+                                                                <p>{{saddress.city}} , {{saddress.state}}, {{saddress.zipcode}} - {{saddress.zipcode_addon}} </p>
+                                                            </div>
                                                         </div>
-                                                        <div class="card-text">
-                                                            <p>{{saddress.city}} , {{saddress.state}}, {{saddress.zipcode}} - {{saddress.zipcode_addon}} </p>
-                                                        </div>
+                                                        <!-- <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button> -->
+                                                        <button ngbAutofocus (click)="closeModal();updatesaddress(saddressi,i)" class=" border-light basbtn">Accept</button>
                                                     </div>
-                                                    <!-- <button mat-raised-button *ngIf=" !this.Address[i]" (click)="EditSingleAd(i)" type="button">Edit</button> -->
-                                                    <button ngbAutofocus (click)="closeModal();updatesaddress(saddressi,i)" class=" border-light basbtn">Accept</button>
                                                 </div>
                                             </div>
+                                            <p *ngIf="nosuggested">No Suggested Address Found.</p>
                                         </div>
                                     </div>
                                 </div>
@@ -963,7 +967,7 @@
             <div class="row mx-5 pb-3">
                 <div class="col">
                     <h5 class="text-uppercase">About Us</h5>
-                    <p>Build-A-Gift Store is backed by <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
+                    <p>Build-A-Gift Store is a service of <a href="https://idworks.com" target="_blank" class="text-white">Identity Works, Inc.,</a> an industry leader in branded apparel and promotional products since 1996.
                         <a [routerLink]="['/about-us']" class="text-white">Learn More</a></p>
                 </div>
                 <hr class="clearfix w-100 d-md-none pb-3">
